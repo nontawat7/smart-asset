@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบริหารจัดการครุภัณฑ์อัจฉริยะ (Smart Asset Management System - Cloud v3.5)</title>
+    <title>ระบบบริหารจัดการวัสดุและครุภัณฑ์ - สำนักงานเลขานุการ อบจ.ภูเก็ต</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Chart.js สำหรับแสดงผลสัดส่วนพัสดุ -->
+    <!-- Chart.js สำหรับแสดงสัดส่วน -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Google Fonts: Noto Sans Thai (ฟอนต์ภาษาไทยอ่านง่ายและสะอาดที่สุด ปรับแต่งความโต) -->
+    <!-- Google Fonts: Noto Sans Thai และเพิ่ม Sarabun สำรองราชการ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- นำเข้า Firebase SDK Compat เพื่อรันบนหน้าเว็บเดียวได้อย่างเสถียร -->
+    <!-- นำเข้า Firebase SDK Compat เพื่อรันเสถียรบนไฟล์เดี่ยว -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <style>
         body {
             font-family: 'Noto Sans Thai', 'Inter', sans-serif;
-            font-size: 15px; /* ปรับขนาดฟอนต์ให้ใหญ่ขึ้นเพื่อให้อ่านง่าย */
+            font-size: 15px;
         }
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -30,6 +30,23 @@
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
+        }
+
+        /* ปรับสไตล์ตัดองค์ประกอบส่วนอื่นออกเมื่อสั่งพิมพ์กระดาษ A4 และบังคับใช้ฟอนต์ TH SarabunIT๙ */
+        @media print {
+            body > *:not(#print-section) {
+                display: none !important;
+            }
+            #print-section {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                color: black !important;
+                font-family: 'TH SarabunIT๙', 'TH Sarabun IT๙', 'TH Sarabun New', 'Sarabun', sans-serif !important;
+            }
         }
     </style>
 </head>
@@ -39,16 +56,14 @@
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-none"></div>
 
     <!-- ========================================================================= -->
-    <!-- ========================= 1. LOGIN SCREEN (หน้าเข้าสู่ระบบ สีขาว-ฟ้าพรีเมียม) ========================= -->
+    <!-- ========================= 1. LOGIN SCREEN =============================== -->
     <!-- ========================================================================= -->
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-100/40 to-indigo-50/70 p-4 overflow-y-auto">
-        <!-- ขยายความกว้างสูงสุดเป็น max-w-xl และเพิ่ม Padding และเพิ่มมิติของเงาตกแต่งเพื่อความหรูหรา -->
         <div class="relative w-full max-w-xl bg-white/80 backdrop-blur-xl p-10 md:p-12 rounded-3xl border border-white/80 shadow-[0_25px_60px_rgba(30,58,138,0.12)] flex flex-col space-y-8 text-slate-800 my-auto">
-            <!-- เอฟเฟกต์แสงตกแต่งพื้นหลังเพิ่มความหรูหรา -->
+            <!-- แสงตกแต่งพื้นหลัง -->
             <div class="absolute -top-10 -left-10 w-44 h-44 bg-sky-300/30 rounded-full blur-[70px] opacity-60 pointer-events-none"></div>
             <div class="absolute -bottom-10 -right-10 w-44 h-44 bg-indigo-300/30 rounded-full blur-[70px] opacity-60 pointer-events-none"></div>
             
-            <!-- โลโก้และชื่อระบบ (ดีไซน์ Cubic Dynamic Crest ใหม่ล่าสุด) -->
             <div class="text-center space-y-4 relative">
                 <div class="inline-flex relative p-1.5">
                     <!-- SVG Logo: 3D Cubic Dynamic Crest -->
@@ -63,27 +78,21 @@
                                 <stop offset="100%" stop-color="#3b82f6" />
                             </linearGradient>
                         </defs>
-                        <!-- วงแหวนสัญญาณข้อมูลรอบตัวหมุนเวียนรอบนวัตกรรม (หมุนเวียน/สแกน) -->
                         <circle cx="50" cy="50" r="45" stroke="url(#skyGrad)" stroke-width="2" stroke-dasharray="8 6" opacity="0.5"/>
-                        <!-- ส่วนหัวกล่อง 3 มิติ -->
                         <path d="M50 18 L78 33 L50 48 L22 33 Z" fill="url(#skyGrad)" opacity="0.9"/>
-                        <!-- ฝั่งขวากล่อง 3 มิติ -->
                         <path d="M50 48 L78 33 L78 63 L50 78 Z" fill="url(#blueGrad)" opacity="0.95"/>
-                        <!-- ฝั่งซ้ายกล่อง 3 มิติ -->
                         <path d="M22 33 L50 48 L50 78 L22 63 Z" fill="url(#blueGrad)" opacity="0.75"/>
-                        <!-- จุดสว่างพาสพอยท์เชื่อมโยงคลาวด์ตรงกลาง -->
                         <circle cx="50" cy="48" r="4" fill="#ffffff" filter="drop-shadow(0px 0px 4px #ffffff)"/>
                     </svg>
                 </div>
-                <div class="space-y-1.5">
+                <div class="space-y-2">
                     <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-900 to-indigo-950 bg-clip-text text-transparent">
-                        ระบบบริหารจัดการครุภัณฑ์อัจฉริยะ
+                        ระบบบริหารจัดการวัสดุและครุภัณฑ์
                     </h1>
-                    <p class="text-[13px] text-blue-600/80 font-semibold uppercase tracking-wider">Smart Asset Management System (v3.5 Cloud)</p>
+                    <p class="text-[16px] text-blue-600/90 font-bold tracking-wide">สำนักงานเลขานุการ อบจ.ภูเก็ต</p>
                 </div>
             </div>
 
-            <!-- ฟอร์มเข้าสู่ระบบ -->
             <form id="login-form" onsubmit="handleLogin(event)" class="space-y-6 relative">
                 <div class="space-y-2.5">
                     <label class="block text-sm font-bold text-blue-950 uppercase tracking-wider">ชื่อผู้ใช้งาน (Username)</label>
@@ -101,30 +110,20 @@
                     </div>
                 </div>
 
-                <!-- ปรับเปลี่ยนคำเขียนบนปุ่มเป็นคำว่า "เข้าสู่ระบบ" ตามข้อกำหนด -->
                 <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-[16px] py-4 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/15 hover:shadow-blue-500/25">
                     <i data-lucide="log-in" class="w-5 h-5"></i>
                     เข้าสู่ระบบ
                 </button>
             </form>
-
-            <!-- ข้อมูลบัญชีตั้งต้นเพื่ออำนวยความสะดวกในการทดสอบ -->
-            <div class="pt-4 border-t border-slate-200 text-center relative">
-                <p class="text-[11px] text-slate-400 font-medium">สำหรับทดสอบระบบใช้บัญชี:</p>
-                <div class="flex items-center justify-center gap-3 text-[11px] text-slate-600 mt-2 font-medium bg-slate-50 py-2.5 px-3 rounded-xl border border-slate-200/60">
-                    <span>แอดมิน: <strong class="text-blue-600">admin</strong> / password</span>
-                    <span>ผู้ใช้: <strong class="text-blue-600">user</strong> / password</span>
-                </div>
-            </div>
         </div>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- ====================== 2. SYSTEM WORKSPACE (พื้นที่แอปหลัก) ====================== -->
+    <!-- ====================== 2. SYSTEM WORKSPACE ============================== -->
     <!-- ========================================================================= -->
     <div id="main-workspace" class="hidden flex h-full w-full overflow-hidden">
         
-        <!-- ================= MOBILE SIDEBAR DRAWER ================= -->
+        <!-- MOBILE SIDEBAR DRAWER -->
         <div id="mobile-sidebar" class="fixed inset-0 z-40 hidden md:hidden" role="dialog" aria-modal="true">
             <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeMobileSidebar()"></div>
             <div class="fixed inset-y-0 left-0 w-64 bg-slate-900 text-white flex flex-col p-6 shadow-2xl transition-transform transform duration-300">
@@ -134,8 +133,8 @@
                             <i data-lucide="package-open" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h1 class="font-bold text-sm leading-tight">Smart Asset</h1>
-                            <span class="text-xs text-blue-400 font-medium">v3.5 Cloud</span>
+                            <h1 class="font-bold text-sm leading-tight">จัดการวัสดุและครุภัณฑ์</h1>
+                            <span class="text-xs text-blue-400 font-medium">อบจ.ภูเก็ต</span>
                         </div>
                     </div>
                     <button onclick="closeMobileSidebar()" class="p-1 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white">
@@ -148,16 +147,18 @@
                         <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                         <span>แดชบอร์ดภาพรวม</span>
                     </button>
-                    <!-- เมนูรายการพัสดุครุภัณฑ์ - สิทธิ์ User จะเป็น "รายการครุภัณฑ์ต่างๆ" ส่วน Admin เป็น "จัดการครุภัณฑ์" -->
                     <button id="mobile-btn-inventory" onclick="switchTab('inventory'); closeMobileSidebar();" class="mobile-menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800">
                         <i data-lucide="package" class="w-5 h-5"></i>
-                        <span>จัดการครุภัณฑ์</span>
+                        <span id="mobile-inventory-label">จัดการครุภัณฑ์</span>
                     </button>
                     <button onclick="switchTab('borrow'); closeMobileSidebar();" class="mobile-menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800">
                         <i data-lucide="git-pull-request" class="w-5 h-5"></i>
                         <span>เบิก-คืนครุภัณฑ์</span>
                     </button>
-                    <!-- เมนูการจัดการผู้ใช้ (แอดมินเท่านั้นที่จะเห็น) -->
+                    <button id="mobile-btn-materials" onclick="switchTab('materials'); closeMobileSidebar();" class="mobile-menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800">
+                        <i data-lucide="boxes" class="w-5 h-5"></i>
+                        <span id="mobile-materials-label">จัดการวัสดุสิ้นเปลือง</span>
+                    </button>
                     <button id="mobile-btn-users" onclick="switchTab('users'); closeMobileSidebar();" class="mobile-menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800">
                         <i data-lucide="users" class="w-5 h-5"></i>
                         <span>จัดการผู้ใช้งาน</span>
@@ -166,7 +167,6 @@
 
                 <div class="pt-4 border-t border-slate-800">
                     <div class="flex items-center justify-between">
-                        <!-- รูปโปรไฟล์ที่ปรับแต่งให้แตกต่างกันจะถูกยัดเข้ามาทาง id=mobile-user-avatar -->
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-200 shadow-inner" id="mobile-user-avatar">-</div>
                             <div>
@@ -182,18 +182,17 @@
             </div>
         </div>
 
-        <!-- ================= SIDEBAR NAV (Desktop) ================= -->
+        <!-- SIDEBAR NAV (Desktop) -->
         <aside class="hidden md:flex flex-col w-64 bg-slate-900 text-white shrink-0">
             <div class="p-6 border-b border-slate-800 flex items-center gap-3">
-                <!-- SVG Mini Logo -->
                 <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M50 18 L78 33 L50 48 L22 33 Z" fill="#06b6d4" />
                     <path d="M50 48 L78 33 L78 63 L50 78 Z" fill="#3b82f6" />
                     <path d="M22 33 L50 48 L50 78 L22 63 Z" fill="#1d4ed8" />
                 </svg>
                 <div>
-                    <h1 class="font-bold text-sm leading-tight">ระบบจัดการครุภัณฑ์</h1>
-                    <span class="text-xs text-blue-400 font-medium">Smart Asset v3.5</span>
+                    <h1 class="font-bold text-sm leading-tight">จัดการวัสดุและครุภัณฑ์</h1>
+                    <span class="text-xs text-blue-400 font-medium">อบจ.ภูเก็ต</span>
                 </div>
             </div>
             
@@ -204,14 +203,16 @@
                 </button>
                 <button onclick="switchTab('inventory')" id="btn-tab-inventory" class="menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
                     <i data-lucide="package" class="w-5 h-5"></i>
-                    <!-- เปลี่ยนเนื้อหาได้แบบ Dynamic ตามบทบาท -->
                     <span id="sidebar-inventory-label">จัดการครุภัณฑ์</span>
                 </button>
                 <button onclick="switchTab('borrow')" id="btn-tab-borrow" class="menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
                     <i data-lucide="git-pull-request" class="w-5 h-5"></i>
                     <span>เบิก-คืนครุภัณฑ์</span>
                 </button>
-                <!-- แอดมินจัดการผู้ใช้เท่านั้น -->
+                <button onclick="switchTab('materials')" id="btn-tab-materials" class="menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <i data-lucide="boxes" class="w-5 h-5"></i>
+                    <span id="sidebar-materials-label">จัดการวัสดุสิ้นเปลือง</span>
+                </button>
                 <button onclick="switchTab('users')" id="btn-tab-users" class="menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
                     <i data-lucide="users" class="w-5 h-5"></i>
                     <span>จัดการผู้ใช้งาน</span>
@@ -220,7 +221,6 @@
 
             <div class="p-4 border-t border-slate-800 bg-slate-950/50">
                 <div class="flex items-center justify-between">
-                    <!-- รูปโปรไฟล์ที่ปรับแต่งให้แตกต่างอย่างสวยงามระหว่าง AD และ US -->
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-200 shadow-inner" id="desktop-user-avatar">-</div>
                         <div class="max-w-[120px] truncate">
@@ -235,7 +235,7 @@
             </div>
         </aside>
 
-        <!-- ================= MAIN CONTENT AREA ================= -->
+        <!-- MAIN CONTENT AREA -->
         <main class="flex-1 flex flex-col overflow-hidden bg-slate-100">
             
             <!-- Topbar -->
@@ -244,20 +244,17 @@
                     <button class="md:hidden p-2 hover:bg-slate-100 rounded-lg text-slate-600" onclick="openMobileSidebar()">
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
-                    <h2 id="current-page-title" class="text-lg font-bold text-slate-800">แดชบอร์ดภาพรวม (Overview Dashboard)</h2>
+                    <h2 id="current-page-title" class="text-lg font-bold text-slate-800">แดชบอร์ดภาพรวม</h2>
                 </div>
                 
                 <div class="flex items-center gap-3">
-                    <!-- แสดงสถานะระบบคลาวด์ Firebase (แก้ไข: แอดมินคลิกเชื่อมต่อได้ ส่วนยูสเซอร์ทั่วไปดูสถานะได้อย่างเดียว) -->
                     <div id="cloud-status-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300">
                     </div>
 
-                    <!-- ปุ่มตั้งค่า Firebase Config (แสดงเฉพาะแอดมินเท่านั้น) -->
                     <button id="fb-settings-cog-btn" onclick="openFirebaseSettings()" title="ตั้งค่าเชื่อมต่อ Firebase Cloud" class="p-2 hover:bg-slate-100 rounded-lg border border-slate-200 text-slate-600 transition-colors hidden">
                         <i data-lucide="settings" class="w-4 h-4"></i>
                     </button>
 
-                    <!-- ปุ่มออกจากระบบด่วน -->
                     <button onclick="handleLogout()" class="flex items-center gap-2 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-colors shadow-sm">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
                         <span class="hidden sm:inline">ออกจากระบบ</span>
@@ -265,43 +262,81 @@
                 </div>
             </header>
 
-            <!-- Container สำหรับแสดงเนื้อหาแต่ละแท็บ -->
+            <!-- Scrollable Container -->
             <div class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 no-scrollbar">
                 
-                <!-- ================= TAB: DASHBOARD (แดชบอร์ดภาพรวม) ================= -->
+                <!-- ================= TAB: DASHBOARD ================= -->
                 <div id="tab-dashboard" class="tab-content space-y-6">
-                    <!-- การ์ดตัวชี้วัด -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ครุภัณฑ์ทั้งหมด</p>
-                                <h3 id="stat-total" class="text-2xl font-bold text-slate-900 mt-2">0</h3>
-                                <p class="text-[11px] text-slate-500 mt-1">รายการทั้งหมดในระบบ</p>
+                    <!-- การ์ดตัวชี้วัดครุภัณฑ์ (Asset KPI) -->
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">สถานะการคุมครุภัณฑ์ (Asset Stats)</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ครุภัณฑ์ทั้งหมด</p>
+                                    <h3 id="stat-total" class="text-2xl font-bold text-slate-900 mt-2">0</h3>
+                                    <p class="text-[11px] text-slate-500 mt-1">รายการคุมพัสดุในทะเบียน</p>
+                                </div>
+                                <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
+                                    <i data-lucide="box" class="w-5 h-5"></i>
+                                </div>
                             </div>
-                            <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                                <i data-lucide="box" class="w-5 h-5"></i>
+                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">พร้อมใช้งาน</p>
+                                    <h3 id="stat-available" class="text-2xl font-bold text-emerald-600 mt-2">0</h3>
+                                    <p class="text-[11px] text-slate-500 mt-1">คลังกลางพร้อมรับคำขอเบิก</p>
+                                </div>
+                                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ถูกเบิกใช้งาน</p>
+                                    <h3 id="stat-borrowed" class="text-2xl font-bold text-blue-500 mt-2">0</h3>
+                                    <p class="text-[11px] text-slate-500 mt-1">ส่งมอบครอบครองแล้ว</p>
+                                </div>
+                                <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
+                                    <i data-lucide="git-pull-request" class="w-5 h-5"></i>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">พร้อมใช้งาน</p>
-                                <h3 id="stat-available" class="text-2xl font-bold text-emerald-600 mt-2">0</h3>
-                                <p class="text-[11px] text-slate-500 mt-1">พร้อมรับการขอเบิก</p>
-                            </div>
-                            <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-                                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
-                            </div>
-                        </div>
+                    </div>
 
-                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ถูกเบิกใช้งาน</p>
-                                <h3 id="stat-borrowed" class="text-2xl font-bold text-blue-500 mt-2">0</h3>
-                                <p class="text-[11px] text-slate-500 mt-1">ส่งมอบสิทธิ์ครองแล้ว</p>
+                    <!-- การ์ดตัวชี้วัดวัสดุสิ้นเปลือง (Material KPI) -->
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">สถานะการคุมวัสดุสิ้นเปลือง (Material Stats)</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ชนิดวัสดุทั้งหมด</p>
+                                    <h3 id="stat-mat-types" class="text-2xl font-bold text-indigo-900 mt-2">0</h3>
+                                    <p class="text-[11px] text-slate-500 mt-1">ประเภทวัสดุสิ้นเปลืองที่ลงทะเบียน</p>
+                                </div>
+                                <div class="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
+                                    <i data-lucide="boxes" class="w-5 h-5"></i>
+                                </div>
                             </div>
-                            <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                                <i data-lucide="git-pull-request" class="w-5 h-5"></i>
+                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">จำนวนคงคลังรวม</p>
+                                    <h3 id="stat-mat-qty" class="text-2xl font-bold text-emerald-600 mt-2">0</h3>
+                                    <p class="text-[11px] text-slate-500 mt-1">จำนวนคงเหลือรวมในคลังสิ้นเปลือง</p>
+                                </div>
+                                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+                                    <i data-lucide="package-plus" class="w-5 h-5"></i>
+                                </div>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">จำนวนที่เบิกสะสม</p>
+                                    <h3 id="stat-mat-disbursed" class="text-2xl font-bold text-amber-600 mt-2">0</h3>
+                                    <p class="text-[11px] text-slate-500 mt-1">ยอดวัสดุที่ถูกจ่ายออกสะสม</p>
+                                </div>
+                                <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
+                                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -310,9 +345,8 @@
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                         <h4 class="font-bold text-slate-800 text-[15px] mb-4 flex items-center gap-2">
                             <i data-lucide="sparkles" class="text-amber-500 w-5 h-5"></i>
-                            ปุ่มลัดดำเนินงานด่วน (Quick Actions)
+                            ปุ่มลัดดำเนินการเร่งด่วน (Quick Actions)
                         </h4>
-                        <!-- ปรับโครงสร้าง grid ให้เข้าสิทธิ์การแสดงผลตามสิทธิ์บทบาท -->
                         <div class="grid grid-cols-2 gap-3" id="quick-actions-grid">
                             <button onclick="onQuickAddAsset()" id="quick-action-add-btn" class="flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-blue-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all text-blue-700">
                                 <i data-lucide="plus-circle" class="w-6 h-6 mb-2"></i>
@@ -320,27 +354,25 @@
                             </button>
                             <button onclick="switchTab('borrow')" class="flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-emerald-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all text-emerald-700">
                                 <i data-lucide="send" class="w-6 h-6 mb-2"></i>
-                                <span class="text-[13px] font-semibold">ยื่นเรื่องขอเบิกพัสดุ</span>
+                                <span class="text-[13px] font-semibold">ยื่นคำขอเบิกครุภัณฑ์</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- แผนภูมิวงกลมและประวัติกิจกรรม -->
+                    <!-- รายการล่าสุดและประวัติ -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <!-- รายการล่าสุด -->
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:col-span-2 flex flex-col">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:col-span-1 flex flex-col">
                             <div class="flex items-center justify-between pb-4 border-b border-slate-100">
                                 <h3 class="font-bold text-slate-800 text-[15px] flex items-center gap-2">
                                     <i data-lucide="clock" class="text-blue-600 w-5 h-5"></i>
-                                    ประวัติกิจกรรมในระบบ (System Logs)
+                                    กิจกรรมล่าสุด (Logs)
                                 </h3>
-                                <span class="text-[10px] font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded">ล่าสุด</span>
                             </div>
                             <div class="flex-1 mt-4 overflow-y-auto max-h-[300px] space-y-4 pr-1" id="recent-activities">
                             </div>
                         </div>
 
-                        <!-- แผนภูมิวงกลมแสดงสถานะ -->
+                        <!-- แผนภูมิวงกลมครุภัณฑ์ -->
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center">
                             <div class="w-full pb-4 border-b border-slate-100 mb-4 self-start">
                                 <h3 class="font-bold text-slate-800 text-[15px] flex items-center gap-2">
@@ -348,16 +380,31 @@
                                     สัดส่วนสถานะครุภัณฑ์
                                 </h3>
                             </div>
-                            <div class="relative w-full max-w-[180px] aspect-square flex items-center justify-center">
+                            <div class="relative w-full max-w-[150px] aspect-square flex items-center justify-center">
                                 <canvas id="assetStatusChart"></canvas>
                             </div>
-                            <div id="chart-legend" class="flex flex-col gap-1.5 mt-5 w-full">
+                            <div id="chart-legend" class="flex flex-col gap-1.5 mt-4 w-full">
+                            </div>
+                        </div>
+
+                        <!-- แผนภูมิวงกลมวัสดุสิ้นเปลืองคงเหลือ -->
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center">
+                            <div class="w-full pb-4 border-b border-slate-100 mb-4 self-start">
+                                <h3 class="font-bold text-slate-800 text-[15px] flex items-center gap-2">
+                                    <i data-lucide="pie-chart" class="text-indigo-600 w-5 h-5"></i>
+                                    แผนภูมิวงกลมวัสดุคงเหลือ
+                                </h3>
+                            </div>
+                            <div class="relative w-full max-w-[150px] aspect-square flex items-center justify-center">
+                                <canvas id="materialDashboardChart"></canvas>
+                            </div>
+                            <div id="mat-dashboard-chart-legend" class="flex flex-col gap-1.5 mt-4 w-full">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ================= TAB: INVENTORY (จัดการครุภัณฑ์) ================= -->
+                <!-- ================= TAB: INVENTORY (ครุภัณฑ์) ================= -->
                 <div id="tab-inventory" class="tab-content hidden space-y-6">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                         <div class="flex flex-1 items-center gap-2.5 max-w-md bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5">
@@ -378,15 +425,13 @@
                                 <option value="pending_approval">รออนุมัติเบิก</option>
                                 <option value="borrowed">ถูกเบิกใช้งาน</option>
                             </select>
-                            <!-- ปุ่มเพิ่มครุภัณฑ์ (ซ่อนหากเป็นสิทธิ์ผู้ใช้ธรรมดาเพื่อให้อ่านได้แค่อย่างเดียว) -->
                             <button id="add-asset-top-btn" onclick="openAssetModal()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-md hover:shadow-blue-200 ml-auto sm:ml-0">
                                 <i data-lucide="plus-circle" class="w-5 h-5"></i>
-                                <span>ลงทะเบียนพัสดุเพิ่ม</span>
+                                <span>ลงทะเบียนครุภัณฑ์เพิ่ม</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- ตารางรายการครุภัณฑ์ -->
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
@@ -394,12 +439,11 @@
                                     <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 tracking-wider">
                                         <th class="py-4 px-6">รูปภาพ</th>
                                         <th class="py-4 px-6">รหัสครุภัณฑ์</th>
-                                        <th class="py-4 px-6">ชื่อครุภัณฑ์ / ผู้ดูแลหลัก / ผู้เบิก</th>
+                                        <th class="py-4 px-6">ชื่อครุภัณฑ์ / ผู้เบิก</th>
                                         <th class="py-4 px-6">หมวดหมู่</th>
                                         <th class="py-4 px-6">สถานที่ตั้ง</th>
                                         <th class="py-4 px-6">ราคาจัดซื้อ</th>
                                         <th class="py-4 px-6">สถานะ</th>
-                                        <!-- คอลัมน์สำหรับสิทธิ์จัดการแอดมิน -->
                                         <th class="py-4 px-6 text-right" id="action-header-td">ดำเนินการ</th>
                                     </tr>
                                 </thead>
@@ -410,22 +454,21 @@
                     </div>
                 </div>
 
-                <!-- ================= TAB: BORROW & RETURN (เบิก-คืนครุภัณฑ์) ================= -->
+                <!-- ================= TAB: BORROW & RETURN ================= -->
                 <div id="tab-borrow" class="tab-content hidden space-y-6">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         
-                        <!-- ฝั่งยื่นเรื่องคำขอเบิก -->
+                        <!-- ฝั่งส่งคำร้องขอเบิกครุภัณฑ์ -->
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4 flex flex-col justify-between">
                             <div>
                                 <h3 class="font-bold text-slate-800 text-[15px] border-b border-slate-100 pb-3 flex items-center gap-2" id="borrow-form-title">
                                     <i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i>
-                                    ส่งคำร้องขอเบิกใช้งานพัสดุ
+                                    ส่งคำร้องขอเบิกใช้งานพัสดุครุภัณฑ์
                                 </h3>
                                 <form id="borrow-form" class="space-y-4 mt-4" onsubmit="handleBorrow(event)">
                                     
-                                    <!-- ตัวกรองค้นหาพัสดุในแบบฟอร์มเบิก -->
                                     <div class="space-y-2 p-3 bg-slate-50 border border-slate-200/60 rounded-xl">
-                                        <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ค้นหาพัสดุว่างพร้อมเบิก</span>
+                                        <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ค้นหาครุภัณฑ์ว่างพร้อมเบิก</span>
                                         <div class="grid grid-cols-2 gap-2">
                                             <select id="borrow-asset-cat-filter" onchange="filterBorrowSelector()" class="border border-slate-200 rounded-lg p-2 text-xs bg-white focus:outline-blue-500">
                                                 <option value="all">ทุกหมวดหมู่</option>
@@ -462,7 +505,6 @@
                                         <input type="text" id="borrower-dept" readonly required class="w-full border border-slate-200 bg-slate-50 cursor-not-allowed rounded-xl p-3 text-sm focus:outline-blue-500">
                                     </div>
                                     <div>
-                                        <!-- สรุปวันที่เบิกอย่างเดียว ตัดวันที่กำหนดส่งคืนออกตามกฎการใช้งานแบบใหม่ -->
                                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">วันที่เบิกใช้งาน</label>
                                         <input type="date" id="borrow-date" required class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
                                     </div>
@@ -475,15 +517,14 @@
                             </div>
                         </div>
 
-                        <!-- คำขอรอกลั่นกรอง และประวัติเบิกจ่าย -->
+                        <!-- ประวัติคำขอเบิกครุภัณฑ์ -->
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:col-span-2 flex flex-col space-y-6">
                             
-                            <!-- กล่องของแอดมิน: คำขอยังไม่ได้รับการอนุมัติ (Pending) -->
                             <div id="admin-pending-section" class="space-y-3">
                                 <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
                                     <h3 class="font-bold text-slate-800 text-[15px] flex items-center gap-2">
                                         <i data-lucide="bell" class="text-amber-500 w-5 h-5"></i>
-                                        รายการคำร้องรอพิจารณาอนุมัติ (แอดมินอนุมัติ)
+                                        รายการคำร้องขอเบิกครุภัณฑ์รอพิจารณา (แอดมินอนุมัติ)
                                     </h3>
                                     <span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-bold" id="badge-pending-count">0</span>
                                 </div>
@@ -504,7 +545,6 @@
                                 </div>
                             </div>
 
-                            <!-- ประวัติและประเบียนการเบิกใช้จริงในปัจจุบัน (Active approved) -->
                             <div class="space-y-3">
                                 <div class="pb-3 border-b border-slate-100">
                                     <h3 class="font-bold text-slate-800 text-[15px] flex items-center gap-2">
@@ -534,7 +574,102 @@
                     </div>
                 </div>
 
-                <!-- ================= TAB: USER MANAGEMENT (จัดการผู้ใช้งาน) ================= -->
+                <!-- ================= TAB: MATERIALS (จัดการวัสดุสิ้นเปลือง) ================= -->
+                <div id="tab-materials" class="tab-content hidden space-y-6">
+                    <!-- โซนแผนภูมิวิเคราะห์วัสดุสิ้นเปลือง (สัดส่วนคงคลัง) แบบไดนามิกเลือกได้ -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="lg:col-span-2 flex flex-col justify-between space-y-4">
+                            <div class="space-y-2">
+                                <h3 class="font-extrabold text-slate-800 text-lg flex items-center gap-2">
+                                    <i data-lucide="pie-chart" class="text-indigo-600 w-6 h-6"></i>
+                                    วิเคราะห์ยอดคงเหลือวัสดุสิ้นเปลืองในคลัง
+                                </h3>
+                                <p class="text-xs text-slate-500 leading-relaxed">
+                                    เลือกประเภทหมวดหมู่ด้านล่างเพื่อรับชมการจำลองแผนภูมิสัดส่วนคงเหลือ (Pie Chart) พร้อมรายงานแยกตามชนิดของวัสดุในระบบแบบเรียลไทม์ ผู้ใช้ทั่วไปสามารถใช้สืบค้นปริมาณสต็อกปัจจุบันได้ทันที
+                                </p>
+                            </div>
+
+                            <!-- คอนโทรลฟังก์ชัน: ตัวกรองประเภท และช่องค้นหาย่อย -->
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 space-y-3">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1">เลือกประเภท/หมวดหมู่พัสดุวัสดุ</label>
+                                        <select id="mat-chart-select" onchange="renderMaterialChartDetail()" class="w-full border border-slate-200 rounded-lg p-2.5 text-xs bg-white font-bold text-slate-700 focus:outline-indigo-500">
+                                            <option value="all">📊 สรุปภาพรวมทุกหมวดหมู่</option>
+                                            <option value="วัสดุไฟฟ้าและวิทยุ">💡 วัสดุไฟฟ้าและวิทยุ</option>
+                                            <option value="วัสดุงานบ้านงานครัว">🧼 วัสดุงานบ้านงานครัว</option>
+                                            <option value="วัสดุคอมพิวเตอร์">💻 วัสดุคอมพิวเตอร์</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1">ค้นหารายชื่อวัสดุ (คัดกรองแผนภูมิ)</label>
+                                        <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-2.5 py-2">
+                                            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400"></i>
+                                            <input type="text" id="mat-chart-search" oninput="renderMaterialChartDetail()" placeholder="พิมพ์คำเพื่อค้นหาพัสดุในหมวดนี้..." class="bg-transparent border-none text-xs w-full focus:outline-none focus:ring-0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-[11px] text-slate-400 font-medium">
+                                *เมื่อเลือกหมวดหมู่ใดเป็นพิเศษ แผนภูมิวงกลมด้านขวาจะวาดสัดส่วนแยกรายรายการพัสดุของหมวดนั้นๆ ให้ทันที
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center justify-start p-2 border-t lg:border-t-0 lg:border-l border-slate-100">
+                            <div class="relative w-full max-w-[150px] aspect-square flex items-center justify-center">
+                                <canvas id="materialStockChart"></canvas>
+                            </div>
+                            <!-- รายชื่อสิ่งของคงเหลือและสัดส่วนรายไอเทมแบบไดนามิก -->
+                            <div id="material-chart-legend" class="w-full">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- แผงค้นหาและการคัดกรอง + ตารางข้อมูล -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <!-- ช่องค้นหาและตัวกรอง -->
+                            <div class="flex flex-1 flex-col sm:flex-row gap-3">
+                                <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 max-w-md w-full">
+                                    <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
+                                    <input type="text" id="search-materials" oninput="renderMaterialsTable()" placeholder="ค้นหารหัส, ชื่อวัสดุ..." class="bg-transparent border-none text-[15px] w-full focus:outline-none focus:ring-0">
+                                </div>
+                                <select id="filter-mat-category" onchange="renderMaterialsTable()" class="border border-slate-200 rounded-xl px-4 py-2.5 text-sm bg-white focus:outline-indigo-500">
+                                    <option value="all">ทุกประเภทวัสดุ</option>
+                                    <option value="วัสดุไฟฟ้าและวิทยุ">วัสดุไฟฟ้าและวิทยุ</option>
+                                    <option value="วัสดุงานบ้านงานครัว">วัสดุงานบ้านงานครัว</option>
+                                    <option value="วัสดุคอมพิวเตอร์">วัสดุคอมพิวเตอร์</option>
+                                </select>
+                            </div>
+                            <!-- ปุ่มเพิ่มวัสดุใหม่ (สิทธิ์แอดมินเท่านั้น) -->
+                            <button id="add-material-btn" onclick="openMaterialModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl flex items-center gap-2 shadow-md hover:shadow-indigo-100 transition-all ml-auto sm:ml-0">
+                                <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                                <span>เพิ่มวัสดุเข้าระบบ</span>
+                            </button>
+                        </div>
+
+                        <!-- ตารางแสดงรายการวัสดุ -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-sm">
+                                <thead>
+                                    <tr class="bg-slate-50 text-xs font-semibold text-slate-500 border-b border-slate-200">
+                                        <th class="py-4 px-6">รูปภาพ</th>
+                                        <th class="py-4 px-6">รหัสพัสดุวัสดุ</th>
+                                        <th class="py-4 px-6">ชื่อวัสดุ / รายละเอียดขนาด</th>
+                                        <th class="py-4 px-6">ประเภทวัสดุ</th>
+                                        <th class="py-4 px-6 text-center">จำนวนคงคลังคงเหลือ</th>
+                                        <th class="py-4 px-6 text-center">เบิกสะสมทั้งหมด</th>
+                                        <th class="py-4 px-6 text-right" id="mat-action-header">จัดการรายการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="materials-table-body" class="divide-y divide-slate-100 text-[15px] text-slate-700">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= TAB: USER MANAGEMENT ================= -->
                 <div id="tab-users" class="tab-content hidden space-y-6">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                         <div>
@@ -589,7 +724,6 @@
                 <input type="hidden" id="form-mode" value="add">
                 <input type="hidden" id="original-id" value="">
 
-                <!-- รูปประกอบ -->
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/60 space-y-3">
                     <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ภาพประกอบรายการครุภัณฑ์</span>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -608,7 +742,7 @@
                         </div>
                         <div>
                             <p class="text-xs font-semibold text-slate-700">ตัวอย่างภาพจริงครุภัณฑ์ (คลิกขยายดูได้)</p>
-                            <p class="text-[10px] text-slate-400">ระบบจะทำการบีบอัดขนาดของภาพถ่ายให้อย่างเสถียรเพื่อป้องกันหน่วยความจำเต็ม</p>
+                            <p class="text-[10px] text-slate-400">ระบบบีบอัดขนาดภาพเพื่อป้องกันระบบช้าลงและจัดเก็บได้อย่างเสถียรที่สุด</p>
                         </div>
                     </div>
                 </div>
@@ -640,7 +774,8 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- ปรับโครงสร้างแบบฟอร์ม ตัดช่องระบุอายุปีงบประมาณ และนำค่าส่งออกเป็น Hidden Input เพื่อประมวลบัญชีหลังบ้านเสถียร -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">ราคาทุนจัดซื้อ (บาท)</label>
                         <input type="number" id="form-cost" required min="1" placeholder="ราคาทุนพัสดุ" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
@@ -649,16 +784,11 @@
                         <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">วันที่ได้รับพัสดุ</label>
                         <input type="date" id="form-purchase-date" required class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">อายุใช้งานปีงบประมาณ (ปี)</label>
-                        <input type="number" id="form-useful-life" required min="1" value="5" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
-                    </div>
                 </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">ผู้ดูแลรับผิดชอบหลัก</label>
-                    <input type="text" id="form-responsible" required placeholder="ระบุเจ้าหน้าที่ผู้ดูแลครุภัณฑ์ชิ้นนี้" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
-                </div>
+                
+                <!-- ค่าตั้งต้นสำหรับสถิติการบัญชี (Hidden Fields) -->
+                <input type="hidden" id="form-useful-life" value="5">
+                <input type="hidden" id="form-responsible" value="-">
 
                 <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
                     <button type="button" onclick="closeAssetModal()" class="px-5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100 rounded-xl transition-all">ยกเลิก</button>
@@ -668,7 +798,7 @@
         </div>
     </div>
 
-    <!-- 2. Modal: บัตรคุมประวัติพัสดุ -->
+    <!-- 2. Modal: บัตรคุมประวัติครุภัณฑ์ -->
     <div id="asset-detail-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl flex flex-col overflow-hidden">
             <div class="p-6 bg-slate-900 text-white flex justify-between items-center bg-gradient-to-r from-slate-900 to-blue-950">
@@ -682,7 +812,6 @@
             </div>
 
             <div class="p-6 space-y-6">
-                <!-- ภาพขนาดเต็ม -->
                 <div class="w-full h-44 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden relative shadow-inner cursor-zoom-in" onclick="triggerDetailImageLightbox()">
                     <img id="detail-cover-image" src="" alt="Asset Image" class="w-full h-full object-cover">
                     <div class="absolute bottom-3 left-3 bg-slate-900/75 backdrop-blur-sm text-white px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5">
@@ -697,8 +826,6 @@
                         <div class="grid grid-cols-2 gap-y-2 text-sm">
                             <span class="text-slate-500">เลขพัสดุ:</span>
                             <span class="font-bold text-slate-800" id="detail-id">-</span>
-                            <span class="text-slate-500">ผู้ถือครองรับสิทธิ์:</span>
-                            <span class="font-medium text-slate-800" id="detail-responsible">-</span>
                             <span class="text-slate-500">จุดติดตั้งพัสดุ:</span>
                             <span class="font-medium text-slate-800" id="detail-location">-</span>
                             <span class="text-slate-500">สถานะล่าสุด:</span>
@@ -750,7 +877,6 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <!-- ปรับแต่งตัวเลือกแผนก Dropdown 3 แผนกตามนโยบายองค์กรของคุณ -->
                         <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">ฝ่าย / สังกัด</label>
                         <select id="user-form-dept" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white focus:outline-blue-500">
                             <option value="ฝ่ายประชุม">ฝ่ายประชุม</option>
@@ -775,7 +901,87 @@
         </div>
     </div>
 
-    <!-- 4. CUSTOM CONFIRMATION MODAL -->
+    <!-- 4. Modal: เพิ่ม/แก้ไข ข้อมูลวัสดุสิ้นเปลือง -->
+    <div id="material-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl flex flex-col">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-indigo-50/50">
+                <h3 class="font-bold text-indigo-950 text-lg flex items-center gap-2" id="material-modal-title">
+                    <i data-lucide="boxes" class="text-indigo-600 w-5 h-5"></i>
+                    เพิ่มรายการวัสดุสิ้นเปลืองเข้าระบบ
+                </h3>
+                <button onclick="closeMaterialModal()" class="p-1.5 hover:bg-slate-200 rounded-full transition-colors">
+                    <i data-lucide="x" class="w-6 h-6 text-slate-500"></i>
+                </button>
+            </div>
+            
+            <form id="material-form" onsubmit="handleMaterialFormSubmit(event)" class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+                <input type="hidden" id="material-form-mode" value="add">
+                <input type="hidden" id="material-form-original-id" value="">
+
+                <!-- ส่วนแนบภาพพัสดุสำหรับวัสดุสิ้นเปลือง -->
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/60 space-y-3">
+                    <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ภาพประกอบพัสดุวัสดุ</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[11px] text-slate-400 font-medium mb-1">อัปโหลดภาพจากเครื่อง (ย่ออัตโนมัติ)</label>
+                            <input type="file" id="form-mat-image-file" accept="image/*" onchange="previewUploadedMaterialImage(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-400 font-medium mb-1">หรือระบุลิงก์รูปภาพ (URL)</label>
+                            <input type="text" id="form-mat-image-url" oninput="previewMatUrlImage(this.value)" placeholder="https://..." class="w-full border border-slate-200 rounded-lg p-2 text-xs focus:outline-indigo-500">
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white p-2.5 rounded-lg border border-slate-100">
+                        <div class="w-14 h-14 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
+                            <img id="form-mat-image-preview" src="https://placehold.co/100x100/f1f5f9/475569?text=No+Image" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-slate-700">ตัวอย่างภาพจริงพัสดุวัสดุ</p>
+                            <p class="text-[10px] text-slate-400">ภาพจำลองสำหรับช่วยสังเกตการณ์คลังพัสดุ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">รหัสพัสดุวัสดุ (Material ID)</label>
+                        <input type="text" id="mat-id" required placeholder="เช่น MAT-EL-001" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">ชื่อวัสดุ / ยี่ห้อ / รายละเอียดขนาด</label>
+                        <input type="text" id="mat-name" required placeholder="เช่น สายไฟ THW 1x1.5 SQ.MM." class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-indigo-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">ประเภทวัสดุสิ้นเปลือง</label>
+                    <select id="mat-category" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white focus:outline-indigo-500">
+                        <option value="วัสดุไฟฟ้าและวิทยุ">วัสดุไฟฟ้าและวิทยุ</option>
+                        <option value="วัสดุงานบ้านงานครัว">วัสดุงานบ้านงานครัว</option>
+                        <option value="วัสดุคอมพิวเตอร์">วัสดุคอมพิวเตอร์</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">จำนวนรับเข้าคลังสะสมคงเหลือ</label>
+                        <input type="number" id="mat-stock" required min="0" value="10" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">หน่วยนับพัสดุ</label>
+                        <input type="text" id="mat-unit" required placeholder="เช่น ม้วน, ชิ้น, ขวด, รีม" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-indigo-500">
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
+                    <button type="button" onclick="closeMaterialModal()" class="px-5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100 rounded-xl transition-all">ยกเลิก</button>
+                    <button type="submit" class="px-6 py-2.5 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all shadow-md">บันทึกวัสดุ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. CONFIRMATION MODAL -->
     <div id="confirm-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-center">
             <div class="mx-auto w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center" id="confirm-icon-box">
@@ -796,7 +1002,7 @@
         </div>
     </div>
 
-    <!-- 5. LIGHTBOX MODAL FOR FULL IMAGE VIEW (แสดงรูปขนาดเต็มจอ) -->
+    <!-- 6. LIGHTBOX MODAL FOR FULL IMAGE VIEW -->
     <div id="lightbox-modal" class="fixed inset-0 bg-slate-950/95 z-[60] flex flex-col items-center justify-center hidden transition-all duration-300" onclick="closeLightbox()">
         <button class="absolute top-5 right-5 text-white bg-white/10 hover:bg-white/20 p-3 rounded-full transition-all focus:outline-none">
             <i data-lucide="x" class="w-6 h-6"></i>
@@ -807,7 +1013,7 @@
         <p id="lightbox-caption" class="text-white/80 text-sm mt-4 text-center font-medium px-4 bg-black/40 py-2 rounded-full"></p>
     </div>
 
-    <!-- 6. Firebase Settings Connection Modal -->
+    <!-- 7. Firebase Settings Connection Modal -->
     <div id="firebase-settings-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-blue-50/50">
@@ -821,17 +1027,6 @@
             </div>
             
             <div class="p-6 space-y-4">
-                <div class="p-4 bg-slate-50 border border-slate-200/60 rounded-xl space-y-2">
-                    <p class="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1">
-                        <i data-lucide="help-circle" class="w-4 h-4"></i> วิธีเริ่มการเชื่อมโยงข้อมูลคลาวด์:
-                    </p>
-                    <ol class="text-xs text-slate-600 list-decimal list-inside space-y-1">
-                        <li>เปิดบัญชี <a href="https://console.firebase.google.com" target="_blank" class="text-blue-600 underline font-semibold">Firebase Console</a> และสร้าง Project ใหม่</li>
-                        <li>เปิดใช้งานเมนู <strong>Firestore Database</strong> (เลือก Start in Test Mode)</li>
-                        <li>กดที่ไอคอนเฟือง ⚙️ > Project Settings และก๊อปปี้ <strong>Firebase SDK Configuration</strong> มากรอกด้านล่าง</li>
-                    </ol>
-                </div>
-
                 <form id="firebase-config-form" onsubmit="saveFirebaseConfig(event)" class="space-y-3.5">
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 mb-1">API Key</label>
@@ -861,7 +1056,7 @@
                     <div id="sync-data-panel" class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl hidden flex items-center justify-between">
                         <div>
                             <p class="text-xs font-bold text-emerald-800">ตรวจพบข้อมูลครุภัณฑ์ภายในเครื่อง!</p>
-                            <p class="text-[10px] text-emerald-600">ต้องการอัปโหลดชุดพัสดุจากเครื่อง ขึ้นคลาวด์ Firebase ตอนนี้เลยหรือไม่?</p>
+                            <p class="text-[10px] text-emerald-600">ต้องการอัปโหลดชุดพัสดุและวัสดุจากเครื่อง ขึ้นคลาวด์ Firebase ตอนนี้เลยหรือไม่?</p>
                         </div>
                         <button type="button" onclick="migrateLocalToFirebase()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors shadow-sm">
                             ซิงก์ขึ้นคลาวด์ทันที
@@ -882,8 +1077,70 @@
         </div>
     </div>
 
+    <!-- 8. Modal: บันทึกจ่ายวัสดุและพิมพ์ใบเบิก (เพิ่มตามโจทย์ใหม่ v4.6.1) -->
+    <div id="material-print-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl flex flex-col">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-indigo-50/50">
+                <h3 class="font-bold text-indigo-950 text-lg flex items-center gap-2">
+                    <i data-lucide="printer" class="text-indigo-600 w-5 h-5"></i>
+                    ทำรายการจ่ายและพิมพ์ใบเบิกวัสดุ
+                </h3>
+                <button onclick="closeMaterialPrintModal()" class="p-1.5 hover:bg-slate-200 rounded-full transition-colors">
+                    <i data-lucide="x" class="w-6 h-6 text-slate-500"></i>
+                </button>
+            </div>
+            
+            <form id="material-print-form" onsubmit="handleMaterialPrintSubmit(event)" class="p-6 space-y-4">
+                <input type="hidden" id="print-mat-id" value="">
+                
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">พัสดุวัสดุที่จะจ่าย</label>
+                    <input type="text" id="print-mat-name" readonly class="w-full border border-slate-200 bg-slate-50 cursor-not-allowed rounded-xl p-3 text-sm font-semibold text-slate-700">
+                    <div class="text-[11px] text-slate-500 mt-1">คงเหลือในคลัง: <span id="print-mat-current-stock" class="font-bold text-indigo-600">0</span> <span id="print-mat-unit">หน่วย</span></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">ชื่อ-นามสกุล ผู้ขอเบิก</label>
+                    <input type="text" id="print-mat-recipient" required placeholder="ระบุชื่อผู้รับพัสดุจริง" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-indigo-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">ฝ่าย / สังกัด</label>
+                        <select id="print-mat-dept" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white focus:outline-indigo-500">
+                            <option value="ฝ่ายประชุม">ฝ่ายประชุม</option>
+                            <option value="ฝ่ายกิจการสภา">ฝ่ายกิจการสภา</option>
+                            <option value="ฝ่ายส่งเสริมการมีส่วนร่วมฯ">ฝ่ายส่งเสริมการมีส่วนร่วมฯ</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">จำนวนที่เบิกจ่าย</label>
+                        <input type="number" id="print-mat-qty" required min="1" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-indigo-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">วันที่ทำจ่ายวัสดุ</label>
+                    <input type="date" id="print-mat-date" required class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-indigo-500">
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
+                    <button type="button" onclick="closeMaterialPrintModal()" class="px-5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100 rounded-xl transition-all">ยกเลิก</button>
+                    <button type="submit" class="px-6 py-2.5 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all shadow-md flex items-center gap-1.5">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                        บันทึกยอด & พิมพ์ทันที
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- โครงสร้างพรีวิวเอกสารพิมพ์ (Print Section - Hidden normally, visible on A4 print window) -->
+    <div id="print-section" class="hidden"></div>
+
     <!-- ================= JAVASCRIPT LOGIC AND BUSINESS RULES ================= -->
     <script>
+        // ข้อมูลเริ่มต้นครุภัณฑ์
         const initialAssets = [
             {
                 id: "EQ-2026-001",
@@ -893,7 +1150,7 @@
                 cost: 89900,
                 purchaseDate: "2024-01-10",
                 usefulLife: 5,
-                responsible: "ดร.วิชัย รักษาสัตย์",
+                responsible: "-",
                 status: "available",
                 image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80"
             },
@@ -905,7 +1162,7 @@
                 cost: 45000,
                 purchaseDate: "2023-06-15",
                 usefulLife: 5,
-                responsible: "นางสาวสมร มีสุข",
+                responsible: "-",
                 status: "borrowed",
                 image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=600&q=80"
             },
@@ -917,21 +1174,94 @@
                 cost: 650000,
                 purchaseDate: "2022-03-20",
                 usefulLife: 8,
-                responsible: "นายจำลอง ล้อหมุน",
+                responsible: "-",
                 status: "available",
                 image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80"
+            }
+        ];
+
+        // ข้อมูลเริ่มต้นวัสดุสิ้นเปลือง
+        const initialMaterials = [
+            {
+                id: "MAT-EL-001",
+                name: "สายไฟ THW 1x1.5 SQ.MM. (ม้วน 100 เมตร)",
+                category: "วัสดุไฟฟ้าและวิทยุ",
+                stock: 12,
+                disbursed: 3,
+                unit: "ม้วน",
+                image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&w=600&q=80"
             },
             {
-                id: "EQ-2026-004",
-                name: "กล้องถ่ายภาพดิจิทัล Sony Alpha 7 IV",
-                category: "คอมพิวเตอร์และไอที",
-                location: "ฝ่ายประชาสัมพันธ์ ชั้น 2",
-                cost: 82900,
-                purchaseDate: "2025-02-01",
-                usefulLife: 5,
-                responsible: "นายวีระ ปากน้ำ",
-                status: "pending_approval",
-                image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80"
+                id: "MAT-EL-002",
+                name: "หลอดไฟ LED Bulb 18W (แสงสีขาว)",
+                category: "วัสดุไฟฟ้าและวิทยุ",
+                stock: 35,
+                disbursed: 10,
+                unit: "หลอด",
+                image: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "MAT-EL-003",
+                name: "ปลั๊กไฟพ่วงมอก. 5 ช่อง (สายยาว 3 เมตร)",
+                category: "วัสดุไฟฟ้าและวิทยุ",
+                stock: 8,
+                disbursed: 2,
+                unit: "อัน",
+                image: "https://images.unsplash.com/photo-1620283085439-39620a1e21c4?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "MAT-HW-002",
+                name: "น้ำยาล้างจานสูตรมะนาว 3.6 ลิตร",
+                category: "วัสดุงานบ้านงานครัว",
+                stock: 25,
+                disbursed: 8,
+                unit: "แกลลอน",
+                image: "https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "MAT-HW-003",
+                name: "ถุงขยะสีดำ ขนาด 30x40 นิ้ว",
+                category: "วัสดุงานบ้านงานครัว",
+                stock: 50,
+                disbursed: 15,
+                unit: "แพ็ค",
+                image: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "MAT-HW-004",
+                name: "กระดาษชำระแบบม้วนใหญ่บรรจุกล่อง",
+                category: "วัสดุงานบ้านงานครัว",
+                stock: 30,
+                disbursed: 5,
+                unit: "ม้วน",
+                image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "MAT-IT-003",
+                name: "สายชาร์จ USB-C Fast Charge (1 เมตร)",
+                category: "วัสดุคอมพิวเตอร์",
+                stock: 45,
+                disbursed: 15,
+                unit: "เส้น",
+                image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "MAT-IT-004",
+                name: "แฟลชไดรฟ์ Kingston 64GB USB 3.2",
+                category: "วัสดุคอมพิวเตอร์",
+                stock: 20,
+                disbursed: 4,
+                unit: "อัน",
+                image: "https://images.unsplash.com/photo-1532443211411-cf0b9f91a67a?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "MAT-IT-005",
+                name: "กระดาษพิมพ์งาน Double A A4 (80 แกรม)",
+                category: "วัสดุคอมพิวเตอร์",
+                stock: 60,
+                disbursed: 22,
+                unit: "รีม",
+                image: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80"
             }
         ];
 
@@ -944,20 +1274,10 @@
                 department: "ฝ่ายประชุม",
                 borrowDate: "2026-06-01",
                 status: "approved"
-            },
-            {
-                id: "BR-1002",
-                assetId: "EQ-2026-004",
-                type: "เบิกชั่วคราว",
-                borrower: "นางสาวมลดี ดีเลิศ",
-                department: "ฝ่ายกิจการสภา",
-                borrowDate: "2026-06-09",
-                status: "pending"
             }
         ];
 
         const initialActivities = [
-            { time: "10:30 น. วันนี้", user: "นางสาวมลดี", action: "ยื่นคำขอเบิกกล้อง Sony A7 IV ไปใช้งาน (รออนุมัติ)" },
             { time: "09:15 น. วันนี้", user: "นายกรกช", action: "ได้รับอนุมัติการเบิก เครื่องถ่ายเอกสาร Fuji ไปใช้งานชั่วคราว" }
         ];
 
@@ -970,12 +1290,17 @@
         let borrowRecords = [];
         let activities = [];
         let users = [];
+        let materials = [];
 
         let currentUser = null;
         let currentFormImageBase64 = "";
+        let currentMaterialFormImageBase64 = ""; 
+        
         let statusChartInstance = null;
+        let materialChartInstance = null; 
+        let materialDashboardChartInstance = null; 
 
-        // --- 2. การเชื่อมต่อฐานข้อมูลคลาวด์ FIREBASE ENGINE ---
+        // การเชื่อมต่อฐานข้อมูลคลาวด์ FIREBASE ENGINE
         let db = null;
         let isFirebaseActive = false;
 
@@ -993,7 +1318,7 @@
                     db = firebase.firestore();
                     isFirebaseActive = true;
                     
-                    badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span><span>คลาวด์ออนไลน์ (Firebase)</span>`;
+                    badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span><span>คลาวด์ออนไลน์</span>`;
                     badge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 transition-all duration-300";
                     
                     listenToFirestore();
@@ -1013,13 +1338,14 @@
             isFirebaseActive = false;
             db = null;
             const badge = document.getElementById('cloud-status-badge');
-            badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span>ออฟไลน์ (LocalStorage)</span>`;
+            badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span>ออฟไลน์</span>`;
             badge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 transition-all duration-300";
             
             assets = JSON.parse(localStorage.getItem('assets_v2_0')) || initialAssets;
             borrowRecords = JSON.parse(localStorage.getItem('borrowRecords_v2_0')) || initialBorrowRecords;
             activities = JSON.parse(localStorage.getItem('activities_v2_0')) || initialActivities;
             users = JSON.parse(localStorage.getItem('users_v2_0')) || defaultUsers;
+            materials = JSON.parse(localStorage.getItem('materials_v2_0')) || initialMaterials;
             
             checkAuthSession();
             renderApp();
@@ -1028,39 +1354,47 @@
         function listenToFirestore() {
             if (!isFirebaseActive || !db) return;
 
-            db.collection('assets').orderBy('id', 'asc').onSnapshot(snapshot => {
+            db.collection('assets').onSnapshot(snapshot => {
                 assets = [];
-                snapshot.forEach(doc => {
-                    assets.push(doc.data());
-                });
+                snapshot.forEach(doc => { assets.push(doc.data()); });
+                assets.sort((a, b) => a.id.localeCompare(b.id)); // เรียงรหัสจากน้อยไปมาก
                 renderApp();
             }, err => {
                 console.error("Firestore Listen Assets Error: ", err);
                 showToast("ไม่สามารถดึงข้อมูลพัสดุจากคลาวด์ได้", "error");
             });
 
-            db.collection('borrowRecords').onSnapshot(snapshot => {
-                borrowRecords = [];
-                snapshot.forEach(doc => {
-                    borrowRecords.push(doc.data());
-                });
-                borrowRecords.sort((a, b) => b.id.localeCompare(a.id));
+            db.collection('materials').onSnapshot(snapshot => {
+                materials = [];
+                snapshot.forEach(doc => { materials.push(doc.data()); });
+                materials.sort((a, b) => a.id.localeCompare(b.id));
                 renderApp();
+            }, err => {
+                console.error("Firestore Listen Materials Error: ", err);
             });
 
-            db.collection('activities').orderBy('timestamp', 'desc').limit(20).onSnapshot(snapshot => {
-                activities = [];
-                snapshot.forEach(doc => {
-                    activities.push(doc.data());
-                });
+            db.collection('borrowRecords').onSnapshot(snapshot => {
+                borrowRecords = [];
+                snapshot.forEach(doc => { borrowRecords.push(doc.data()); });
+                borrowRecords.sort((a, b) => b.id.localeCompare(a.id));
                 renderApp();
+            }, err => {
+                console.error("Firestore Listen Borrow Error: ", err);
+            });
+
+            db.collection('activities').onSnapshot(snapshot => {
+                activities = [];
+                snapshot.forEach(doc => { activities.push(doc.data()); });
+                activities.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); // เรียงเวลาใหม่ล่าสุด
+                activities = activities.slice(0, 20); 
+                renderApp();
+            }, err => {
+                console.error("Firestore Listen Activities Error: ", err);
             });
 
             db.collection('users').onSnapshot(snapshot => {
                 users = [];
-                snapshot.forEach(doc => {
-                    users.push(doc.data());
-                });
+                snapshot.forEach(doc => { users.push(doc.data()); });
                 if (users.length === 0) {
                     defaultUsers.forEach(u => db.collection('users').doc(u.username).set(u));
                 }
@@ -1073,6 +1407,8 @@
                     }
                 }
                 renderApp();
+            }, err => {
+                console.error("Firestore Listen Users Error: ", err);
             });
 
             checkAuthSession();
@@ -1080,12 +1416,7 @@
 
         async function writeAsset(asset) {
             if (isFirebaseActive && db) {
-                try {
-                    await db.collection('assets').doc(asset.id).set(asset);
-                } catch (e) {
-                    console.error("Firebase write error:", e);
-                    showToast("ไม่สามารถเขียนข้อมูลลงคลาวด์ได้", "error");
-                }
+                try { await db.collection('assets').doc(asset.id).set(asset); } catch (e) { console.error(e); }
             } else {
                 const idx = assets.findIndex(a => a.id === asset.id);
                 if (idx > -1) assets[idx] = asset;
@@ -1095,13 +1426,21 @@
             }
         }
 
+        async function writeMaterial(mat) {
+            if (isFirebaseActive && db) {
+                try { await db.collection('materials').doc(mat.id).set(mat); } catch (e) { console.error(e); }
+            } else {
+                const idx = materials.findIndex(m => m.id === mat.id);
+                if (idx > -1) materials[idx] = mat;
+                else materials.unshift(mat);
+                saveOfflineState();
+                renderApp();
+            }
+        }
+
         async function writeBorrowRecord(record) {
             if (isFirebaseActive && db) {
-                try {
-                    await db.collection('borrowRecords').doc(record.id).set(record);
-                } catch (e) {
-                    console.error("Firebase write error:", e);
-                }
+                try { await db.collection('borrowRecords').doc(record.id).set(record); } catch (e) { console.error(e); }
             } else {
                 const idx = borrowRecords.findIndex(b => b.id === record.id);
                 if (idx > -1) borrowRecords[idx] = record;
@@ -1120,11 +1459,7 @@
             };
 
             if (isFirebaseActive && db) {
-                try {
-                    await db.collection('activities').add(act);
-                } catch (e) {
-                    console.error("Firebase write error:", e);
-                }
+                try { await db.collection('activities').add(act); } catch (e) {}
             } else {
                 activities.unshift(act);
                 saveOfflineState();
@@ -1134,11 +1469,7 @@
 
         async function removeAssetFromDb(id) {
             if (isFirebaseActive && db) {
-                try {
-                    await db.collection('assets').doc(id).delete();
-                } catch (e) {
-                    console.error("Firebase delete error:", e);
-                }
+                try { await db.collection('assets').doc(id).delete(); } catch (e) {}
             } else {
                 assets = assets.filter(a => a.id !== id);
                 saveOfflineState();
@@ -1146,13 +1477,19 @@
             }
         }
 
+        async function removeMaterialFromDb(id) {
+            if (isFirebaseActive && db) {
+                try { await db.collection('materials').doc(id).delete(); } catch (e) {}
+            } else {
+                materials = materials.filter(m => m.id !== id);
+                saveOfflineState();
+                renderApp();
+            }
+        }
+
         async function writeUser(user) {
             if (isFirebaseActive && db) {
-                try {
-                    await db.collection('users').doc(user.username).set(user);
-                } catch (e) {
-                    console.error("Firebase user write error:", e);
-                }
+                try { await db.collection('users').doc(user.username).set(user); } catch (e) {}
             } else {
                 const idx = users.findIndex(u => u.username === user.username);
                 if (idx > -1) users[idx] = user;
@@ -1164,11 +1501,7 @@
 
         async function removeUserFromDb(username) {
             if (isFirebaseActive && db) {
-                try {
-                    await db.collection('users').doc(username).delete();
-                } catch (e) {
-                    console.error("Firebase user delete error:", e);
-                }
+                try { await db.collection('users').doc(username).delete(); } catch (e) {}
             } else {
                 users = users.filter(u => u.username !== username);
                 saveOfflineState();
@@ -1181,6 +1514,7 @@
             localStorage.setItem('borrowRecords_v2_0', JSON.stringify(borrowRecords));
             localStorage.setItem('activities_v2_0', JSON.stringify(activities));
             localStorage.setItem('users_v2_0', JSON.stringify(users));
+            localStorage.setItem('materials_v2_0', JSON.stringify(materials));
         }
 
         async function migrateLocalToFirebase() {
@@ -1189,21 +1523,17 @@
             const localAssets = JSON.parse(localStorage.getItem('assets_v2_0')) || initialAssets;
             const localBorrows = JSON.parse(localStorage.getItem('borrowRecords_v2_0')) || initialBorrowRecords;
             const localUsers = JSON.parse(localStorage.getItem('users_v2_0')) || defaultUsers;
+            const localMaterials = JSON.parse(localStorage.getItem('materials_v2_0')) || initialMaterials;
             
-            showToast("กำลังอัปโหลดพัสดุและผู้ใช้งานขึ้นคลาวด์...", "info");
+            showToast("กำลังอัปโหลดพัสดุ วัสดุอุปกรณ์ และผู้ใช้งานขึ้นคลาวด์...", "info");
 
             try {
-                for (let a of localAssets) {
-                    await db.collection('assets').doc(a.id).set(a);
-                }
-                for (let b of localBorrows) {
-                    await db.collection('borrowRecords').doc(b.id).set(b);
-                }
-                for (let u of localUsers) {
-                    await db.collection('users').doc(u.username).set(u);
-                }
-                await writeActivity("แอดมินระบบ", "นำเข้าข้อมูลชุดครุภัณฑ์และสมาชิกขึ้นระบบคลาวด์ Firebase เรียบร้อย");
-                showToast("ซิงก์พัสดุขึ้นสู่ Firebase สำเร็จ!", "success");
+                for (let a of localAssets) { await db.collection('assets').doc(a.id).set(a); }
+                for (let b of localBorrows) { await db.collection('borrowRecords').doc(b.id).set(b); }
+                for (let u of localUsers) { await db.collection('users').doc(u.username).set(u); }
+                for (let m of localMaterials) { await db.collection('materials').doc(m.id).set(m); }
+                await writeActivity("แอดมินระบบ", "นำเข้าข้อมูลครุภัณฑ์ วัสดุ และสมาชิกขึ้นระบบคลาวด์ Firebase เรียบร้อย");
+                showToast("ซิงก์ข้อมูลพัสดุทั้งหมดขึ้นสู่ Firebase สำเร็จ!", "success");
                 document.getElementById('sync-data-panel').classList.add('hidden');
             } catch (err) {
                 console.error("Migration error:", err);
@@ -1211,7 +1541,7 @@
             }
         }
 
-        // --- 3. ระบบยืนยันตัวตนและการเข้าสู่ระบบ (Authentication & Session) ---
+        // ระบบยืนยันตัวตนและการเข้าสู่ระบบ
         function checkAuthSession() {
             const storedUser = localStorage.getItem('currentUser_v2_0');
             if (storedUser) {
@@ -1287,7 +1617,6 @@
             nameTexts.forEach(el => { if (el) el.innerText = shortName; });
             deptTexts.forEach(el => { if (el) el.innerText = `${currentUser.dept} (${shortRole})`; });
 
-            // ปรับแต่งรูปโปรไฟล์ / อวาตาร์ด้านล่างซ้ายให้แตกต่างอย่างสวยงาม
             avatars.forEach(el => {
                 if (el) {
                     if (currentUser.role === 'admin') {
@@ -1300,22 +1629,25 @@
                 }
             });
 
-            // ตรวจสอบจัดการเมนูนำทางและปุ่มตั้งค่า (แอดมินสามารถคลิกตั้งค่าได้ / ยูสเซอร์ดูได้อย่างเดียวและไม่มีปุ่มเฟือง)
             const cloudBadge = document.getElementById('cloud-status-badge');
             const fbCogBtn = document.getElementById('fb-settings-cog-btn');
+            
             const adminMenuBtn = document.getElementById('btn-tab-users');
             const mobileAdminBtn = document.getElementById('mobile-btn-users');
+            
             const adminInventoryBtn = document.getElementById('btn-tab-inventory');
             const mobileInventoryBtn = document.getElementById('mobile-btn-inventory');
 
-            const pendingSection = document.getElementById('admin-pending-section');
+            const adminPendingSection = document.getElementById('admin-pending-section');
             const topAddAssetBtn = document.getElementById('add-asset-top-btn');
+            const addMaterialBtn = document.getElementById('add-material-btn');
             const quickAddBtn = document.getElementById('quick-action-add-btn');
+            
             const inventoryActionCol = document.getElementById('action-header-td');
             const borrowActionCol = document.getElementById('action-header-cell');
+            const matActionCol = document.getElementById('mat-action-header');
 
             if (currentUser.role === 'admin') {
-                // สำหรับสิทธิ์ แอดมิน (Admin)
                 if (cloudBadge) {
                     cloudBadge.setAttribute('onclick', 'openFirebaseSettings()');
                     cloudBadge.classList.add('cursor-pointer');
@@ -1328,19 +1660,25 @@
                 if (adminInventoryBtn) adminInventoryBtn.style.display = 'flex';
                 if (mobileInventoryBtn) mobileInventoryBtn.style.display = 'flex';
 
-                if (pendingSection) pendingSection.classList.remove('hidden');
+                if (adminPendingSection) adminPendingSection.classList.remove('hidden');
                 if (topAddAssetBtn) topAddAssetBtn.classList.remove('hidden');
+                if (addMaterialBtn) addMaterialBtn.classList.remove('hidden');
                 if (quickAddBtn) quickAddBtn.classList.remove('hidden');
+                
                 if (inventoryActionCol) inventoryActionCol.style.display = 'table-cell';
                 if (borrowActionCol) borrowActionCol.style.display = 'table-cell';
+                if (matActionCol) matActionCol.style.display = 'table-cell';
 
                 document.getElementById('sidebar-inventory-label').innerText = "จัดการครุภัณฑ์";
+                document.getElementById('mobile-inventory-label').innerText = "จัดการครุภัณฑ์";
+                document.getElementById('sidebar-materials-label').innerText = "จัดการวัสดุสิ้นเปลือง";
+                document.getElementById('mobile-materials-label').innerText = "จัดการวัสดุสิ้นเปลือง";
+                
                 document.getElementById('borrow-form-title').innerHTML = `<i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i> บันทึกสิทธิ์เบิกพัสดุ (โดยแอดมิน)`;
                 document.getElementById('borrow-submit-btn').innerHTML = `<i data-lucide="check-circle" class="w-5 h-5"></i> อนุมัติเบิกพัสดุโดยตรง`;
                 
                 document.getElementById('quick-actions-grid').className = "grid grid-cols-2 gap-3";
             } else {
-                // สำหรับสิทธิ์ ผู้ใช้ทั่วไป (User) - จำกัดการตั้งค่า DB และปรับเปลี่ยนชื่อเมนู/ซ่อนปุ่ม
                 if (cloudBadge) {
                     cloudBadge.removeAttribute('onclick');
                     cloudBadge.classList.remove('cursor-pointer');
@@ -1349,21 +1687,26 @@
                 }
                 if (fbCogBtn) fbCogBtn.classList.add('hidden');
 
-                // ซ่อนเมนูการจัดการสมาชิกผู้ใช้
                 if (adminMenuBtn) adminMenuBtn.style.display = 'none';
                 if (mobileAdminBtn) mobileAdminBtn.style.display = 'none';
                 
-                // ให้ยูสเซอร์ทั่วไปเห็นเมนู "รายการครุภัณฑ์ต่างๆ" เพื่อเข้าไปดูข้อมูล (Read-only)
                 if (adminInventoryBtn) adminInventoryBtn.style.display = 'flex';
                 if (mobileInventoryBtn) mobileInventoryBtn.style.display = 'flex';
 
-                if (pendingSection) pendingSection.classList.add('hidden');
+                if (adminPendingSection) adminPendingSection.classList.add('hidden');
                 if (topAddAssetBtn) topAddAssetBtn.classList.add('hidden');
+                if (addMaterialBtn) addMaterialBtn.classList.add('hidden');
                 if (quickAddBtn) quickAddBtn.classList.add('hidden');
+                
                 if (inventoryActionCol) inventoryActionCol.style.display = 'none';
                 if (borrowActionCol) borrowActionCol.style.display = 'none';
+                if (matActionCol) matActionCol.style.display = 'none';
 
                 document.getElementById('sidebar-inventory-label').innerText = "รายการครุภัณฑ์ต่างๆ";
+                document.getElementById('mobile-inventory-label').innerText = "รายการครุภัณฑ์ต่างๆ";
+                document.getElementById('sidebar-materials-label').innerText = "รายการวัสดุสิ้นเปลือง";
+                document.getElementById('mobile-materials-label').innerText = "รายการวัสดุสิ้นเปลือง";
+                
                 document.getElementById('borrow-form-title').innerHTML = `<i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i> ส่งคำเสนอขออนุมัติเบิกพัสดุ`;
                 document.getElementById('borrow-submit-btn').innerHTML = `<i data-lucide="send" class="w-5 h-5"></i> ส่งเสนอขออนุมัติเบิก`;
                 
@@ -1371,7 +1714,7 @@
             }
         }
 
-        // --- 4. ระบบ Custom Confirm Dialog ---
+        // ระบบ Custom Confirm Dialog
         let currentConfirmCallback = null;
 
         function showConfirmModal(title, message, callback, isDanger = true) {
@@ -1388,7 +1731,7 @@
             } else {
                 iconBox.className = "mx-auto w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center";
                 yesBtn.className = "px-4 py-2 text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all flex-1 shadow-md";
-                yesBtn.innerText = "ยืนยันยืนคำขอ";
+                yesBtn.innerText = "ยืนยันทำรายการ";
             }
 
             document.getElementById('confirm-modal').classList.remove('hidden');
@@ -1406,7 +1749,7 @@
             currentConfirmCallback = null;
         });
 
-        // --- 5. แท็บสับเปลี่ยนหน้าต่าง (Tab Switcher) ---
+        // แท็บสับเปลี่ยนหน้าต่าง (Tab Switcher)
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
@@ -1423,25 +1766,21 @@
             }
 
             const titles = {
-                dashboard: "แดชบอร์ดภาพรวม (Overview Dashboard)",
+                dashboard: "แดชบอร์ดภาพรวม",
                 inventory: currentUser?.role === 'admin' ? "ระบบสารสนเทศทะเบียนครุภัณฑ์กลาง" : "สืบค้นครุภัณฑ์และพัสดุส่วนกลาง",
                 borrow: "คำขอเบิก-ส่งมอบและรับคืนครุภัณฑ์",
+                materials: currentUser?.role === 'admin' ? "ระบบบริหารจัดการวัสดุอุปกรณ์สิ้นเปลือง" : "รายการวัสดุและอุปกรณ์สิ้นเปลืองในคลัง",
                 users: "จัดการและควบคุมสมาชิกผู้ใช้งานระบบ"
             };
             document.getElementById('current-page-title').innerText = titles[tabId] || "ระบบจัดการครุภัณฑ์";
             renderApp();
         }
 
-        function openMobileSidebar() {
-            document.getElementById('mobile-sidebar').classList.remove('hidden');
-        }
+        function openMobileSidebar() { document.getElementById('mobile-sidebar').classList.remove('hidden'); }
+        function closeMobileSidebar() { document.getElementById('mobile-sidebar').classList.add('hidden'); }
 
-        function closeMobileSidebar() {
-            document.getElementById('mobile-sidebar').classList.add('hidden');
-        }
-
-        // --- 6. ระบบแสดงรูปขนาดเต็มจอ (Lightbox) ---
-        function openLightbox(src, caption = "รูปภาพแสดงรายละเอียดครุภัณฑ์") {
+        // ระบบแสดงรูปขนาดเต็มจอ (Lightbox)
+        function openLightbox(src, caption = "รูปภาพแสดงรายละเอียด") {
             const lightbox = document.getElementById('lightbox-modal');
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxCap = document.getElementById('lightbox-caption');
@@ -1451,9 +1790,7 @@
             lightbox.classList.remove('hidden');
         }
 
-        function closeLightbox() {
-            document.getElementById('lightbox-modal').classList.add('hidden');
-        }
+        function closeLightbox() { document.getElementById('lightbox-modal').classList.add('hidden'); }
 
         function triggerFormPreviewLightbox() {
             const previewImgSrc = document.getElementById('form-image-preview').src;
@@ -1474,15 +1811,16 @@
             }
         }
 
-        // --- 7. การประมวลผลและการวาดหน้าเว็บ (Render Logic) ---
+        // การประมวลผลและการวาดหน้าเว็บ (Render Logic)
         function renderApp() {
             if (!currentUser) return;
             renderStats();
             renderActivities();
             renderAssetsTable();
             renderBorrowTab();
+            renderMaterialsTab(); 
             renderUsersTable();
-            renderPieChart();
+            renderPieCharts();
             lucide.createIcons();
         }
 
@@ -1490,6 +1828,13 @@
             document.getElementById('stat-total').innerText = assets.length;
             document.getElementById('stat-available').innerText = assets.filter(a => a.status === 'available').length;
             document.getElementById('stat-borrowed').innerText = assets.filter(a => a.status === 'borrowed').length;
+            
+            // เรนเดอร์ยอดสรุปวัสดุสิ้นเปลือง
+            document.getElementById('stat-mat-types').innerText = materials.length;
+            const totalQty = materials.reduce((acc, curr) => acc + curr.stock, 0);
+            const totalDisbursed = materials.reduce((acc, curr) => acc + curr.disbursed, 0);
+            document.getElementById('stat-mat-qty').innerText = totalQty;
+            document.getElementById('stat-mat-disbursed').innerText = totalDisbursed;
         }
 
         function renderActivities() {
@@ -1512,65 +1857,326 @@
             `).join('');
         }
 
-        function renderPieChart() {
+        function renderPieCharts() {
+            // 1. วาดแผนภูมิสัดส่วนสถานะครุภัณฑ์
             const availableCount = assets.filter(a => a.status === 'available').length;
             const pendingCount = assets.filter(a => a.status === 'pending_approval').length;
             const borrowedCount = assets.filter(a => a.status === 'borrowed').length;
 
-            const canvas = document.getElementById('assetStatusChart');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            
-            if (statusChartInstance) {
-                statusChartInstance.destroy();
+            const assetCanvas = document.getElementById('assetStatusChart');
+            if (assetCanvas) {
+                const ctx = assetCanvas.getContext('2d');
+                if (statusChartInstance) { statusChartInstance.destroy(); }
+                statusChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['พร้อมใช้งาน', 'รออนุมัติเบิก', 'ถูกเบิกไปใช้'],
+                        datasets: [{
+                            data: [availableCount, pendingCount, borrowedCount],
+                            backgroundColor: ['#10b981', '#f59e0b', '#3b82f6'],
+                            borderColor: '#ffffff',
+                            borderWidth: 2,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        cutout: '65%'
+                    }
+                });
             }
-
-            statusChartInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['พร้อมใช้งาน', 'รออนุมัติเบิก', 'ถูกเบิกไปใช้'],
-                    datasets: [{
-                        data: [availableCount, pendingCount, borrowedCount],
-                        backgroundColor: ['#10b981', '#f59e0b', '#3b82f6'],
-                        borderColor: '#ffffff',
-                        borderWidth: 2,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    cutout: '65%'
-                }
-            });
 
             const legendContainer = document.getElementById('chart-legend');
             if (legendContainer) {
                 legendContainer.innerHTML = `
                     <div class="flex items-center justify-between text-[11px] p-2 rounded-xl bg-emerald-50 text-emerald-800 font-semibold">
                         <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                             <span>มีอยู่พร้อมใช้งาน</span>
                         </div>
                         <span>${availableCount} ชิ้น</span>
                     </div>
                     <div class="flex items-center justify-between text-[11px] p-2 rounded-xl bg-amber-50 text-amber-800 font-semibold">
                         <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
                             <span>รอพิจารณาเบิก</span>
                         </div>
                         <span>${pendingCount} ชิ้น</span>
                     </div>
                     <div class="flex items-center justify-between text-[11px] p-2 rounded-xl bg-blue-50 text-blue-800 font-semibold">
                         <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
                             <span>ถูกจ่ายออกใช้งาน</span>
                         </div>
                         <span>${borrowedCount} ชิ้น</span>
                     </div>
                 `;
             }
+
+            // 2. คำนวณข้อมูลสัดส่วนวัสดุสิ้นเปลืองแยกตาม 3 หมวดหมู่หลัก (Dashboard Material Doughnut)
+            const matCategories = {
+                "วัสดุไฟฟ้าและวิทยุ": 0,
+                "วัสดุงานบ้านงานครัว": 0,
+                "วัสดุคอมพิวเตอร์": 0
+            };
+            materials.forEach(m => {
+                if (matCategories[m.category] !== undefined) {
+                    matCategories[m.category] += m.stock;
+                }
+            });
+
+            // วาดแผนภูมิในหน้าแดชบอร์ด
+            const matDashCanvas = document.getElementById('materialDashboardChart');
+            if (matDashCanvas) {
+                const ctx = matDashCanvas.getContext('2d');
+                if (materialDashboardChartInstance) { materialDashboardChartInstance.destroy(); }
+                materialDashboardChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['ไฟฟ้าและวิทยุ', 'งานบ้านงานครัว', 'คอมพิวเตอร์'],
+                        datasets: [{
+                            data: [
+                                matCategories["วัสดุไฟฟ้าและวิทยุ"], 
+                                matCategories["วัสดุงานบ้านงานครัว"], 
+                                matCategories["วัสดุคอมพิวเตอร์"]
+                            ],
+                            backgroundColor: ['#f59e0b', '#ec4899', '#6366f1'],
+                            borderColor: '#ffffff',
+                            borderWidth: 2,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        cutout: '65%'
+                    }
+                });
+            }
+
+            const matDashLegend = document.getElementById('mat-dashboard-chart-legend');
+            if (matDashLegend) {
+                matDashLegend.innerHTML = `
+                    <div class="flex items-center justify-between text-[11px] p-2 rounded-xl bg-amber-50 text-amber-800 font-semibold">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <span>ไฟฟ้าและวิทยุ</span>
+                        </div>
+                        <span>${matCategories["วัสดุไฟฟ้าและวิทยุ"]} หน่วย</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] p-2 rounded-xl bg-pink-50 text-pink-800 font-semibold">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-pink-500"></span>
+                            <span>งานบ้านงานครัว</span>
+                        </div>
+                        <span>${matCategories["วัสดุงานบ้านงานครัว"]} หน่วย</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] p-2 rounded-xl bg-indigo-50 text-indigo-800 font-semibold">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                            <span>คอมพิวเตอร์</span>
+                        </div>
+                        <span>${matCategories["วัสดุคอมพิวเตอร์"]} หน่วย</span>
+                    </div>
+                `;
+            }
+
+            // 3. วาดแผนภูมิแบบรายละเอียดในหน้าวัสดุ (tab-materials) โดยแยกดูตาม dropdown และค้นหาได้
+            renderMaterialChartDetail();
+        }
+
+        // ฟังก์ชันประมวลผลวาดแผนภูมิวัสดุและแสดงยอดคงเหลือรายชิ้นแบบไดนามิกตาม Dropdown + ค้นหา
+        function renderMaterialChartDetail() {
+            const chartSelect = document.getElementById('mat-chart-select');
+            if (!chartSelect) return;
+            const category = chartSelect.value;
+            const searchVal = document.getElementById('mat-chart-search').value.toLowerCase().trim();
+
+            // คัดกรองวัสดุตาม Dropdown และคำค้นหา
+            const filtered = materials.filter(m => {
+                const matchCat = category === 'all' || m.category === category;
+                const matchSearch = m.name.toLowerCase().includes(searchVal) || m.id.toLowerCase().includes(searchVal);
+                return matchCat && matchSearch;
+            });
+
+            const canvas = document.getElementById('materialStockChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            if (materialChartInstance) { materialChartInstance.destroy(); }
+
+            let labels = [];
+            let data = [];
+            let bgColors = [];
+
+            const legendContainer = document.getElementById('material-chart-legend');
+
+            if (category === 'all') {
+                // แสดงภาพรวม (ยอดรวมของแต่ละหมวดหมู่หลัก)
+                const catSums = {
+                    "วัสดุไฟฟ้าและวิทยุ": 0,
+                    "วัสดุงานบ้านงานครัว": 0,
+                    "วัสดุคอมพิวเตอร์": 0
+                };
+                
+                filtered.forEach(m => {
+                    if (catSums[m.category] !== undefined) {
+                        catSums[m.category] += m.stock;
+                    }
+                });
+
+                labels = Object.keys(catSums);
+                data = Object.values(catSums);
+                bgColors = ['#f59e0b', '#ec4899', '#6366f1'];
+
+                materialChartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: bgColors,
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } }
+                    }
+                });
+
+                // วาดลิสต์รายงานสรุปคงเหลือแยกตามแผนกทางขวา
+                if (legendContainer) {
+                    legendContainer.className = "grid grid-cols-1 gap-2.5 w-full mt-4";
+                    legendContainer.innerHTML = `
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">ยอดวัสดุคงเหลือรวมแยกหมวดหมู่:</div>
+                        <div class="flex items-center justify-between text-xs p-3 rounded-xl bg-amber-50 text-amber-800 font-semibold border border-amber-100">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                <span>วัสดุไฟฟ้าและวิทยุ</span>
+                            </div>
+                            <span class="font-extrabold text-sm">${catSums["วัสดุไฟฟ้าและวิทยุ"]} หน่วย</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs p-3 rounded-xl bg-pink-50 text-pink-800 font-semibold border border-pink-100">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-pink-500"></span>
+                                <span>วัสดุงานบ้านงานครัว</span>
+                            </div>
+                            <span class="font-extrabold text-sm">${catSums["วัสดุงานบ้านงานครัว"]} หน่วย</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs p-3 rounded-xl bg-indigo-50 text-indigo-800 font-semibold border border-indigo-100">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                                <span>วัสดุคอมพิวเตอร์</span>
+                            </div>
+                            <span class="font-extrabold text-sm">${catSums["วัสดุคอมพิวเตอร์"]} หน่วย</span>
+                        </div>
+                    `;
+                }
+            } else {
+                // เลือกดูหมวดหมู่เฉพาะชิ้น -> แสดงสัดส่วนรายชิ้นของวัสดุนั้นๆ
+                labels = filtered.map(m => m.name);
+                data = filtered.map(m => m.stock);
+
+                // พาเลตต์สีสันสดใสแบบไดนามิกสำหรับสิ่งของหลายชิ้น
+                const palette = [
+                    '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', 
+                    '#8b5cf6', '#6366f1', '#14b8a6', '#f43f5e', '#a855f7'
+                ];
+                bgColors = filtered.map((_, i) => palette[i % palette.length]);
+
+                if (filtered.length === 0) {
+                    // กรณีไม่พบข้อมูลพัสดุในหมวดนี้หลังจากระบุคำค้นหา
+                    legendContainer.className = "flex flex-col items-center justify-center py-8 text-center text-slate-400 w-full";
+                    legendContainer.innerHTML = `
+                        <i data-lucide="package-open" class="w-8 h-8 text-slate-300 mb-1.5"></i>
+                        <span class="text-xs font-semibold">ไม่พบข้อมูลวัสดุในระบบ</span>
+                    `;
+                    materialChartInstance = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['ไม่มีข้อมูล'],
+                            datasets: [{
+                                data: [1],
+                                backgroundColor: ['#f1f5f9'],
+                                borderColor: '#ffffff',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                    lucide.createIcons();
+                    return;
+                }
+
+                materialChartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels.map(l => l.length > 15 ? l.substring(0, 13) + '...' : l),
+                        datasets: [{
+                            data: data,
+                            backgroundColor: bgColors,
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const idx = context.dataIndex;
+                                        return ` ${filtered[idx].name}: ${filtered[idx].stock} ${filtered[idx].unit}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // วาดรายชื่อพัสดุในหมวดนั้นๆ พร้อมประมวลแถบ Progress Bar ระบุจำนวนคงเหลือ
+                if (legendContainer) {
+                    legendContainer.className = "flex flex-col gap-2 w-full mt-4 max-h-[220px] overflow-y-auto pr-1 no-scrollbar";
+                    const maxStock = Math.max(...data, 1);
+                    
+                    let html = `<div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">ยอดคงคลังวัสดุชิ้นเดี่ยวคงเหลือ:</div>`;
+                    
+                    filtered.forEach((m, i) => {
+                        const pct = Math.min((m.stock / maxStock) * 100, 100);
+                        const clr = bgColors[i];
+                        
+                        html += `
+                            <div class="p-2.5 rounded-xl border border-slate-100 hover:bg-slate-50 transition-all flex flex-col gap-1">
+                                <div class="flex items-center justify-between text-xs">
+                                    <div class="flex items-center gap-1.5 truncate max-w-[70%]">
+                                        <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${clr}"></span>
+                                        <span class="font-bold text-slate-700 truncate" title="${m.name}">${m.name}</span>
+                                    </div>
+                                    <span class="font-extrabold text-slate-900 shrink-0 text-[11px]">${m.stock} ${m.unit}</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1 rounded-full overflow-hidden">
+                                    <div class="h-full rounded-full" style="width: ${pct}%; background-color: ${clr}"></div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    legendContainer.innerHTML = html;
+                }
+            }
+            lucide.createIcons();
         }
 
         function renderAssetsTable() {
@@ -1635,13 +2241,10 @@
                             <span class="text-[10px] text-blue-600 font-semibold bg-blue-50/60 px-1.5 py-0.5 rounded border border-blue-200/40">${borrowerLabel}</span>
                         </div>
                     `;
-                } else {
-                    statusBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">จำหน่ายออก</span>`;
                 }
 
                 const assetPhoto = item.image || `https://placehold.co/100x100/e2e8f0/475569?text=${encodeURIComponent(item.category)}`;
 
-                // แอดมินสามารถดู, แก้ไข, ลบได้ / ยูสเซอร์ทั่วไปกดดูประวัติได้อย่างเดียว
                 const actionButtons = currentUser?.role === 'admin' ? `
                     <button onclick="viewAssetDetails('${item.id}')" title="รายละเอียด" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                         <i data-lucide="eye" class="w-4.5 h-4.5"></i>
@@ -1672,7 +2275,6 @@
                         <td class="py-4 px-6">
                             <div class="font-bold text-slate-800">${item.name}</div>
                             <div class="text-[10px] text-slate-400 mt-1 space-y-0.5">
-                                <div>ผู้ดูแลหลัก: ${item.responsible}</div>
                                 ${activeBorrow ? `<div class="text-blue-600 font-bold bg-blue-50/60 px-1.5 py-0.5 rounded border border-blue-100/30 inline-block">ผู้ครอบครอง: ${activeBorrow.borrower} (${activeBorrow.department})</div>` : ''}
                             </div>
                         </td>
@@ -1680,7 +2282,6 @@
                         <td class="py-4 px-6 text-xs text-slate-500">${item.location}</td>
                         <td class="py-4 px-6 font-semibold text-slate-900">฿${item.cost.toLocaleString()}</td>
                         <td class="py-4 px-6">${statusBadge}</td>
-                        <!-- ซ่อนการแสดงผลคอลัมน์การดำเนินการออกทันทีหากไม่ใช่แอดมิน เพื่อความสอดคล้องแบบ Read-only -->
                         <td class="py-4 px-6 text-right" style="display: ${currentUser?.role === 'admin' ? 'table-cell' : 'none'};">
                             <div class="flex items-center justify-end gap-1">
                                 ${actionButtons}
@@ -1780,13 +2381,19 @@
                     statusBadge = `<span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200 text-slate-500 font-medium text-xs">ส่งคืนคลังแล้ว</span>`;
                 }
 
+                // อัปเดต v4.6.1: เพิ่มปุ่มพิมพ์ใบเบิกจ่ายครุภัณฑ์ (Approved Assets)
                 let actionButton = '-';
                 if (currentUser?.role === 'admin') {
                     if (record.status === 'approved') {
                         actionButton = `
-                            <button onclick="handleReturn('${record.id}')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold py-1.5 px-3 rounded-lg border border-emerald-200 transition-colors">
-                                ตรวจรับคืนคลัง
-                            </button>
+                            <div class="flex items-center justify-end gap-1.5">
+                                <button onclick="printBorrowSlip('${record.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold py-1.5 px-2.5 rounded-lg border border-blue-200 transition-colors" title="พิมพ์ใบเบิกครุภัณฑ์">
+                                    <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                                </button>
+                                <button onclick="handleReturn('${record.id}')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold py-1.5 px-3 rounded-lg border border-emerald-200 transition-colors">
+                                    ตรวจรับคืนคลัง
+                                </button>
+                            </div>
                         `;
                     } else {
                         actionButton = `<span class="text-xs text-slate-400">เสร็จสมบูรณ์</span>`;
@@ -1805,6 +2412,434 @@
                 `;
             }).join('');
         }
+
+        // ================= ฟังก์ชันแท็บจัดการวัสดุสิ้นเปลือง =================
+
+        function renderMaterialsTab() {
+            renderMaterialsTable();
+        }
+
+        function renderMaterialsTable() {
+            const tbody = document.getElementById('materials-table-body');
+            const catFilter = document.getElementById('filter-mat-category').value;
+            const searchValue = document.getElementById('search-materials').value.toLowerCase();
+
+            const filteredMats = materials.filter(m => {
+                const matchSearch = m.name.toLowerCase().includes(searchValue) || m.id.toLowerCase().includes(searchValue);
+                const matchCat = catFilter === 'all' || m.category === catFilter;
+                return matchSearch && matchCat;
+            });
+
+            if (filteredMats.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="py-8 text-center text-slate-400">
+                            ไม่พบรายการวัสดุสิ้นเปลืองคงคลังในขณะนี้
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filteredMats.map(mat => {
+                const stockWarning = mat.stock <= 5 
+                    ? `<span class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-100 animate-pulse">ใกล้หมด!</span>` 
+                    : ``;
+
+                // อัปเดต v4.6.1: เพิ่มปุ่มทำรายการจ่ายวัสดุ & พิมพ์ใบเบิกจ่ายโดยตรง (printer icon) สำหรับแอดมิน
+                const actionCell = currentUser?.role === 'admin' ? `
+                    <button onclick="openMaterialPrintModal('${mat.id}')" class="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="ทำจ่ายวัสดุ & พิมพ์ใบเบิก">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="editMaterial('${mat.id}')" class="p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors" title="แก้ไข/เพิ่มสต็อก">
+                        <i data-lucide="edit-3" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="deleteMaterial('${mat.id}')" class="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" title="ลบวัสดุ">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                ` : `-`;
+
+                const materialPhoto = mat.image || `https://placehold.co/100x100/e2e8f0/475569?text=${encodeURIComponent(mat.category)}`;
+
+                return `
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-4 px-6">
+                            <div class="w-12 h-12 rounded-xl border border-slate-200 overflow-hidden bg-slate-100 shrink-0 cursor-zoom-in relative group" onclick="openLightbox('${materialPhoto}', 'รูปภาพ: ${mat.name}')" title="คลิกขยายดูภาพขนาดเต็ม">
+                                <img src="${materialPhoto}" alt="${mat.name}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                                    <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-3 px-4 font-bold text-slate-900">${mat.id}</td>
+                        <td class="py-3 px-4">
+                            <div class="font-bold text-slate-800">${mat.name}</div>
+                            <div class="text-[10px] text-slate-400">คลังพัสดุ: สังกัดภายในฝ่ายธุรการและพัสดุส่วนกลาง</div>
+                        </td>
+                        <td class="py-3 px-4 text-xs font-semibold text-slate-500">${mat.category}</td>
+                        <td class="py-3 px-4 text-center font-bold text-slate-800">
+                            ${mat.stock} ${mat.unit} ${stockWarning}
+                        </td>
+                        <td class="py-3 px-4 text-center text-slate-500 font-medium">${mat.disbursed} ${mat.unit}</td>
+                        <td class="py-3 px-4 text-right" style="display: ${currentUser?.role === 'admin' ? 'table-cell' : 'none'};">
+                            <div class="flex items-center justify-end gap-1">
+                                ${actionCell}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // แนบและพรีวิวภาพวัสดุสิ้นเปลือง
+        function previewUploadedMaterialImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 400; 
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                    currentMaterialFormImageBase64 = compressedDataUrl;
+                    document.getElementById('form-mat-image-preview').src = compressedDataUrl;
+                    document.getElementById('form-mat-image-url').value = ""; 
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function previewMatUrlImage(url) {
+            const trimmedUrl = url.trim();
+            if (!trimmedUrl) {
+                document.getElementById('form-mat-image-preview').src = "https://placehold.co/100x100/f1f5f9/475569?text=No+Image";
+                currentMaterialFormImageBase64 = "";
+                return;
+            }
+            currentMaterialFormImageBase64 = trimmedUrl;
+            document.getElementById('form-mat-image-preview').src = trimmedUrl;
+        }
+
+        // เปิด Modal เพิ่ม/แก้ไขพัสดุวัสดุสิ้นเปลือง
+        function openMaterialModal(id = null) {
+            if (currentUser?.role !== 'admin') return;
+
+            const form = document.getElementById('material-form');
+            form.reset();
+
+            currentMaterialFormImageBase64 = "";
+            document.getElementById('form-mat-image-preview').src = "https://placehold.co/100x100/f1f5f9/475569?text=No+Image";
+            document.getElementById('form-mat-image-file').value = "";
+
+            const matIdInput = document.getElementById('mat-id');
+
+            if (id) {
+                const targetMat = materials.find(m => m.id === id);
+                if (targetMat) {
+                    document.getElementById('material-modal-title').innerHTML = `<i data-lucide="edit" class="text-indigo-600 w-5 h-5"></i> แก้ไขพัสดุและปรับสต็อก [${id}]`;
+                    document.getElementById('material-form-mode').value = "edit";
+                    document.getElementById('material-form-original-id').value = id;
+
+                    matIdInput.value = targetMat.id;
+                    matIdInput.disabled = true;
+                    document.getElementById('mat-name').value = targetMat.name;
+                    document.getElementById('mat-category').value = targetMat.category;
+                    document.getElementById('mat-stock').value = targetMat.stock;
+                    document.getElementById('mat-unit').value = targetMat.unit;
+
+                    if (targetMat.image) {
+                        currentMaterialFormImageBase64 = targetMat.image;
+                        document.getElementById('form-mat-image-preview').src = targetMat.image;
+                        if (targetMat.image.startsWith('http')) {
+                            document.getElementById('form-mat-image-url').value = targetMat.image;
+                        }
+                    }
+                }
+            } else {
+                document.getElementById('material-modal-title').innerHTML = `<i data-lucide="boxes" class="text-indigo-600 w-5 h-5"></i> ลงทะเบียนพัสดุวัสดุสิ้นเปลืองใหม่`;
+                document.getElementById('material-form-mode').value = "add";
+                document.getElementById('material-form-original-id').value = "";
+                matIdInput.disabled = false;
+            }
+
+            document.getElementById('material-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeMaterialModal() {
+            document.getElementById('material-modal').classList.add('hidden');
+        }
+
+        async function handleMaterialFormSubmit(e) {
+            e.preventDefault();
+
+            const mode = document.getElementById('material-form-mode').value;
+            const originalId = document.getElementById('material-form-original-id').value;
+
+            const matObj = {
+                id: document.getElementById('mat-id').value.trim(),
+                name: document.getElementById('mat-name').value.trim(),
+                category: document.getElementById('mat-category').value,
+                stock: parseInt(document.getElementById('mat-stock').value),
+                unit: document.getElementById('mat-unit').value.trim(),
+                disbursed: 0,
+                image: currentMaterialFormImageBase64
+            };
+
+            if (mode === 'add') {
+                if (materials.some(m => m.id === matObj.id)) {
+                    showToast("รหัสพัสดุซ้ำกับรายการที่มีอยู่แล้วในคลัง!", "error");
+                    return;
+                }
+                await writeMaterial(matObj);
+                await writeActivity("เจ้าหน้าที่พัสดุ", `ลงทะเบียนวัสดุสิ้นเปลืองใหม่: [${matObj.id}] ${matObj.name}`);
+                showToast("บันทึกพัสดุวัสดุเข้าคลังสำเร็จ!", "success");
+            } else {
+                const originalMat = materials.find(m => m.id === originalId);
+                matObj.disbursed = originalMat ? originalMat.disbursed : 0;
+
+                await writeMaterial(matObj);
+                await writeActivity("เจ้าหน้าที่พัสดุ", `ปรับยอดสต็อกและอัปเดตข้อมูลวัสดุ: [${matObj.id}]`);
+                showToast("อัปเดตทะเบียนสต็อกเสร็จสิ้น", "success");
+            }
+
+            closeMaterialModal();
+            renderApp();
+        }
+
+        function editMaterial(id) {
+            openMaterialModal(id);
+        }
+
+        function deleteMaterial(id) {
+            if (currentUser?.role !== 'admin') return;
+
+            showConfirmModal(
+                "ถอดถอนรายการพัสดุวัสดุ?",
+                `คุณต้องการลบพัสดุวัสดุสิ้นเปลืองรหัส ${id} ออกจากระบบคลังถาวรหรือไม่?`,
+                async function() {
+                    await removeMaterialFromDb(id);
+                    await writeActivity("เจ้าหน้าที่พัสดุ", `ลบพัสดุวัสดุ [${id}] ออกจากสารบบคลังสิ้นเปลือง`);
+                    showToast("ลบข้อมูลทะเบียนสำเร็จ", "info");
+                    renderApp();
+                }
+            );
+        }
+
+        // ================= ฟังก์ชันโมดูลพิมพ์ใบเบิกพัสดุและวัสดุ (ใหม่ v4.6.1) =================
+
+        function openMaterialPrintModal(id) {
+            const mat = materials.find(m => m.id === id);
+            if (!mat) return;
+            
+            document.getElementById('print-mat-id').value = mat.id;
+            document.getElementById('print-mat-name').value = mat.name;
+            document.getElementById('print-mat-current-stock').innerText = mat.stock;
+            document.getElementById('print-mat-unit').innerText = mat.unit;
+            document.getElementById('print-mat-qty').value = 1;
+            document.getElementById('print-mat-qty').max = mat.stock;
+            document.getElementById('print-mat-recipient').value = "";
+            
+            // ตั้งค่าวันที่ค่าตั้งต้นเป็นวันนี้
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('print-mat-date').value = today;
+
+            document.getElementById('material-print-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeMaterialPrintModal() {
+            document.getElementById('material-print-modal').classList.add('hidden');
+        }
+
+        async function handleMaterialPrintSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('print-mat-id').value;
+            const recipient = document.getElementById('print-mat-recipient').value.trim();
+            const dept = document.getElementById('print-mat-dept').value;
+            const qty = parseInt(document.getElementById('print-mat-qty').value);
+            const dateStr = document.getElementById('print-mat-date').value;
+
+            const mat = materials.find(m => m.id === id);
+            if (!mat) return;
+
+            if (qty > mat.stock) {
+                showToast(`จำนวนพัสดุที่ระบุเบิกมีมากกว่าคลังคงเหลือในระบบ (${mat.stock} ${mat.unit})`, "error");
+                return;
+            }
+
+            // ตัดยอดคงเหลือสะสมในคลังพัสดุ
+            mat.stock -= qty;
+            mat.disbursed += qty;
+
+            await writeMaterial(mat);
+            await writeActivity("เจ้าหน้าที่พัสดุ", `ทำเรื่องจ่ายวัสดุสิ้นเปลืองด่วน: [${id}] จำนวน ${qty} ${mat.unit} ให้แก่คุณ ${recipient} (${dept})`);
+            showToast("ตัดยอดคลังวัสดุสิ้นเปลืองเสร็จสิ้น กำลังเปิดรายงานการพิมพ์...", "success");
+
+            // วาดและเปิดกล่องเอกสารการสั่งพิมพ์ (Print Trigger)
+            const printSec = document.getElementById('print-section');
+            printSec.innerHTML = `
+                <div style="font-family: 'TH SarabunIT๙', 'TH Sarabun IT๙', 'TH Sarabun New', 'Sarabun', sans-serif; padding: 40px; color: #000; line-height: 1.6; max-width: 800px; margin: 0 auto; background: white; font-size: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+                        <div>
+                            <h2 style="margin: 0; font-size: 28px; font-weight: bold; line-height: 1.2;">ใบเบิกจ่ายพัสดุวัสดุสิ้นเปลือง</h2>
+                            <h3 style="margin: 5px 0 0 0; font-size: 20px; font-weight: bold; color: #334155; line-height: 1.2;">สำนักงานเลขานุการ อบจ.ภูเก็ต</h3>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="font-size: 16px; font-weight: bold; border: 1px solid #000; padding: 4px 10px; border-radius: 4px;">ต้นฉบับงานพัสดุ</span>
+                        </div>
+                    </div>
+
+                    <table style="width: 100%; margin-bottom: 20px; font-size: 18px;">
+                        <tr>
+                            <td style="width: 50%; padding: 4px 0;"><strong>รหัสพัสดุในสารบบ:</strong> ${mat.id}</td>
+                            <td style="width: 50%; padding: 4px 0; text-align: right;"><strong>วันที่ทำรายการ:</strong> ${dateStr}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 4px 0;"><strong>ผู้รับมอบพัสดุ:</strong> ${recipient}</td>
+                            <td style="padding: 4px 0; text-align: right;"><strong>ฝ่าย/กองสังกัด:</strong> ${dept}</td>
+                        </tr>
+                    </table>
+
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 18px;">
+                        <thead>
+                            <tr style="border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; background-color: #f8fafc;">
+                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">ลำดับ</th>
+                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 55%;">รายการวัสดุอุปกรณ์สิ้นเปลือง</th>
+                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">จำนวนเบิก</th>
+                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">หน่วยนับ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1.5px solid #000;">
+                                <td style="padding: 10px 10px;">1</td>
+                                <td style="padding: 10px 10px;">
+                                    <div style="font-weight: bold; font-size: 20px;">${mat.name}</div>
+                                    <div style="font-size: 16px; color: #475569; margin-top: 2px;">หมวดหมู่: ${mat.category}</div>
+                                </td>
+                                <td style="padding: 10px 10px; text-align: right; font-weight: bold; font-size: 20px;">${qty}</td>
+                                <td style="padding: 10px 10px; text-align: right;">${mat.unit}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 80px; display: flex; justify-content: space-between; font-size: 18px;">
+                        <div style="text-align: center; width: 45%;">
+                            <p>ลงชื่อ............................................................ผู้รับพัสดุ</p>
+                            <p style="margin-top: 5px; font-weight: bold;">( ${recipient} )</p>
+                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">ตำแหน่ง: ............................................................</p>
+                        </div>
+                        <div style="text-align: center; width: 45%;">
+                            <p>ลงชื่อ............................................................ผู้จ่ายพัสดุ</p>
+                            <p style="margin-top: 5px; font-weight: bold;">( เจ้าหน้าที่งานพัสดุ )</p>
+                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">วันที่อนุมัติจ่าย: ${dateStr}</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 80px; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: center; font-size: 14px; color: #64748b;">
+                        * เอกสารนี้สร้างขึ้นโดยระบบควบคุมพัสดุและวัสดุสิ้นเปลือง สำนักงานเลขานุการ อบจ.ภูเก็ต เพื่อใช้ควบคุมทะเบียนคลังพัสดุหลวง *
+                    </div>
+                </div>
+            `;
+
+            window.print();
+            
+            closeMaterialPrintModal();
+            renderApp();
+        }
+
+        // ฟังก์ชันสั่งพิมพ์ใบเบิกจ่ายครุภัณฑ์ (Approved Borrow Asset Record)
+        function printBorrowSlip(recordId) {
+            const record = borrowRecords.find(r => r.id === recordId);
+            if (!record) return;
+
+            const asset = assets.find(a => a.id === record.assetId);
+            const assetName = asset ? asset.name : "ครุภัณฑ์ไม่พบข้อมูลในสารบบ";
+            const assetCategory = asset ? asset.category : "-";
+
+            const printSec = document.getElementById('print-section');
+            printSec.innerHTML = `
+                <div style="font-family: 'TH SarabunIT๙', 'TH Sarabun IT๙', 'TH Sarabun New', 'Sarabun', sans-serif; padding: 40px; color: #000; line-height: 1.6; max-width: 800px; margin: 0 auto; background: white; font-size: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+                        <div>
+                            <h2 style="margin: 0; font-size: 28px; font-weight: bold; line-height: 1.2;">ใบเบิกจ่ายพัสดุครุภัณฑ์</h2>
+                            <h3 style="margin: 5px 0 0 0; font-size: 20px; font-weight: bold; color: #334155; line-height: 1.2;">สำนักงานเลขานุการ อบจ.ภูเก็ต</h3>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="font-size: 16px; font-weight: bold; border: 1px solid #000; padding: 4px 10px; border-radius: 4px;">ประวัติคุมพัสดุ</span>
+                        </div>
+                    </div>
+
+                    <table style="width: 100%; margin-bottom: 20px; font-size: 18px;">
+                        <tr>
+                            <td style="width: 50%; padding: 4px 0;"><strong>เลขที่คำร้อง:</strong> ${record.id}</td>
+                            <td style="width: 50%; padding: 4px 0; text-align: right;"><strong>วันที่เสนอเบิก:</strong> ${record.borrowDate}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 4px 0;"><strong>ผู้ยื่นเรื่องเบิก:</strong> ${record.borrower}</td>
+                            <td style="padding: 4px 0; text-align: right;"><strong>ฝ่าย/กองสังกัด:</strong> ${record.department}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 4px 0;" colspan="2"><strong>เงื่อนไขการส่งมอบสิทธิ์:</strong> ${record.type}</td>
+                        </tr>
+                    </table>
+
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 18px;">
+                        <thead>
+                            <tr style="border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; background-color: #f8fafc;">
+                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 25%;">รหัสครุภัณฑ์</th>
+                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 45%;">รายการชื่อครุภัณฑ์ / รุ่นสารบบ</th>
+                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">จำนวนที่ได้รับ</th>
+                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">ราคาทุนกลาง</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1.5px solid #000;">
+                                <td style="padding: 10px 10px; font-weight: bold; font-size: 20px;">${record.assetId}</td>
+                                <td style="padding: 10px 10px;">
+                                    <div style="font-weight: bold; font-size: 20px;">${assetName}</div>
+                                    <div style="font-size: 16px; color: #475569; margin-top: 2px;">หมวดหมู่: ${assetCategory}</div>
+                                </td>
+                                <td style="padding: 10px 10px; text-align: right; font-weight: bold; font-size: 20px;">1</td>
+                                <td style="padding: 10px 10px; text-align: right; font-weight: bold;">฿${asset ? asset.cost.toLocaleString() : '-'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 80px; display: flex; justify-content: space-between; font-size: 18px;">
+                        <div style="text-align: center; width: 45%;">
+                            <p>ลงชื่อ............................................................ผู้รับมอบครุภัณฑ์</p>
+                            <p style="margin-top: 5px; font-weight: bold;">( ${record.borrower} )</p>
+                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">ฝ่าย: ${record.department}</p>
+                        </div>
+                        <div style="text-align: center; width: 45%;">
+                            <p>ลงชื่อ............................................................ผู้จ่ายมอบพัสดุ</p>
+                            <p style="margin-top: 5px; font-weight: bold;">( เจ้าหน้าที่พัสดุส่วนกลาง )</p>
+                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">วันที่อนุมัติส่งมอบ: ${record.borrowDate}</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 80px; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: center; font-size: 14px; color: #64748b;">
+                        * ระเบียบราชการ: ครุภัณฑ์และพัสดุหลวงห้ามนำไปจัดจำหน่าย แลกเปลี่ยน หรือใช้ส่วนตนโดยมิชอบเด็ดขาด *
+                    </div>
+                </div>
+            `;
+
+            window.print();
+            renderApp();
+        }
+
+        // ================= สิ้นสุดฟังก์ชันโมดูลวัสดุสิ้นเปลือง =================
 
         function renderUsersTable() {
             const tbody = document.getElementById('user-table-body');
@@ -1851,7 +2886,7 @@
             }).join('');
         }
 
-        // --- 8. บันทึกและควบคุมระบบ (Operations Control) ---
+        // ระบบพรีวิวรูปภาพครุภัณฑ์
         function previewUploadedImage(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1916,8 +2951,12 @@
                     document.getElementById('form-location').value = item.location;
                     document.getElementById('form-cost').value = item.cost;
                     document.getElementById('form-purchase-date').value = item.purchaseDate;
-                    document.getElementById('form-useful-life').value = item.usefulLife;
-                    document.getElementById('form-responsible').value = item.responsible;
+                    
+                    // อัปเดต v4.6.1: กำหนดค่าลง Hidden fields อย่างปลอดภัยเพื่อไม่ให้กระทบต่อโครงสร้างข้อมูลระบบ
+                    const usefulInp = document.getElementById('form-useful-life');
+                    if (usefulInp) usefulInp.value = item.usefulLife || 5;
+                    const respInp = document.getElementById('form-responsible');
+                    if (respInp) respInp.value = item.responsible || "-";
 
                     if (item.image) {
                         currentFormImageBase64 = item.image;
@@ -1933,15 +2972,19 @@
                 document.getElementById('form-mode').value = "add";
                 document.getElementById('original-id').value = "";
                 document.getElementById('asset-submit-btn').innerText = "ลงทะเบียน";
+                
+                // กำหนดค่าเริ่มต้นพัสดุใหม่
+                const usefulInp = document.getElementById('form-useful-life');
+                if (usefulInp) usefulInp.value = 5;
+                const respInp = document.getElementById('form-responsible');
+                if (respInp) respInp.value = "-";
             }
 
             document.getElementById('asset-modal').classList.remove('hidden');
             lucide.createIcons();
         }
 
-        function closeAssetModal() {
-            document.getElementById('asset-modal').classList.add('hidden');
-        }
+        function closeAssetModal() { document.getElementById('asset-modal').classList.add('hidden'); }
 
         async function handleFormSubmit(e) {
             e.preventDefault();
@@ -1956,8 +2999,8 @@
                 location: document.getElementById('form-location').value.trim(),
                 cost: parseFloat(document.getElementById('form-cost').value),
                 purchaseDate: document.getElementById('form-purchase-date').value,
-                usefulLife: parseInt(document.getElementById('form-useful-life').value),
-                responsible: document.getElementById('form-responsible').value.trim(),
+                usefulLife: parseInt(document.getElementById('form-useful-life')?.value || 5),
+                responsible: document.getElementById('form-responsible')?.value?.trim() || "-",
                 status: "available",
                 image: currentFormImageBase64
             };
@@ -1991,9 +3034,7 @@
             renderApp();
         }
 
-        function editAsset(id) {
-            openAssetModal(id);
-        }
+        function editAsset(id) { openAssetModal(id); }
 
         function onQuickAddAsset() {
             if (currentUser?.role === 'admin') openAssetModal();
@@ -2014,7 +3055,7 @@
             );
         }
 
-        // --- 9. ระบบบริการจัดการผู้ใช้งาน (User Management Actions) ---
+        // ระบบบริการจัดการผู้ใช้งาน
         function openUserModal(username = null) {
             if (currentUser?.role !== 'admin') return;
 
@@ -2052,9 +3093,7 @@
             lucide.createIcons();
         }
 
-        function closeUserModal() {
-            document.getElementById('user-modal').classList.add('hidden');
-        }
+        function closeUserModal() { document.getElementById('user-modal').classList.add('hidden'); }
 
         async function handleUserFormSubmit(e) {
             e.preventDefault();
@@ -2094,9 +3133,7 @@
             renderApp();
         }
 
-        function editUser(username) {
-            openUserModal(username);
-        }
+        function editUser(username) { openUserModal(username); }
 
         function deleteUser(username) {
             if (currentUser?.role !== 'admin') return;
@@ -2112,7 +3149,7 @@
             );
         }
 
-        // --- 10. ระบบควบคุมธุรกรรมการเบิก-คืน (Transaction Actions) ---
+        // ระบบควบคุมธุรกรรมการเบิก-คืนครุภัณฑ์
         async function handleBorrow(e) {
             e.preventDefault();
             
@@ -2127,7 +3164,6 @@
                 return;
             }
 
-            // สิทธิ์แอดมินเบิกพัสดุแล้วอนุมัติเลย ส่วนสิทธิ์ผู้ใช้งานเบิกแล้วต้องเข้าสถานะ 'pending' รอการอนุมัติก่อน
             const initialStatus = currentUser?.role === 'admin' ? 'approved' : 'pending';
 
             const newRecord = {
@@ -2246,7 +3282,7 @@
             }
         }
 
-        // --- 11. ระบบกล่องข้อมูล Toast Alert ---
+        // ระบบกล่องข้อมูล Toast Alert
         function showToast(message, type = "success") {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -2275,7 +3311,7 @@
             }, 3000);
         }
 
-        // --- 12. ระบบแสดงผลข้อมูลพัสดุเชิงลึก (Asset Card View) ---
+        // ระบบแสดงผลข้อมูลพัสดุครุภัณฑ์เชิงลึก
         function viewAssetDetails(id) {
             const item = assets.find(a => a.id === id);
             if (item) {
@@ -2291,11 +3327,10 @@
                 if (activeBorrow) {
                     const typeLabel = item.status === 'borrowed' ? 'ผู้เบิกปัจจุบัน' : 'ผู้รออนุมัติเบิก';
                     document.getElementById('detail-responsible').innerHTML = `
-                        <span class="text-slate-500">ผู้ดูแลหลัก:</span> ${item.responsible}<br>
                         <span class="text-blue-600 font-bold block mt-1">★ ${typeLabel}: ${activeBorrow.borrower} (${activeBorrow.department})</span>
                     `;
                 } else {
-                    document.getElementById('detail-responsible').innerText = item.responsible;
+                    document.getElementById('detail-responsible').innerText = "-";
                 }
 
                 const detailImgEl = document.getElementById('detail-cover-image');
@@ -2323,11 +3358,9 @@
             }
         }
 
-        function closeAssetDetailModal() {
-            document.getElementById('asset-detail-modal').classList.add('hidden');
-        }
+        function closeAssetDetailModal() { document.getElementById('asset-detail-modal').classList.add('hidden'); }
 
-        // --- 13. ระบบบันทึก Config UI เพื่อแชร์ฐานข้อมูล ---
+        // ระบบบันทึก Config UI เพื่อเชื่อมคลาวด์
         function openFirebaseSettings() {
             const configStr = localStorage.getItem('firebase_config_v2_0');
             if (configStr) {
@@ -2349,9 +3382,7 @@
             lucide.createIcons();
         }
 
-        function closeFirebaseSettings() {
-            document.getElementById('firebase-settings-modal').classList.add('hidden');
-        }
+        function closeFirebaseSettings() { document.getElementById('firebase-settings-modal').classList.add('hidden'); }
 
         function saveFirebaseConfig(e) {
             e.preventDefault();
@@ -2367,24 +3398,20 @@
             closeFirebaseSettings();
             showToast("บันทึกข้อมูลเรียบร้อย กำลังเริ่มระบบใหม่...", "info");
             
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
+            setTimeout(() => { window.location.reload(); }, 1000);
         }
 
         function clearFirebaseConfig() {
             localStorage.removeItem('firebase_config_v2_0');
             closeFirebaseSettings();
-            showToast("ยกเลิกการเชื่อมโยงข้อมูลคลาวด์แล้ว กำลังปิดปรับปรุง...", "info");
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
+            showToast("ยกเลิกการเชื่อมโยงข้อมูลคลาวด์แล้ว กำลังรีบูตระบบใหม่...", "info");
+            setTimeout(() => { window.location.reload(); }, 1000);
         }
 
-        // --- 14. เริ่มต้นรันระบบเมื่อเบราว์เซอร์พร้อมทำงาน ---
+        // เริ่มต้นรันระบบเมื่อเบราว์เซอร์พร้อมทำงาน
         window.onload = function() {
             initializeFirebase();
-            showToast("ระบบสืบค้นพัสดุและกลั่นกรองคำร้องเบิกพัสดุออนไลน์ พร้อมทำงาน!", "info");
+            showToast("ระบบจัดการวัสดุและครุภัณฑ์ อบจ.ภูเก็ต พร้อมทำงาน!", "info");
         };
     </script>
 
