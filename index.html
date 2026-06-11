@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบริหารจัดการวัสดุและครุภัณฑ์ - สำนักงานเลขานุการ อบจ.ภูเก็ต</title>
+    <title>E-Office Portal Hub - สำนักงานเลขานุการ อบจ.ภูเก็ต</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -17,6 +17,7 @@
     
     <!-- นำเข้า Firebase SDK Compat เพื่อรันเสถียรบนไฟล์เดี่ยว -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <style>
@@ -57,38 +58,26 @@
     <!-- ========================================================================= -->
     <!-- ========================= 1. LOGIN SCREEN =============================== -->
     <!-- ========================================================================= -->
-    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-100/40 to-indigo-50/70 p-4 overflow-y-auto">
+    <div id="login-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-100/40 to-indigo-50/70 p-4 overflow-y-auto">
         <div class="relative w-full max-w-xl bg-white/80 backdrop-blur-xl p-10 md:p-12 rounded-3xl border border-white/80 shadow-[0_25px_60px_rgba(30,58,138,0.12)] flex flex-col space-y-8 text-slate-800 my-auto">
             <!-- แสงตกแต่งพื้นหลัง -->
             <div class="absolute -top-10 -left-10 w-44 h-44 bg-sky-300/30 rounded-full blur-[70px] opacity-60 pointer-events-none"></div>
             <div class="absolute -bottom-10 -right-10 w-44 h-44 bg-indigo-300/30 rounded-full blur-[70px] opacity-60 pointer-events-none"></div>
-            
-            <div class="text-center space-y-4 relative">
+
+            <div class="text-center space-y-4 relative pt-4">
                 <div class="inline-flex relative p-1.5">
-                    <!-- SVG Logo: 3D Cubic Crest -->
-                    <svg class="w-24 h-24 mx-auto drop-shadow-[0_8px_16px_rgba(59,130,246,0.15)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#3b82f6" />
-                                <stop offset="100%" stop-color="#1d4ed8" />
-                            </linearGradient>
-                            <linearGradient id="skyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#06b6d4" />
-                                <stop offset="100%" stop-color="#3b82f6" />
-                            </linearGradient>
-                        </defs>
-                        <circle cx="50" cy="50" r="45" stroke="url(#skyGrad)" stroke-width="2" stroke-dasharray="8 6" opacity="0.5"/>
-                        <path d="M50 18 L78 33 L50 48 L22 33 Z" fill="url(#skyGrad)" opacity="0.9"/>
-                        <path d="M50 48 L78 33 L78 63 L50 78 Z" fill="url(#blueGrad)" opacity="0.95"/>
-                        <path d="M22 33 L50 48 L50 78 L22 63 Z" fill="url(#blueGrad)" opacity="0.75"/>
-                        <circle cx="50" cy="48" r="4" fill="#ffffff" filter="drop-shadow(0px 0px 4px #ffffff)"/>
+                    <svg class="w-20 h-16 mx-auto drop-shadow-[0_8px_16px_rgba(59,130,246,0.15)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" stroke="#3b82f6" stroke-width="2" stroke-dasharray="8 6" opacity="0.5"/>
+                        <path d="M50 18 L78 33 L50 48 L22 33 Z" fill="#06b6d4" opacity="0.9"/>
+                        <path d="M50 48 L78 33 L78 63 L50 78 Z" fill="#3b82f6" opacity="0.95"/>
+                        <path d="M22 33 L50 48 L50 78 L22 63 Z" fill="#1d4ed8" opacity="0.75"/>
                     </svg>
                 </div>
-                <div class="space-y-2">
-                    <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-900 to-indigo-950 bg-clip-text text-transparent">
-                        ระบบบริหารจัดการวัสดุและครุภัณฑ์
-                    </h1>
-                    <p class="text-[16px] text-blue-600/90 font-bold tracking-wide">สำนักงานเลขานุการ อบจ.ภูเก็ต</p>
+                <div class="space-y-1">
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tight">
+                        E-Office Portal Hub
+                    </h2>
+                    <p class="text-[14px] text-blue-600 font-bold tracking-wide">สำนักงานเลขานุการ อบจ.ภูเก็ต</p>
                 </div>
             </div>
 
@@ -109,15 +98,199 @@
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-[16px] py-4 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/15 hover:shadow-blue-500/25">
-                        <i data-lucide="log-in" class="w-5 h-5"></i>
-                        เข้าสู่ระบบ
-                    </button>
-                    <!-- แสดงข้อความเวอร์ชันระบบตัวเล็กๆ ใต้ปุ่มเข้าสู่ระบบ -->
-                    <p class="text-center text-[10px] text-slate-400/90 font-semibold tracking-wider pt-2">เวอร์ชัน 4.8 (เสถียร)</p>
-                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-[16px] py-4 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/15 hover:shadow-blue-500/25">
+                    <i data-lucide="log-in" class="w-5 h-5"></i>
+                    เข้าสู่ระบบ E-Office
+                </button>
             </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ======================= 0. PORTAL MAIN SCREEN =========================== -->
+    <!-- ========================================================================= -->
+    <div id="portal-screen" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-100/30 to-indigo-100/50 p-4 overflow-y-auto">
+        <div class="relative w-full max-w-6xl bg-white/70 backdrop-blur-2xl p-8 md:p-12 rounded-[2.5rem] border border-white/80 shadow-[0_30px_70px_rgba(30,58,138,0.15)] flex flex-col space-y-10 text-slate-800 my-auto">
+            
+            <!-- แสงตกแต่งพื้นหลังคลื่นอัจฉริยะ -->
+            <div class="absolute -top-16 -left-16 w-64 h-64 bg-sky-300/20 rounded-full blur-[80px] opacity-70 pointer-events-none"></div>
+            <div class="absolute -bottom-16 -right-16 w-64 h-64 bg-blue-300/20 rounded-full blur-[80px] opacity-70 pointer-events-none"></div>
+            
+            <!-- ปุ่มออกจากระบบบนหน้า Portal -->
+            <button onclick="handleLogout()" class="absolute top-6 right-6 md:top-8 md:right-10 flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-4 py-2 rounded-2xl text-xs font-bold transition-all shadow-sm">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+                <span>ออกจากระบบ</span>
+            </button>
+
+            <!-- ส่วนหัวแสดงตราสัญลักษณ์และหัวข้อ Portal -->
+            <div class="text-center space-y-4 relative">
+                <div class="inline-flex relative p-2 bg-gradient-to-tr from-blue-500 to-sky-400 rounded-3xl shadow-lg shadow-blue-500/20">
+                    <!-- SVG Logo -->
+                    <svg class="w-16 h-16 text-white" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 15 L80 30 L50 45 L20 30 Z" fill="currentColor" opacity="0.9"/>
+                        <path d="M50 45 L80 30 L80 60 L50 75 Z" fill="currentColor" opacity="0.95"/>
+                        <path d="M20 30 L50 45 L50 75 L20 60 Z" fill="currentColor" opacity="0.75"/>
+                        <circle cx="50" cy="45" r="5" fill="#f59e0b"/>
+                    </svg>
+                </div>
+                <div class="space-y-2">
+                    <h1 class="text-4xl font-black tracking-tight bg-gradient-to-r from-blue-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent">
+                        E-Office Portal Hub
+                    </h1>
+                    <p class="text-lg font-bold text-blue-700 tracking-wide">สำนักงานเลขานุการ อบจ.ภูเก็ต</p>
+                    
+                    <!-- ส่วนต้อนรับตามสิทธิ์บัญชีผู้ใช้งาน -->
+                    <div id="portal-user-greeting" class="mt-2 inline-flex items-center gap-2 bg-blue-50 border border-blue-100 px-4 py-1.5 rounded-full text-xs font-bold text-blue-800">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span id="portal-greeting-text">ยินดีต้อนรับผู้ใช้งาน</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- กล่องทางเลือกเมนูหลัก 3 คอลัมน์ -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                
+                <!-- การ์ดระบบ 1: จัดการวัสดุและครุภัณฑ์ -->
+                <button onclick="enterAssetSystem()" class="group text-left p-6 bg-white/90 hover:bg-white rounded-[2rem] border border-slate-200/80 shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_rgba(30,58,138,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
+                    
+                    <div class="relative flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-50 to-sky-100/50 rounded-2xl shadow-inner border border-white group-hover:shadow-blue-500/10 group-hover:border-blue-200 transition-all duration-300">
+                        <div class="absolute inset-0 bg-blue-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_8px_12px_rgba(30,58,138,0.2)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="cubeTopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#38bdf8" />
+                                    <stop offset="100%" stop-color="#0284c7" />
+                                </linearGradient>
+                                <linearGradient id="cubeLeftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#0284c7" />
+                                    <stop offset="100%" stop-color="#1e3a8a" />
+                                </linearGradient>
+                                <linearGradient id="cubeRightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#0ea5e9" />
+                                    <stop offset="100%" stop-color="#1d4ed8" />
+                                </linearGradient>
+                                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="3" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                            </defs>
+                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#1e3b8a" opacity="0.25" />
+                            <path d="M25 45 L60 62 L60 98 L25 80 Z" fill="url(#cubeLeftGrad)" />
+                            <path d="M60 62 L95 45 L95 80 L60 98 Z" fill="url(#cubeRightGrad)" />
+                            <path d="M60 25 L95 45 L60 62 L25 45 Z" fill="url(#cubeTopGrad)" />
+                            <path d="M60 25 L60 62" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.6" />
+                            <path d="M25 45 L60 62 L95 45" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" opacity="0.4" />
+                            <circle cx="60" cy="43" r="10" fill="#f59e0b" opacity="0.9" filter="url(#glow)" />
+                            <path d="M56 43 L64 43 M60 39 L60 47" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+                            <path d="M20 58 C 20 45, 100 45, 100 58 C 100 70, 20 70, 20 58" stroke="#38bdf8" stroke-width="2" stroke-dasharray="6 4" opacity="0.8" />
+                        </svg>
+                    </div>
+                    
+                    <div class="space-y-2 mt-4 z-10">
+                        <span class="text-[11px] font-extrabold text-blue-600 uppercase tracking-widest bg-blue-50 px-2.5 py-1 rounded-full">ระบบภายใน</span>
+                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-700 transition-colors">ระบบบริหารจัดการวัสดุและครุภัณฑ์</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">ระบบบันทึกคุมสต็อกวัสดุอุปกรณ์ และตรวจสอบขออนุมัติเบิกจ่ายครุภัณฑ์กลางของสำนักงาน</p>
+                    </div>
+                </button>
+
+                <!-- การ์ดระบบ 2: จัดการผู้ใช้งานระบบ (ถอนตัวแยกเดี่ยวออกมาหน้าแรก) -->
+                <button id="portal-card-users" onclick="enterUserSystem()" class="group text-left p-6 bg-white/90 hover:bg-white rounded-[2rem] border border-slate-200/80 shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_rgba(30,58,138,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
+                    
+                    <div class="relative flex items-center justify-center w-20 h-20 bg-gradient-to-br from-indigo-50 to-purple-100/50 rounded-2xl shadow-inner border border-white group-hover:shadow-indigo-500/10 group-hover:border-indigo-200 transition-all duration-300">
+                        <div class="absolute inset-0 bg-indigo-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_8px_12px_rgba(79,70,229,0.25)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="userTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#c7d2fe" />
+                                    <stop offset="100%" stop-color="#818cf8" />
+                                </linearGradient>
+                                <linearGradient id="userLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#4f46e5" />
+                                    <stop offset="100%" stop-color="#312e81" />
+                                </linearGradient>
+                                <linearGradient id="userRight" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#6366f1" />
+                                    <stop offset="100%" stop-color="#3730a3" />
+                                </linearGradient>
+                                <filter id="purpleGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="2.5" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                            </defs>
+                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#312e81" opacity="0.3" />
+                            <path d="M30 65 L60 76 L60 98 L30 86 Z" fill="url(#userLeft)" />
+                            <path d="M60 76 L90 65 L90 86 L60 98 Z" fill="url(#userRight)" />
+                            <path d="M60 54 L90 65 L60 76 L30 65 Z" fill="url(#userTop)" />
+                            <circle cx="60" cy="40" r="8" fill="#ffffff" filter="url(#purpleGlow)" />
+                            <path d="M44 60 C 44 48, 76 48, 76 60 Z" fill="#ffffff" opacity="0.9" />
+                            <path d="M25 80 C 25 70, 95 70, 95 80" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7" />
+                        </svg>
+                    </div>
+                    
+                    <div class="space-y-2 mt-4 z-10">
+                        <span class="text-[11px] font-extrabold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2.5 py-1 rounded-full">ระบบเฉพาะแอดมิน</span>
+                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">ระบบจัดการผู้ใช้งาน</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">ควบคุมบัญชีผู้ใช้งานระบบ อัปเดตสิทธิ์การเข้าถึง กำหนดฝ่ายสังกัดพนักงาน และตรวจสอบความปลอดภัยข้อมูล</p>
+                    </div>
+                </button>
+
+                <!-- การ์ดระบบ 3: จองห้องประชุม (เชื่อมภายนอก) -->
+                <a href="https://meeting.phuketpao.go.th/index.php" target="_blank" class="group text-left p-6 bg-white/90 hover:bg-white rounded-[2rem] border border-slate-200/80 shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_rgba(30,58,138,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
+                    
+                    <div class="relative flex items-center justify-center w-20 h-20 bg-gradient-to-br from-amber-50 to-orange-100/50 rounded-2xl shadow-inner border border-white group-hover:shadow-amber-500/10 group-hover:border-amber-200 transition-all duration-300">
+                        <div class="absolute inset-0 bg-amber-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_8px_12px_rgba(180,83,9,0.25)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="podiumTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fef08a" />
+                                    <stop offset="100%" stop-color="#eab308" />
+                                </linearGradient>
+                                <linearGradient id="podiumLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#d97706" />
+                                    <stop offset="100%" stop-color="#7c2d12" />
+                                </linearGradient>
+                                <linearGradient id="podiumRight" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#f59e0b" />
+                                    <stop offset="100%" stop-color="#b45309" />
+                                </linearGradient>
+                                <filter id="amberGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="2.5" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                            </defs>
+                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#7c2d12" opacity="0.3" />
+                            <path d="M30 65 L60 76 L60 98 L30 86 Z" fill="url(#podiumLeft)" />
+                            <path d="M60 76 L90 65 L90 86 L60 98 Z" fill="url(#podiumRight)" />
+                            <path d="M60 54 L90 65 L60 76 L30 65 Z" fill="url(#podiumTop)" />
+                            <path d="M40 33 L60 41 L80 33 L60 25 Z" fill="#ffffff" opacity="0.95" />
+                            <path d="M40 33 L60 41 L60 47 L40 39 Z" fill="#cbd5e1" />
+                            <path d="M60 41 L80 33 L80 39 L60 47 Z" fill="#e2e8f0" />
+                            <path d="M50 29 L60 33 L70 29 L60 25 Z" fill="#ef4444" />
+                            <path d="M50 29 L60 33 L60 36 L50 32 Z" fill="#b91c1c" />
+                            <path d="M60 33 L70 29 L70 32 L60 36 Z" fill="#dc2626" />
+                            <circle cx="60" cy="33" r="5" fill="#f59e0b" filter="url(#amberGlow)" />
+                            <path d="M25 80 C 25 70, 95 70, 95 80 C 95 90, 25 90, 25 80" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7" />
+                        </svg>
+                    </div>
+                    
+                    <div class="space-y-2 mt-4 z-10">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[11px] font-extrabold text-amber-600 uppercase tracking-widest bg-amber-50 px-2.5 py-1 rounded-full">ระบบจองออนไลน์</span>
+                            <span class="inline-flex w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-amber-600 transition-colors">ระบบจองห้องประชุม</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">เข้าใช้บริการบันทึกข้อมูลตรวจสอบคิว และจองห้องประชุมสำหรับการสัมมนา ประชุมสภา และงานพิธีการ</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- ข้อความลิขสิทธิ์ท้ายหน้าจอ -->
+            <div class="text-center text-[11px] text-slate-400/90 font-medium tracking-wider relative pt-2">
+                &copy; 2026 สำนักงานเลขานุการ อบจ.ภูเก็ต
+            </div>
         </div>
     </div>
 
@@ -146,6 +319,11 @@
                 </div>
                 
                 <nav class="flex-1 py-6 space-y-1 overflow-y-auto">
+                    <button onclick="showPortal(); closeMobileSidebar();" class="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-bold text-amber-400 hover:bg-slate-800 transition-all mb-4 border border-dashed border-amber-400/30">
+                        <i data-lucide="home" class="w-5 h-5 text-amber-400"></i>
+                        <span>กลับสู่หน้าหลัก E-Office</span>
+                    </button>
+
                     <button onclick="switchTab('dashboard'); closeMobileSidebar();" class="mobile-menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800">
                         <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                         <span>แดชบอร์ดภาพรวม</span>
@@ -156,7 +334,7 @@
                     </button>
                     <button onclick="switchTab('borrow'); closeMobileSidebar();" class="mobile-menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800">
                         <i data-lucide="git-pull-request" class="w-5 h-5"></i>
-                        <span>เบิก-คืนครุภัณฑ์</span>
+                        <span>ระบบเบิกวัสดุ</span>
                     </button>
                     <button id="mobile-btn-materials" onclick="switchTab('materials'); closeMobileSidebar();" class="mobile-menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800">
                         <i data-lucide="boxes" class="w-5 h-5"></i>
@@ -200,6 +378,11 @@
             </div>
             
             <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+                <button onclick="showPortal()" class="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-bold text-amber-400 hover:bg-slate-800 transition-all mb-4 border border-dashed border-amber-400/30">
+                    <i data-lucide="home" class="w-5 h-5 text-amber-400"></i>
+                    <span>กลับหน้าหลัก E-Office</span>
+                </button>
+
                 <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all bg-blue-600 text-white">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                     <span>แดชบอร์ดภาพรวม</span>
@@ -210,7 +393,7 @@
                 </button>
                 <button onclick="switchTab('borrow')" id="btn-tab-borrow" class="menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
                     <i data-lucide="git-pull-request" class="w-5 h-5"></i>
-                    <span>เบิก-คืนครุภัณฑ์</span>
+                    <span>ระบบเบิกวัสดุ</span>
                 </button>
                 <button onclick="switchTab('materials')" id="btn-tab-materials" class="menu-btn flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
                     <i data-lucide="boxes" class="w-5 h-5"></i>
@@ -231,7 +414,7 @@
                             <p class="text-[10px] text-slate-500 truncate" id="desktop-user-dept">-</p>
                         </div>
                     </div>
-                    <button onclick="handleLogout()" class="p-2 hover:bg-slate-800 text-rose-400 rounded-lg transition-colors" title="ออกจากระบบ">
+                    <button onclick="handleLogout()" class="p-2 hover:bg-slate-800 text-rose-400 rounded-lg transition-colors hover:text-rose-300" title="ออกจากระบบ">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -357,7 +540,7 @@
                             </button>
                             <button onclick="switchTab('borrow')" class="flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-emerald-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all text-emerald-700">
                                 <i data-lucide="send" class="w-6 h-6 mb-2"></i>
-                                <span class="text-[13px] font-semibold">ยื่นคำขอเบิกครุภัณฑ์</span>
+                                <span class="text-[13px] font-semibold">ยื่นคำขอเบิกวัสดุ</span>
                             </button>
                         </div>
                     </div>
@@ -415,12 +598,21 @@
                             <input type="text" id="search-inventory" oninput="filterAssets()" placeholder="ค้นหารหัส, ชื่อครุภัณฑ์, ผู้เบิก, แผนก..." class="bg-transparent border-none text-[15px] w-full focus:outline-none focus:ring-0">
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
+                            <!-- อัปเดต Dropdown คัดกรองหมวดหมู่ครุภัณฑ์ทั้ง 12 รายการ -->
                             <select id="filter-category" onchange="filterAssets()" class="border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-blue-500">
                                 <option value="all">ทุกหมวดหมู่</option>
-                                <option value="คอมพิวเตอร์และไอที">คอมพิวเตอร์และไอที</option>
-                                <option value="เครื่องใช้สำนักงาน">เครื่องใช้สำนักงาน</option>
-                                <option value="เครื่องใช้ไฟฟ้า">เครื่องใช้ไฟฟ้า</option>
-                                <option value="ยานพาหนะ">ยานพาหนะ</option>
+                                <option value="ครุภัณฑ์สำนักงาน">ครุภัณฑ์สำนักงาน</option>
+                                <option value="ครุภัณฑ์ยานพาหนะและขนส่ง">ครุภัณฑ์ยานพาหนะและขนส่ง</option>
+                                <option value="ครุภัณฑ์คอมพิวเตอร์">ครุภัณฑ์คอมพิวเตอร์</option>
+                                <option value="ครุภัณฑ์การศึกษา">ครุภัณฑ์การศึกษา</option>
+                                <option value="ครุภัณฑ์การแพทย์">ครุภัณฑ์การแพทย์</option>
+                                <option value="ครุภัณฑ์วิทยาศาสตร์">ครุภัณฑ์วิทยาศาสตร์</option>
+                                <option value="ครุภัณฑ์การเกษตร">ครุภัณฑ์การเกษตร</option>
+                                <option value="ครุภัณฑ์งานบ้านงานครัว">ครุภัณฑ์งานบ้านงานครัว</option>
+                                <option value="ครุภัณฑ์ไฟฟ้าและวิทยุ">ครุภัณฑ์ไฟฟ้าและวิทยุ</option>
+                                <option value="ครุภัณฑ์ก่อสร้าง">ครุภัณฑ์ก่อสร้าง</option>
+                                <option value="ครุภัณฑ์โฆษณาและเผยแพร่">ครุภัณฑ์โฆษณาและเผยแพร่</option>
+                                <option value="ครุภัณฑ์สำรวจ">ครุภัณฑ์สำรวจ</option>
                             </select>
                             <select id="filter-status" onchange="filterAssets()" class="border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-blue-500">
                                 <option value="all">ทุกสถานะ</option>
@@ -457,30 +649,29 @@
                     </div>
                 </div>
 
-                <!-- ================= TAB: BORROW & RETURN ================= -->
+                <!-- ================= TAB: MATERIAL REQUEST ================= -->
                 <div id="tab-borrow" class="tab-content hidden space-y-6">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         
-                        <!-- ฝั่งส่งคำร้องขอเบิกครุภัณฑ์ -->
+                        <!-- ฝั่งส่งคำร้องขอเบิกวัสดุ -->
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4 flex flex-col justify-between">
                             <div>
                                 <h3 class="font-bold text-slate-800 text-[15px] border-b border-slate-100 pb-3 flex items-center gap-2" id="borrow-form-title">
                                     <i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i>
-                                    ส่งคำร้องขอเบิกใช้งานพัสดุครุภัณฑ์
+                                    ส่งคำร้องขอเบิกวัสดุ
                                 </h3>
                                 <form id="borrow-form" class="space-y-4 mt-4" onsubmit="handleBorrow(event)">
                                     
                                     <div class="space-y-2 p-3 bg-slate-50 border border-slate-200/60 rounded-xl">
-                                        <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ค้นหาครุภัณฑ์ว่างพร้อมเบิก</span>
+                                        <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ค้นหาวัสดุในคลังที่พร้อมเบิก</span>
                                         <div class="grid grid-cols-2 gap-2">
                                             <select id="borrow-asset-cat-filter" onchange="filterBorrowSelector()" class="border border-slate-200 rounded-lg p-2 text-xs bg-white focus:outline-blue-500">
-                                                <option value="all">ทุกหมวดหมู่</option>
-                                                <option value="คอมพิวเตอร์และไอที">ไอที / คอม</option>
-                                                <option value="เครื่องใช้สำนักงาน">เครื่องใช้สำนักงาน</option>
-                                                <option value="เครื่องใช้ไฟฟ้า">เครื่องใช้ไฟฟ้า</option>
-                                                <option value="ยานพาหนะ">ยานพาหนะ</option>
+                                                <option value="all">ทุกประเภทวัสดุ</option>
+                                                <option value="วัสดุไฟฟ้าและวิทยุ">วัสดุไฟฟ้าและวิทยุ</option>
+                                                <option value="วัสดุงานบ้านงานครัว">วัสดุงานบ้านงานครัว</option>
+                                                <option value="วัสดุคอมพิวเตอร์">วัสดุคอมพิวเตอร์</option>
                                             </select>
-                                            <input type="text" id="borrow-asset-search" oninput="filterBorrowSelector()" placeholder="พิมพ์ค้นชื่อ/รหัส..." class="border border-slate-200 rounded-lg p-2 text-xs focus:outline-blue-500">
+                                            <input type="text" id="borrow-asset-search" oninput="filterBorrowSelector()" placeholder="พิมพ์ค้นชื่อ/รหัสวัสดุ..." class="border border-slate-200 rounded-lg p-2 text-xs focus:outline-blue-500">
                                         </div>
                                         <select id="borrow-asset-select" required class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white focus:outline-blue-500">
                                         </select>
@@ -495,26 +686,30 @@
                                         <input type="text" id="borrower-dept" readonly required class="w-full border border-slate-200 bg-slate-50 cursor-not-allowed rounded-xl p-3 text-sm focus:outline-blue-500">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">วันที่เบิกใช้งาน</label>
+                                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">จำนวนที่ต้องการเบิก</label>
+                                        <input type="number" id="borrow-qty" required min="1" value="1" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">วันที่ยื่นคำขอเบิก</label>
                                         <input type="date" id="borrow-date" required class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
                                     </div>
                                     
                                     <button type="submit" class="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-md" id="borrow-submit-btn">
                                         <i data-lucide="check-circle" class="w-5 h-5"></i>
-                                        ส่งคำขอเบิกพัสดุ
+                                        ส่งคำขอเบิกวัสดุ
                                     </button>
                                 </form>
                             </div>
                         </div>
 
-                        <!-- ประวัติคำขอเบิกครุภัณฑ์ -->
+                        <!-- ประวัติคำขอเบิกวัสดุ -->
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:col-span-2 flex flex-col space-y-6">
                             
                             <div id="admin-pending-section" class="space-y-3">
                                 <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
                                     <h3 class="font-bold text-slate-800 text-[15px] flex items-center gap-2">
                                         <i data-lucide="bell" class="text-amber-500 w-5 h-5"></i>
-                                        รายการคำร้องขอเบิกครุภัณฑ์รอพิจารณา (แอดมินอนุมัติ)
+                                        รายการคำร้องขอเบิกวัสดุรอพิจารณา (แอดมินอนุมัติ)
                                     </h3>
                                     <span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-bold" id="badge-pending-count">0</span>
                                 </div>
@@ -522,7 +717,7 @@
                                     <table class="w-full text-left border-collapse text-sm">
                                         <thead>
                                             <tr class="bg-slate-50 text-xs font-semibold text-slate-500 border-b border-slate-200">
-                                                <th class="py-3 px-4">ครุภัณฑ์</th>
+                                                <th class="py-3 px-4">วัสดุ</th>
                                                 <th class="py-3 px-4">ผู้ยื่นเรื่อง/แผนก</th>
                                                 <th class="py-3 px-4">วันที่เบิก</th>
                                                 <th class="py-3 px-4 text-right">การพิจารณา</th>
@@ -538,15 +733,15 @@
                                 <div class="pb-3 border-b border-slate-100">
                                     <h3 class="font-bold text-slate-800 text-[15px] flex items-center gap-2">
                                         <i data-lucide="clipboard-list" class="text-blue-600 w-5 h-5"></i>
-                                        ทะเบียนประวัติการเบิกครุภัณฑ์ล่าสุด
+                                        ทะเบียนประวัติการเบิกวัสดุล่าสุด
                                     </h3>
                                 </div>
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-left border-collapse text-sm">
                                         <thead>
                                             <tr class="bg-slate-50 text-xs font-semibold text-slate-500 border-b border-slate-200">
-                                                <th class="py-3 px-4">ครุภัณฑ์</th>
-                                                <th class="py-3 px-4">ผู้ยืม / สังกัด</th>
+                                                <th class="py-3 px-4">วัสดุ</th>
+                                                <th class="py-3 px-4">ผู้ขอเบิก / สังกัด</th>
                                                 <th class="py-3 px-4">วันที่เบิก</th>
                                                 <th class="py-3 px-4">สถานะอนุมัติ</th>
                                                 <th class="py-3 px-4 text-right" id="action-header-cell">ดำเนินการ</th>
@@ -564,7 +759,6 @@
 
                 <!-- ================= TAB: MATERIALS (จัดการวัสดุสิ้นเปลือง) ================= -->
                 <div id="tab-materials" class="tab-content hidden space-y-6">
-                    <!-- โซนแผนภูมิวิเคราะห์วัสดุสิ้นเปลือง (สัดส่วนคงคลัง) แบบไดนามิกเลือกได้ -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                         <div class="lg:col-span-2 flex flex-col justify-between space-y-4">
                             <div class="space-y-2">
@@ -577,7 +771,6 @@
                                 </p>
                             </div>
 
-                            <!-- คอนโทรลฟังก์ชัน: ตัวกรองประเภท และช่องค้นหาย่อย -->
                             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 space-y-3">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div>
@@ -603,20 +796,17 @@
                                 *เมื่อเลือกหมวดหมู่ใดเป็นพิเศษ แผนภูมิวงกลมด้านขวาจะวาดสัดส่วนแยกรายรายการพัสดุของหมวดนั้นๆ ให้ทันที
                             </div>
                         </div>
-                        <div class="flex flex-col items-center justify-start p-2 border-t lg:border-t-0 lg:border-l border-slate-100">
+                        <div class="flex flex-col items-center justify-start p-2 border-t lg:border-t-0 lg:border-l border-slate-100 w-full">
                             <div class="relative w-full max-w-[150px] aspect-square flex items-center justify-center">
                                 <canvas id="materialStockChart"></canvas>
                             </div>
-                            <!-- รายชื่อสิ่งของคงเหลือและสัดส่วนรายไอเทมแบบไดนามิก -->
                             <div id="material-chart-legend" class="w-full">
                             </div>
                         </div>
                     </div>
 
-                    <!-- แผงค้นหาและการคัดกรอง + ตารางข้อมูล -->
                     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                            <!-- ช่องค้นหาและตัวกรอง -->
                             <div class="flex flex-1 flex-col sm:flex-row gap-3">
                                 <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 max-w-md w-full">
                                     <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
@@ -629,14 +819,12 @@
                                     <option value="วัสดุคอมพิวเตอร์">วัสดุคอมพิวเตอร์</option>
                                 </select>
                             </div>
-                            <!-- ปุ่มเพิ่มวัสดุใหม่ (สิทธิ์แอดมินเท่านั้น) -->
                             <button id="add-material-btn" onclick="openMaterialModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl flex items-center gap-2 shadow-md hover:shadow-indigo-100 transition-all ml-auto sm:ml-0">
                                 <i data-lucide="plus-circle" class="w-5 h-5"></i>
                                 <span>เพิ่มวัสดุเข้าระบบ</span>
                             </button>
                         </div>
 
-                        <!-- ตารางแสดงรายการวัสดุ (นำคอลัมน์รหัสพัสดุออกเพื่อความสะอาดตา) -->
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse text-sm">
                                 <thead>
@@ -748,11 +936,20 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">หมวดหมู่พัสดุ</label>
+                        <!-- อัปเดตเมนูหมวดหมู่ครุภัณฑ์ทั้ง 12 หมวดหมู่ในขั้นตอนบันทึกข้อมูล -->
                         <select id="form-category" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white focus:outline-blue-500">
-                            <option value="คอมพิวเตอร์และไอที">คอมพิวเตอร์และไอที</option>
-                            <option value="เครื่องใช้สำนักงาน">เครื่องใช้สำนักงาน</option>
-                            <option value="เครื่องใช้ไฟฟ้า">เครื่องใช้ไฟฟ้า</option>
-                            <option value="ยานพาหนะ">ยานพาหนะ</option>
+                            <option value="ครุภัณฑ์สำนักงาน">ครุภัณฑ์สำนักงาน</option>
+                            <option value="ครุภัณฑ์ยานพาหนะและขนส่ง">ครุภัณฑ์ยานพาหนะและขนส่ง</option>
+                            <option value="ครุภัณฑ์คอมพิวเตอร์">ครุภัณฑ์คอมพิวเตอร์</option>
+                            <option value="ครุภัณฑ์การศึกษา">ครุภัณฑ์การศึกษา</option>
+                            <option value="ครุภัณฑ์การแพทย์">ครุภัณฑ์การแพทย์</option>
+                            <option value="ครุภัณฑ์วิทยาศาสตร์">ครุภัณฑ์วิทยาศาสตร์</option>
+                            <option value="ครุภัณฑ์การเกษตร">ครุภัณฑ์การเกษตร</option>
+                            <option value="ครุภัณฑ์งานบ้านงานครัว">ครุภัณฑ์งานบ้านงานครัว</option>
+                            <option value="ครุภัณฑ์ไฟฟ้าและวิทยุ">ครุภัณฑ์ไฟฟ้าและวิทยุ</option>
+                            <option value="ครุภัณฑ์ก่อสร้าง">ครุภัณฑ์ก่อสร้าง</option>
+                            <option value="ครุภัณฑ์โฆษณาและเผยแพร่">ครุภัณฑ์โฆษณาและเผยแพร่</option>
+                            <option value="ครุภัณฑ์สำรวจ">ครุภัณฑ์สำรวจ</option>
                         </select>
                     </div>
                     <div>
@@ -772,7 +969,6 @@
                     </div>
                 </div>
                 
-                <!-- ค่าตั้งต้นสำหรับสถิติการบัญชี (Hidden Fields) -->
                 <input type="hidden" id="form-useful-life" value="5">
                 <input type="hidden" id="form-responsible" value="-">
 
@@ -789,7 +985,7 @@
         <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl flex flex-col overflow-hidden">
             <div class="p-6 bg-slate-900 text-white flex justify-between items-center bg-gradient-to-r from-slate-900 to-blue-950">
                 <div>
-                    <span class="text-xs text-blue-300 font-semibold uppercase tracking-wider" id="detail-category-badge">คอมพิวเตอร์และไอที</span>
+                    <span class="text-xs text-blue-300 font-semibold uppercase tracking-wider" id="detail-category-badge">ครุภัณฑ์คอมพิวเตอร์</span>
                     <h3 class="font-bold text-lg mt-0.5" id="detail-title">-</h3>
                 </div>
                 <button onclick="closeAssetDetailModal()" class="p-1 hover:bg-slate-800 rounded-full transition-colors">
@@ -814,6 +1010,8 @@
                             <span class="font-bold text-slate-800" id="detail-id">-</span>
                             <span class="text-slate-500">จุดติดตั้งพัสดุ:</span>
                             <span class="font-medium text-slate-800" id="detail-location">-</span>
+                            <span class="text-slate-500">ผู้รับผิดชอบ / ผู้ครอบครอง:</span>
+                            <span class="font-medium text-slate-800 text-blue-700 font-bold" id="detail-responsible">-</span>
                             <span class="text-slate-500">สถานะล่าสุด:</span>
                             <span class="font-semibold" id="detail-status-badge">-</span>
                         </div>
@@ -904,10 +1102,8 @@
                 <input type="hidden" id="material-form-mode" value="add">
                 <input type="hidden" id="material-form-original-id" value="">
                 
-                <!-- ซ่อนฟิลด์รหัสวัสดุสำหรับการรันระบบคลาวด์/ออฟไลน์อย่างสมบูรณ์แบบ -->
                 <input type="hidden" id="mat-id">
 
-                <!-- ส่วนแนบภาพพัสดุสำหรับวัสดุสิ้นเปลือง -->
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/60 space-y-3">
                     <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ภาพประกอบพัสดุวัสดุ</span>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1118,17 +1314,41 @@
         </div>
     </div>
 
-    <!-- โครงสร้างพรีวิวเอกสารพิมพ์ (Print Section - Hidden normally, visible on A4 print window) -->
+    <!-- โครงสร้างพรีวิวเอกสารพิมพ์ (Print Section - Hidden normally) -->
     <div id="print-section" class="hidden"></div>
 
     <!-- ================= JAVASCRIPT LOGIC AND BUSINESS RULES ================= -->
     <script>
-        // ข้อมูลเริ่มต้นครุภัณฑ์
+        // ข้อมูลเริ่มต้นครุภัณฑ์ปรับตามหมวดหมู่ใหม่ที่อัปเดต (ครบถ้วนทั้ง 12 หมวดหมู่)
         const initialAssets = [
             {
-                id: "EQ-2026-001",
+                id: "EQ-2026-OF01",
+                name: "โต๊ะทำงานเหล็ก 4 ฟุต พร้อมกระจกกันรอย",
+                category: "ครุภัณฑ์สำนักงาน",
+                location: "ห้องสำนักปลัด ชั้น 2",
+                cost: 7500,
+                purchaseDate: "2024-02-14",
+                usefulLife: 5,
+                responsible: "-",
+                status: "available",
+                image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "EQ-2026-VE01",
+                name: "รถจักรยานยนต์สายตรวจตำรวจชุมชน Honda CB300R",
+                category: "ครุภัณฑ์ยานพาหนะและขนส่ง",
+                location: "โรงจอดรถฝ่ายป้องกันและรักษาความสงบ",
+                cost: 150000,
+                purchaseDate: "2025-05-10",
+                usefulLife: 8,
+                responsible: "-",
+                status: "borrowed",
+                image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "EQ-2026-CP01",
                 name: "เครื่องคอมพิวเตอร์ MacBook Pro 16\" (M3 Pro)",
-                category: "คอมพิวเตอร์และไอที",
+                category: "ครุภัณฑ์คอมพิวเตอร์",
                 location: "ห้องทำงานผู้อำนวยการ ชั้น 3",
                 cost: 89900,
                 purchaseDate: "2024-01-10",
@@ -1138,28 +1358,112 @@
                 image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80"
             },
             {
-                id: "EQ-2026-002",
-                name: "เครื่องถ่ายเอกสารมัลติฟังก์ชันสี Fuji Apeos",
-                category: "เครื่องใช้สำนักงาน",
-                location: "ห้องธุรการส่วนกลาง ชั้น 1",
-                cost: 45000,
-                purchaseDate: "2023-06-15",
+                id: "EQ-2026-ED01",
+                name: "ชุดหน้าจอกระดานอัจฉริยะ Interactive Board 75 นิ้ว",
+                category: "ครุภัณฑ์การศึกษา",
+                location: "ห้องประชุมสัมมนาและฝึกอบรม ชั้น 3",
+                cost: 120000,
+                purchaseDate: "2025-08-20",
                 usefulLife: 5,
                 responsible: "-",
-                status: "borrowed",
-                image: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=600&q=80"
+                status: "available",
+                image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80"
             },
             {
-                id: "EQ-2026-003",
-                name: "รถกระบะขนส่งครุภัณฑ์ Toyota Hilux Revo",
-                category: "ยานพาหนะ",
-                location: "โรงจอดรถฝ่ายยานพาหนะ",
-                cost: 650000,
-                purchaseDate: "2022-03-20",
+                id: "EQ-2026-MD01",
+                name: "เครื่องตรวจวัดความดันโลหิตแบบดิจิทัลตั้งพื้น",
+                category: "ครุภัณฑ์การแพทย์",
+                location: "ห้องพยาบาลพนักงาน ชั้น 1",
+                cost: 15000,
+                purchaseDate: "2024-11-12",
+                usefulLife: 5,
+                responsible: "-",
+                status: "available",
+                image: "https://images.unsplash.com/photo-1516613902347-190d0b0b8ea7?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "EQ-2026-SC01",
+                name: "กล้องจุลทรรศน์ชนิดกระบอกตาคู่ ยี่ห้อ Olympus",
+                category: "ครุภัณฑ์วิทยาศาสตร์",
+                location: "ห้องปฏิบัติการทดสอบสิ่งแวดล้อม ชั้น 4",
+                cost: 45000,
+                purchaseDate: "2023-09-05",
+                usefulLife: 7,
+                responsible: "-",
+                status: "available",
+                image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "EQ-2026-AG01",
+                name: "เครื่องตัดหญ้าสะพายบ่าสี่จังหวะ Honda GX35",
+                category: "ครุภัณฑ์การเกษตร",
+                location: "โรงพัสดุสวนกลาง ฝ่ายตกแต่งภูมิทัศน์",
+                cost: 9800,
+                purchaseDate: "2025-04-01",
+                usefulLife: 3,
+                responsible: "-",
+                status: "borrowed",
+                image: "https://images.unsplash.com/photo-1530124412963-7ac748893340?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "EQ-2026-HW01",
+                name: "ตู้เย็นอัจฉริยะ 2 ประตู Samsung 14 คิว",
+                category: "ครุภัณฑ์งานบ้านงานครัว",
+                location: "ห้องอาหารและพักผ่อนพนักงาน ชั้น 2",
+                cost: 18500,
+                purchaseDate: "2024-03-10",
+                usefulLife: 5,
+                responsible: "-",
+                status: "available",
+                image: "https://images.unsplash.com/photo-1571175432240-52fb38b5569c?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "EQ-2026-EL01",
+                name: "วิทยุสื่อสารเคลื่อนที่ติดรถยนต์ ICOM IC-2300H",
+                category: "ครุภัณฑ์ไฟฟ้าและวิทยุ",
+                location: "ศูนย์วิทยุสื่อสารบรรเทาสาธารณภัย",
+                cost: 12000,
+                purchaseDate: "2024-06-25",
+                usefulLife: 6,
+                responsible: "-",
+                status: "available",
+                image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "EQ-2026-CN01",
+                name: "เครื่องผสมคอนกรีตขนาด 1 ถุง มอเตอร์ไฟฟ้า",
+                category: "ครุภัณฑ์ก่อสร้าง",
+                location: "ฝ่ายโยธาและผังเมือง ส่วนซ่อมบำรุง",
+                cost: 28000,
+                purchaseDate: "2023-10-15",
                 usefulLife: 8,
                 responsible: "-",
                 status: "available",
-                image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80"
+                image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "EQ-2026-AD01",
+                name: "กล้องถ่ายภาพดิจิทัลไร้กระจก Sony Alpha 7 IV",
+                category: "ครุภัณฑ์โฆษณาและเผยแพร่",
+                location: "ฝ่ายประชาสัมพันธ์และสารสนเทศ ชั้น 1",
+                cost: 82900,
+                purchaseDate: "2025-01-20",
+                usefulLife: 4,
+                responsible: "-",
+                status: "pending_approval",
+                image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: "EQ-2026-SV01",
+                name: "กล้องสำรวจวัดมุมแบบประมวลผลระยะ Total Station",
+                category: "ครุภัณฑ์สำรวจ",
+                location: "ฝ่ายรังวัดและแผนที่ ชั้น 2",
+                cost: 240000,
+                purchaseDate: "2024-08-30",
+                usefulLife: 10,
+                responsible: "-",
+                status: "available",
+                image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80"
             }
         ];
 
@@ -1248,20 +1552,46 @@
             }
         ];
 
+        // ประวัติจำลองการอนุมัติ / คำเสนอเบิกวัสดุ
         const initialBorrowRecords = [
             {
                 id: "BR-1001",
-                assetId: "EQ-2026-002",
-                type: "เบิกใช้งาน",
-                borrower: "นายกรกช เก่งการ",
+                assetId: "MAT-IT-005",
+                type: "เบิกวัสดุ",
+                borrower: "สมชาย รักดี",
                 department: "ฝ่ายประชุม",
                 borrowDate: "2026-06-01",
+                qty: 2,
+                unit: "รีม",
                 status: "approved"
+            },
+            {
+                id: "BR-1002",
+                assetId: "MAT-EL-002",
+                type: "เบิกวัสดุ",
+                borrower: "นายกรกช เก่งการ",
+                department: "ฝ่ายส่งเสริมการมีส่วนร่วมฯ",
+                borrowDate: "2026-06-05",
+                qty: 5,
+                unit: "หลอด",
+                status: "approved"
+            },
+            {
+                id: "BR-1003",
+                assetId: "MAT-HW-003",
+                type: "เบิกวัสดุ",
+                borrower: "สมชาย รักดี",
+                department: "ฝ่ายประชุม",
+                borrowDate: "2026-06-11",
+                qty: 3,
+                unit: "แพ็ค",
+                status: "pending"
             }
         ];
 
         const initialActivities = [
-            { time: "09:15 น. วันนี้", user: "นายกรกช", action: "ได้รับอนุมัติการเบิก เครื่องถ่ายเอกสาร Fuji ไปใช้งานทั่วไป" }
+            { time: "09:15 น. วันนี้", user: "นายกรกช", action: "ได้รับอนุมัติการเบิก รถจักรยานยนต์ Honda CB300R ไปใช้งานสายตรวจชุมชน" },
+            { time: "10:30 น. วันนี้", user: "สมชาย รักดี", action: "ยื่นคำขอเสนออนุมัติเบิก กล้องถ่ายภาพ Sony Alpha 7 IV" }
         ];
 
         const defaultUsers = [
@@ -1286,28 +1616,147 @@
         // การเชื่อมต่อฐานข้อมูลคลาวด์ FIREBASE ENGINE
         let db = null;
         let isFirebaseActive = false;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'phuket-ao-eoffice-v5';
 
-        function initializeFirebase() {
-            const configStr = localStorage.getItem('firebase_config_v2_0');
-            const badge = document.getElementById('cloud-status-badge');
+        // ฟังก์ชันระบบ Portal หลักสับเปลี่ยนหน้าจอ
+        function showPortal() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            document.getElementById('portal-screen').classList.remove('hidden');
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-workspace').classList.add('hidden');
             
-            if (configStr) {
+            const greetingText = document.getElementById('portal-greeting-text');
+            if (greetingText) {
+                const shortRole = currentUser.role === 'admin' ? 'ผู้ดูแลระบบ (Admin)' : 'ผู้ใช้งานทั่วไป (User)';
+                greetingText.innerText = `เข้าใช้งานโดย: คุณ${currentUser.name} (${currentUser.dept} - ${shortRole})`;
+            }
+            lucide.createIcons();
+        }
+
+        // เข้าสู่ระบบวัสดุและครุภัณฑ์ (เปิดหน้าแดชบอร์ดสรุปงาน)
+        function enterAssetSystem() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            showWorkspace();
+            switchTab('dashboard'); 
+        }
+
+        // เข้าสู่ระบบจัดการผู้ใช้งาน (ถอนตัวแยกเดี่ยวออกมาหน้าแรก)
+        function enterUserSystem() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            if (currentUser.role !== 'admin') {
+                showToast("ข้อผิดพลาด: เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถเข้าถึงระบบจัดการผู้ใช้งานได้", "error");
+                return;
+            }
+            showWorkspace(); // เปิดหน้า workspace
+            switchTab('users'); // สลับแท็บไปที่หน้าจัดการผู้ใช้โดยตรง
+        }
+
+        async function authenticateFirebase() {
+            try {
+                const auth = firebase.auth();
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await auth.signInWithCustomToken(__initial_auth_token);
+                } else {
+                    await auth.signInAnonymously();
+                }
+            } catch (err) {
+                console.error("Firebase Authentication failed:", err);
+            }
+        }
+
+        // ตรวจสอบข้อมูลบนเซิร์ฟเวอร์ Firestore หากว่างเปล่าให้ Auto-Populate ข้อมูลเริ่มต้นทันที
+        async function checkAndAutoPopulateFirestore() {
+            if (!isFirebaseActive || !db) return;
+            const baseRef = db.collection('artifacts').doc(appId).collection('public').doc('data');
+            
+            try {
+                const assetSnap = await baseRef.collection('assets').get();
+                if (assetSnap.empty) {
+                    for (let a of initialAssets) {
+                        await baseRef.collection('assets').doc(a.id).set(a);
+                    }
+                }
+                const matSnap = await baseRef.collection('materials').get();
+                if (matSnap.empty) {
+                    for (let m of initialMaterials) {
+                        await baseRef.collection('materials').doc(m.id).set(m);
+                    }
+                }
+                const borrowSnap = await baseRef.collection('borrowRecords').get();
+                if (borrowSnap.empty) {
+                    for (let b of initialBorrowRecords) {
+                        await baseRef.collection('borrowRecords').doc(b.id).set(b);
+                    }
+                }
+                const actSnap = await baseRef.collection('activities').get();
+                if (actSnap.empty) {
+                    for (let act of initialActivities) {
+                        await baseRef.collection('activities').add(act);
+                    }
+                }
+                const userSnap = await baseRef.collection('users').get();
+                if (userSnap.empty) {
+                    for (let u of defaultUsers) {
+                        await baseRef.collection('users').doc(u.username).set(u);
+                    }
+                }
+            } catch (e) {
+                console.error("Firebase auto-population restriction or error: ", e);
+            }
+        }
+
+        async function initializeFirebase() {
+            const badge = document.getElementById('cloud-status-badge');
+            let firebaseConfig = null;
+
+            if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                 try {
-                    const firebaseConfig = JSON.parse(configStr);
-                    
+                    firebaseConfig = JSON.parse(__firebase_config);
+                } catch (e) {
+                    console.error("Error parsing __firebase_config:", e);
+                }
+            }
+
+            if (!firebaseConfig) {
+                const configStr = localStorage.getItem('firebase_config_v2_0');
+                if (configStr) {
+                    try {
+                        firebaseConfig = JSON.parse(configStr);
+                    } catch (e) {
+                        console.error("Error parsing localStorage firebase_config:", e);
+                    }
+                }
+            }
+            
+            if (firebaseConfig) {
+                try {
                     if (!firebase.apps.length) {
                         firebase.initializeApp(firebaseConfig);
                     }
+                    
+                    await authenticateFirebase();
                     db = firebase.firestore();
                     isFirebaseActive = true;
                     
+                    // เรียกเช็คและเติมคลังทันทีถ้าเจอ db บนคลาวด์ว่างเปล่า
+                    await checkAndAutoPopulateFirestore();
+
                     badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span><span>คลาวด์ออนไลน์</span>`;
                     badge.className = "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 transition-all duration-300";
                     
                     listenToFirestore();
                     
                 } catch (error) {
-                    console.error("Firebase config error:", error);
+                    console.error("Firebase connection error:", error);
                     isFirebaseActive = false;
                     localStorage.removeItem('firebase_config_v2_0');
                     setupOfflineFallback();
@@ -1330,14 +1779,15 @@
             users = JSON.parse(localStorage.getItem('users_v2_0')) || defaultUsers;
             materials = JSON.parse(localStorage.getItem('materials_v2_0')) || initialMaterials;
             
-            checkAuthSession();
             renderApp();
         }
 
         function listenToFirestore() {
             if (!isFirebaseActive || !db) return;
 
-            db.collection('assets').onSnapshot(snapshot => {
+            const baseRef = db.collection('artifacts').doc(appId).collection('public').doc('data');
+
+            baseRef.collection('assets').onSnapshot(snapshot => {
                 assets = [];
                 snapshot.forEach(doc => { assets.push(doc.data()); });
                 assets.sort((a, b) => a.id.localeCompare(b.id)); 
@@ -1347,7 +1797,7 @@
                 showToast("ไม่สามารถดึงข้อมูลพัสดุจากคลาวด์ได้", "error");
             });
 
-            db.collection('materials').onSnapshot(snapshot => {
+            baseRef.collection('materials').onSnapshot(snapshot => {
                 materials = [];
                 snapshot.forEach(doc => { materials.push(doc.data()); });
                 materials.sort((a, b) => a.id.localeCompare(b.id));
@@ -1356,7 +1806,7 @@
                 console.error("Firestore Listen Materials Error: ", err);
             });
 
-            db.collection('borrowRecords').onSnapshot(snapshot => {
+            baseRef.collection('borrowRecords').onSnapshot(snapshot => {
                 borrowRecords = [];
                 snapshot.forEach(doc => { borrowRecords.push(doc.data()); });
                 borrowRecords.sort((a, b) => b.id.localeCompare(a.id));
@@ -1365,7 +1815,7 @@
                 console.error("Firestore Listen Borrow Error: ", err);
             });
 
-            db.collection('activities').onSnapshot(snapshot => {
+            baseRef.collection('activities').onSnapshot(snapshot => {
                 activities = [];
                 snapshot.forEach(doc => { activities.push(doc.data()); });
                 activities.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); 
@@ -1375,11 +1825,11 @@
                 console.error("Firestore Listen Activities Error: ", err);
             });
 
-            db.collection('users').onSnapshot(snapshot => {
+            baseRef.collection('users').onSnapshot(snapshot => {
                 users = [];
                 snapshot.forEach(doc => { users.push(doc.data()); });
                 if (users.length === 0) {
-                    defaultUsers.forEach(u => db.collection('users').doc(u.username).set(u));
+                    defaultUsers.forEach(u => baseRef.collection('users').doc(u.username).set(u));
                 }
                 if (currentUser) {
                     const freshUser = users.find(u => u.username === currentUser.username);
@@ -1393,13 +1843,15 @@
             }, err => {
                 console.error("Firestore Listen Users Error: ", err);
             });
-
-            checkAuthSession();
         }
 
         async function writeAsset(asset) {
             if (isFirebaseActive && db) {
-                try { await db.collection('assets').doc(asset.id).set(asset); } catch (e) { console.error(e); }
+                try { 
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('assets').doc(asset.id).set(asset); 
+                } catch (e) { 
+                    console.error("Firestore Write Asset Error:", e); 
+                }
             } else {
                 const idx = assets.findIndex(a => a.id === asset.id);
                 if (idx > -1) assets[idx] = asset;
@@ -1411,7 +1863,11 @@
 
         async function writeMaterial(mat) {
             if (isFirebaseActive && db) {
-                try { await db.collection('materials').doc(mat.id).set(mat); } catch (e) { console.error(e); }
+                try { 
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('materials').doc(mat.id).set(mat); 
+                } catch (e) { 
+                    console.error("Firestore Write Material Error:", e); 
+                }
             } else {
                 const idx = materials.findIndex(m => m.id === mat.id);
                 if (idx > -1) materials[idx] = mat;
@@ -1423,7 +1879,11 @@
 
         async function writeBorrowRecord(record) {
             if (isFirebaseActive && db) {
-                try { await db.collection('borrowRecords').doc(record.id).set(record); } catch (e) { console.error(e); }
+                try { 
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('borrowRecords').doc(record.id).set(record); 
+                } catch (e) { 
+                    console.error("Firestore Write Borrow Error:", e); 
+                }
             } else {
                 const idx = borrowRecords.findIndex(b => b.id === record.id);
                 if (idx > -1) borrowRecords[idx] = record;
@@ -1442,7 +1902,11 @@
             };
 
             if (isFirebaseActive && db) {
-                try { await db.collection('activities').add(act); } catch (e) {}
+                try { 
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('activities').add(act); 
+                } catch (e) {
+                    console.error("Firestore Write Activity Error:", e);
+                }
             } else {
                 activities.unshift(act);
                 saveOfflineState();
@@ -1452,7 +1916,11 @@
 
         async function removeAssetFromDb(id) {
             if (isFirebaseActive && db) {
-                try { await db.collection('assets').doc(id).delete(); } catch (e) {}
+                try { 
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('assets').doc(id).delete(); 
+                } catch (e) {
+                    console.error("Firestore Delete Asset Error:", e);
+                }
             } else {
                 assets = assets.filter(a => a.id !== id);
                 saveOfflineState();
@@ -1462,7 +1930,11 @@
 
         async function removeMaterialFromDb(id) {
             if (isFirebaseActive && db) {
-                try { await db.collection('materials').doc(id).delete(); } catch (e) {}
+                try { 
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('materials').doc(id).delete(); 
+                } catch (e) {
+                    console.error("Firestore Delete Material Error:", e);
+                }
             } else {
                 materials = materials.filter(m => m.id !== id);
                 saveOfflineState();
@@ -1472,7 +1944,11 @@
 
         async function writeUser(user) {
             if (isFirebaseActive && db) {
-                try { await db.collection('users').doc(user.username).set(user); } catch (e) {}
+                try { 
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('users').doc(user.username).set(user); 
+                } catch (e) {
+                    console.error("Firestore Write User Error:", e);
+                }
             } else {
                 const idx = users.findIndex(u => u.username === user.username);
                 if (idx > -1) users[idx] = user;
@@ -1484,7 +1960,11 @@
 
         async function removeUserFromDb(username) {
             if (isFirebaseActive && db) {
-                try { await db.collection('users').doc(username).delete(); } catch (e) {}
+                try { 
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('users').doc(username).delete(); 
+                } catch (e) {
+                    console.error("Firestore Delete User Error:", e);
+                }
             } else {
                 users = users.filter(u => u.username !== username);
                 saveOfflineState();
@@ -1511,10 +1991,11 @@
             showToast("กำลังอัปโหลดพัสดุ วัสดุอุปกรณ์ และผู้ใช้งานขึ้นคลาวด์...", "info");
 
             try {
-                for (let a of localAssets) { await db.collection('assets').doc(a.id).set(a); }
-                for (let b of localBorrows) { await db.collection('borrowRecords').doc(b.id).set(b); }
-                for (let u of localUsers) { await db.collection('users').doc(u.username).set(u); }
-                for (let m of localMaterials) { await db.collection('materials').doc(m.id).set(m); }
+                const baseRef = db.collection('artifacts').doc(appId).collection('public').doc('data');
+                for (let a of localAssets) { await baseRef.collection('assets').doc(a.id).set(a); }
+                for (let b of localBorrows) { await baseRef.collection('borrowRecords').doc(b.id).set(b); }
+                for (let u of localUsers) { await baseRef.collection('users').doc(u.username).set(u); }
+                for (let m of localMaterials) { await baseRef.collection('materials').doc(m.id).set(m); }
                 await writeActivity("แอดมินระบบ", "นำเข้าข้อมูลครุภัณฑ์ วัสดุ และสมาชิกขึ้นระบบคลาวด์ Firebase เรียบร้อย");
                 showToast("ซิงก์ข้อมูลพัสดุทั้งหมดขึ้นสู่ Firebase สำเร็จ!", "success");
                 document.getElementById('sync-data-panel').classList.add('hidden');
@@ -1530,7 +2011,9 @@
             if (storedUser) {
                 try {
                     currentUser = JSON.parse(storedUser);
-                    showWorkspace();
+                    applyRoleUI();
+                    renderApp();
+                    showPortal(); 
                 } catch (e) {
                     localStorage.removeItem('currentUser_v2_0');
                     showLogin();
@@ -1540,32 +2023,40 @@
             }
         }
 
-        function handleLogin(e) {
-            e.preventDefault();
-            const userInp = document.getElementById('login-username').value.trim().toLowerCase();
-            const passInp = document.getElementById('login-password').value;
-
-            const matchedUser = users.find(u => u.username.toLowerCase() === userInp && u.password === passInp);
-
-            if (matchedUser) {
-                currentUser = matchedUser;
-                localStorage.setItem('currentUser_v2_0', JSON.stringify(currentUser));
-                showToast(`ยินดีต้อนรับคุณ ${currentUser.name} เข้าสู่ระบบ`, "success");
-                showWorkspace();
-                e.target.reset();
-            } else {
-                showToast("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง โปรดตรวจสอบอีกครั้ง!", "error");
-            }
-        }
-
         function showLogin() {
             document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('portal-screen').classList.add('hidden');
             document.getElementById('main-workspace').classList.add('hidden');
             currentUser = null;
         }
 
+        function handleLogin(event) {
+            event.preventDefault();
+            const usernameInp = document.getElementById('login-username').value.trim().toLowerCase();
+            const passwordInp = document.getElementById('login-password').value;
+
+            const lookupList = (users && users.length > 0) ? users : defaultUsers;
+            const user = lookupList.find(u => u.username === usernameInp && u.password === passwordInp);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser_v2_0', JSON.stringify(currentUser));
+                showToast(`ยินดีต้อนรับคุณ ${user.name}`, "success");
+                
+                document.getElementById('borrower-name').value = currentUser.name;
+                document.getElementById('borrower-dept').value = currentUser.dept;
+                
+                applyRoleUI();
+                renderApp();
+                showPortal(); 
+            } else {
+                showToast("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง!", "error");
+            }
+        }
+
         function showWorkspace() {
             document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('portal-screen').classList.add('hidden');
             document.getElementById('main-workspace').classList.remove('hidden');
             
             document.getElementById('borrower-name').value = currentUser.name;
@@ -1573,6 +2064,10 @@
 
             applyRoleUI();
             renderApp();
+            
+            setTimeout(() => {
+                renderPieCharts();
+            }, 100);
         }
 
         function handleLogout() {
@@ -1630,6 +2125,8 @@
             const borrowActionCol = document.getElementById('action-header-cell');
             const matActionCol = document.getElementById('mat-action-header');
 
+            const portalUserCard = document.getElementById('portal-card-users');
+
             if (currentUser.role === 'admin') {
                 if (cloudBadge) {
                     cloudBadge.setAttribute('onclick', 'openFirebaseSettings()');
@@ -1652,13 +2149,15 @@
                 if (borrowActionCol) borrowActionCol.style.display = 'table-cell';
                 if (matActionCol) matActionCol.style.display = 'table-cell';
 
+                if (portalUserCard) portalUserCard.style.display = 'flex';
+
                 document.getElementById('sidebar-inventory-label').innerText = "จัดการครุภัณฑ์";
                 document.getElementById('mobile-inventory-label').innerText = "จัดการครุภัณฑ์";
                 document.getElementById('sidebar-materials-label').innerText = "จัดการวัสดุสิ้นเปลือง";
                 document.getElementById('mobile-materials-label').innerText = "จัดการวัสดุสิ้นเปลือง";
                 
-                document.getElementById('borrow-form-title').innerHTML = `<i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i> บันทึกสิทธิ์เบิกพัสดุ (โดยแอดมิน)`;
-                document.getElementById('borrow-submit-btn').innerHTML = `<i data-lucide="check-circle" class="w-5 h-5"></i> อนุมัติเบิกพัสดุโดยตรง`;
+                document.getElementById('borrow-form-title').innerHTML = `<i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i> ระบบเบิกวัสดุ (อนุมัติโดยแอดมิน)`;
+                document.getElementById('borrow-submit-btn').innerHTML = `<i data-lucide="check-circle" class="w-5 h-5"></i> อนุมัติเบิกวัสดุโดยตรง`;
                 
                 document.getElementById('quick-actions-grid').className = "grid grid-cols-2 gap-3";
             } else {
@@ -1682,22 +2181,24 @@
                 if (quickAddBtn) quickAddBtn.classList.add('hidden');
                 
                 if (inventoryActionCol) inventoryActionCol.style.display = 'none';
-                if (borrowActionCol) borrowActionCol.style.display = 'none';
+                if (borrowActionCol) borrowActionCol.style.display = 'table-cell';
                 if (matActionCol) matActionCol.style.display = 'none';
+
+                if (portalUserCard) portalUserCard.style.display = 'none';
 
                 document.getElementById('sidebar-inventory-label').innerText = "รายการครุภัณฑ์ต่างๆ";
                 document.getElementById('mobile-inventory-label').innerText = "รายการครุภัณฑ์ต่างๆ";
                 document.getElementById('sidebar-materials-label').innerText = "รายการวัสดุสิ้นเปลือง";
                 document.getElementById('mobile-materials-label').innerText = "รายการวัสดุสิ้นเปลือง";
                 
-                document.getElementById('borrow-form-title').innerHTML = `<i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i> ส่งคำเสนอขออนุมัติเบิกพัสดุ`;
-                document.getElementById('borrow-submit-btn').innerHTML = `<i data-lucide="send" class="w-5 h-5"></i> ส่งเสนอขออนุมัติเบิก`;
+                document.getElementById('borrow-form-title').innerHTML = `<i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i> ส่งคำเสนอขออนุมัติเบิกวัสดุ`;
+                document.getElementById('borrow-submit-btn').innerHTML = `<i data-lucide="send" class="w-5 h-5"></i> ส่งเสนอขออนุมัติเบิกวัสดุ`;
                 
                 document.getElementById('quick-actions-grid').className = "grid grid-cols-1 gap-3";
             }
         }
 
-        // ระบบ Custom Confirm Dialog
+        // ระบบยืนยันรายการ (Custom Confirm Dialog)
         let currentConfirmCallback = null;
 
         function showConfirmModal(title, message, callback, isDanger = true) {
@@ -1742,6 +2243,11 @@
                 btn.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
             });
 
+            document.querySelectorAll('.mobile-menu-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+            });
+
             const activeBtn = document.getElementById(`btn-tab-${tabId}`);
             if (activeBtn) {
                 activeBtn.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
@@ -1751,12 +2257,18 @@
             const titles = {
                 dashboard: "แดชบอร์ดภาพรวม",
                 inventory: currentUser?.role === 'admin' ? "ระบบสารสนเทศทะเบียนครุภัณฑ์กลาง" : "สืบค้นครุภัณฑ์และพัสดุส่วนกลาง",
-                borrow: "คำขอเบิก-ส่งมอบและรับคืนครุภัณฑ์",
+                borrow: "ระบบเบิกวัสดุ",
                 materials: currentUser?.role === 'admin' ? "ระบบบริหารจัดการวัสดุอุปกรณ์สิ้นเปลือง" : "รายการวัสดุและอุปกรณ์สิ้นเปลืองในคลัง",
                 users: "จัดการและควบคุมสมาชิกผู้ใช้งานระบบ"
             };
             document.getElementById('current-page-title').innerText = titles[tabId] || "ระบบจัดการครุภัณฑ์";
             renderApp();
+
+            if (tabId === 'dashboard') {
+                setTimeout(() => { renderPieCharts(); }, 50);
+            } else if (tabId === 'materials') {
+                setTimeout(() => { renderMaterialChartDetail(); }, 50);
+            }
         }
 
         function openMobileSidebar() { document.getElementById('mobile-sidebar').classList.remove('hidden'); }
@@ -1775,6 +2287,7 @@
 
         function closeLightbox() { document.getElementById('lightbox-modal').classList.add('hidden'); }
 
+        // ระบบตัวตรวจวัดและจัดการพรีวิวรูปภาพ
         function triggerFormPreviewLightbox() {
             const previewImgSrc = document.getElementById('form-image-preview').src;
             const assetName = document.getElementById('form-asset-name').value || "ภาพครุภัณฑ์ประกอบ";
@@ -1812,7 +2325,6 @@
             document.getElementById('stat-available').innerText = assets.filter(a => a.status === 'available').length;
             document.getElementById('stat-borrowed').innerText = assets.filter(a => a.status === 'borrowed').length;
             
-            // เรนเดอร์ยอดสรุปวัสดุสิ้นเปลือง
             document.getElementById('stat-mat-types').innerText = materials.length;
             const totalQty = materials.reduce((acc, curr) => acc + curr.stock, 0);
             const totalDisbursed = materials.reduce((acc, curr) => acc + curr.disbursed, 0);
@@ -1841,13 +2353,12 @@
         }
 
         function renderPieCharts() {
-            // 1. วาดแผนภูมิสัดส่วนสถานะครุภัณฑ์
             const availableCount = assets.filter(a => a.status === 'available').length;
             const pendingCount = assets.filter(a => a.status === 'pending_approval').length;
             const borrowedCount = assets.filter(a => a.status === 'borrowed').length;
 
             const assetCanvas = document.getElementById('assetStatusChart');
-            if (assetCanvas) {
+            if (assetCanvas && assetCanvas.offsetParent !== null) { 
                 const ctx = assetCanvas.getContext('2d');
                 if (statusChartInstance) { statusChartInstance.destroy(); }
                 statusChartInstance = new Chart(ctx, {
@@ -1898,7 +2409,6 @@
                 `;
             }
 
-            // 2. คำนวณข้อมูลสัดส่วนวัสดุสิ้นเปลืองแยกตาม 3 หมวดหมู่หลัก (Dashboard Material Doughnut)
             const matCategories = {
                 "วัสดุไฟฟ้าและวิทยุ": 0,
                 "วัสดุงานบ้านงานครัว": 0,
@@ -1910,9 +2420,8 @@
                 }
             });
 
-            // วาดแผนภูมิในหน้าแดชบอร์ด
             const matDashCanvas = document.getElementById('materialDashboardChart');
-            if (matDashCanvas) {
+            if (matDashCanvas && matDashCanvas.offsetParent !== null) {
                 const ctx = matDashCanvas.getContext('2d');
                 if (materialDashboardChartInstance) { materialDashboardChartInstance.destroy(); }
                 materialDashboardChartInstance = new Chart(ctx, {
@@ -1967,18 +2476,15 @@
                 `;
             }
 
-            // 3. วาดแผนภูมิแบบรายละเอียดในหน้าวัสดุ (tab-materials) โดยแยกดูตาม dropdown และค้นหาได้
             renderMaterialChartDetail();
         }
 
-        // ฟังก์ชันประมวลผลวาดแผนภูมิวัสดุและแสดงยอดคงเหลือรายชิ้นแบบไดนามิกตาม Dropdown + ค้นหา
         function renderMaterialChartDetail() {
             const chartSelect = document.getElementById('mat-chart-select');
             if (!chartSelect) return;
             const category = chartSelect.value;
             const searchVal = document.getElementById('mat-chart-search').value.toLowerCase().trim();
 
-            // คัดกรองวัสดุตาม Dropdown และคำค้นหา
             const filtered = materials.filter(m => {
                 const matchCat = category === 'all' || m.category === category;
                 const matchSearch = m.name.toLowerCase().includes(searchVal) || m.id.toLowerCase().includes(searchVal);
@@ -1986,7 +2492,7 @@
             });
 
             const canvas = document.getElementById('materialStockChart');
-            if (!canvas) return;
+            if (!canvas || canvas.offsetParent === null) return;
             const ctx = canvas.getContext('2d');
 
             if (materialChartInstance) { materialChartInstance.destroy(); }
@@ -1998,7 +2504,6 @@
             const legendContainer = document.getElementById('material-chart-legend');
 
             if (category === 'all') {
-                // แสดงภาพรวม (ยอดรวมของแต่ละหมวดหมู่หลัก)
                 const catSums = {
                     "วัสดุไฟฟ้าและวิทยุ": 0,
                     "วัสดุงานบ้านงานครัว": 0,
@@ -2033,7 +2538,6 @@
                     }
                 });
 
-                // วาดลิสต์รายงานสรุปคงเหลือแยกตามแผนกทางขวา
                 if (legendContainer) {
                     legendContainer.className = "grid grid-cols-1 gap-2.5 w-full mt-4";
                     legendContainer.innerHTML = `
@@ -2062,11 +2566,9 @@
                     `;
                 }
             } else {
-                // เลือกดูหมวดหมู่เฉพาะชิ้น -> แสดงสัดส่วนรายชิ้นของวัสดุนั้นๆ
                 labels = filtered.map(m => m.name);
                 data = filtered.map(m => m.stock);
 
-                // พาเลตต์สีสันสดใสแบบไดนามิกสำหรับสิ่งของหลายชิ้น
                 const palette = [
                     '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', 
                     '#8b5cf6', '#6366f1', '#14b8a6', '#f43f5e', '#a855f7'
@@ -2074,7 +2576,6 @@
                 bgColors = filtered.map((_, i) => palette[i % palette.length]);
 
                 if (filtered.length === 0) {
-                    // กรณีไม่พบข้อมูลพัสดุในหมวดนี้หลังจากระบุคำค้นหา
                     legendContainer.className = "flex flex-col items-center justify-center py-8 text-center text-slate-400 w-full";
                     legendContainer.innerHTML = `
                         <i data-lucide="package-open" class="w-8 h-8 text-slate-300 mb-1.5"></i>
@@ -2129,7 +2630,6 @@
                     }
                 });
 
-                // วาดรายชื่อพัสดุในหมวดนั้นๆ พร้อมประมวลแถบ Progress Bar ระบุจำนวนคงเหลือ
                 if (legendContainer) {
                     legendContainer.className = "flex flex-col gap-2 w-full mt-4 max-h-[220px] overflow-y-auto pr-1 no-scrollbar";
                     const maxStock = Math.max(...data, 1);
@@ -2144,7 +2644,7 @@
                             <div class="p-2.5 rounded-xl border border-slate-100 hover:bg-slate-50 transition-all flex flex-col gap-1">
                                 <div class="flex items-center justify-between text-xs">
                                     <div class="flex items-center gap-1.5 truncate max-w-[70%]">
-                                        <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${clr}"></span>
+                                        <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${clr}"></span>
                                         <span class="font-bold text-slate-700 truncate" title="${m.name}">${m.name}</span>
                                     </div>
                                     <span class="font-extrabold text-slate-900 shrink-0 text-[11px]">${m.stock} ${m.unit}</span>
@@ -2178,6 +2678,7 @@
 
                 const matchSearch = item.name.toLowerCase().includes(searchValue) || 
                                     item.id.toLowerCase().includes(searchValue) ||
+                                    item.responsible.toLowerCase().includes(searchValue) ||
                                     borrowerName.includes(searchValue) ||
                                     borrowerDept.includes(searchValue);
                 const matchCat = filterCat === 'all' || item.category === filterCat;
@@ -2284,17 +2785,17 @@
             const searchVal = document.getElementById('borrow-asset-search').value.toLowerCase();
             const selectEl = document.getElementById('borrow-asset-select');
 
-            const availableList = assets.filter(item => {
+            const availableList = materials.filter(item => {
                 const matchCat = catFilter === 'all' || item.category === catFilter;
                 const matchSearch = item.name.toLowerCase().includes(searchVal) || item.id.toLowerCase().includes(searchVal);
-                return item.status === 'available' && matchCat && matchSearch;
+                return item.stock > 0 && matchCat && matchSearch;
             });
 
             if (availableList.length === 0) {
-                selectEl.innerHTML = `<option value="">-- ไม่พบพัสดุว่างพร้อมใช้งาน --</option>`;
+                selectEl.innerHTML = `<option value="">-- ไม่พบวัสดุคงคลังพร้อมให้เบิก --</option>`;
             } else {
                 selectEl.innerHTML = availableList.map(item => `
-                    <option value="${item.id}">${item.id} - ${item.name} (${item.category})</option>
+                    <option value="${item.id}">${item.id} - ${item.name} | คงเหลือ ${item.stock} ${item.unit}</option>
                 `).join('');
             }
         }
@@ -2311,17 +2812,18 @@
                 pendingBody.innerHTML = `
                     <tr>
                         <td colspan="4" class="py-4 text-center text-xs text-slate-400">
-                            ไม่มีรายการรอการอนุมัติเบิกพัสดุในขณะนี้
+                            ไม่มีรายการรอการอนุมัติเบิกวัสดุในขณะนี้
                         </td>
                     </tr>
                 `;
             } else {
                 pendingBody.innerHTML = pendingRecords.map(record => {
-                    const asset = assets.find(a => a.id === record.assetId);
-                    const assetName = asset ? asset.name : "พัสดุรหัสว่าง";
+                    const mat = materials.find(m => m.id === record.assetId);
+                    const matName = mat ? mat.name : "ไม่พบข้อมูลวัสดุ";
+                    const qtyLabel = `${record.qty || 1} ${record.unit || mat?.unit || 'หน่วย'}`;
                     return `
                         <tr class="bg-amber-50/20">
-                            <td class="py-3 px-4 font-semibold text-slate-800">${record.assetId}<br><span class="text-[10px] font-normal text-slate-400">${assetName}</span></td>
+                            <td class="py-3 px-4 font-semibold text-slate-800">${record.assetId}<br><span class="text-[10px] font-normal text-slate-400">${matName}</span><br><span class="text-[10px] font-bold text-indigo-600">จำนวน ${qtyLabel}</span></td>
                             <td class="py-3 px-4 text-xs"><strong>${record.borrower}</strong><br><span class="text-[10px] text-slate-400">${record.department}</span></td>
                             <td class="py-3 px-4 text-xs text-slate-600">${record.borrowDate}</td>
                             <td class="py-3 px-4 text-right">
@@ -2336,13 +2838,15 @@
             }
 
             const tbody = document.getElementById('borrow-table-body');
-            const activeAndHistRecords = borrowRecords.filter(r => r.status !== 'pending');
+            const activeAndHistRecords = currentUser?.role === 'admin'
+                ? borrowRecords.filter(r => r.status !== 'pending')
+                : borrowRecords;
 
             if (activeAndHistRecords.length === 0) {
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="5" class="py-6 text-center text-slate-400">
-                            ไม่มีข้อมูลประวัติความเคลื่อนไหวการเบิกจ่ายครุภัณฑ์
+                            ไม่มีข้อมูลประวัติความเคลื่อนไหวการเบิกวัสดุ
                         </td>
                     </tr>
                 `;
@@ -2350,44 +2854,40 @@
             }
 
             tbody.innerHTML = activeAndHistRecords.map(record => {
-                const asset = assets.find(a => a.id === record.assetId);
-                const assetName = asset ? asset.name : "สินทรัพย์ไม่มีชื่อ";
+                const mat = materials.find(m => m.id === record.assetId);
+                const matName = mat ? mat.name : "ไม่พบข้อมูลวัสดุ";
+                const qtyLabel = `${record.qty || 1} ${record.unit || mat?.unit || 'หน่วย'}`;
                 
                 let statusBadge = '';
                 if (record.status === 'approved') {
                     statusBadge = `<span class="px-2.5 py-1 rounded bg-blue-50 border border-blue-200 text-blue-700 font-bold text-xs">อนุมัติเรียบร้อย</span>`;
+                } else if (record.status === 'pending') {
+                    statusBadge = `<span class="px-2.5 py-1 rounded bg-amber-50 border border-amber-200 text-amber-700 font-bold text-xs">รอแอดมินอนุมัติ</span>`;
                 } else if (record.status === 'rejected') {
                     statusBadge = `<span class="px-2.5 py-1 rounded bg-rose-50 border border-rose-200 text-rose-700 font-bold text-xs">ปฏิเสธสิทธิ์</span>`;
                 } else {
                     statusBadge = `<span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200 text-slate-500 font-medium text-xs">ส่งคืนคลังแล้ว</span>`;
                 }
 
-                // อัปเดต v4.6.1: เพิ่มปุ่มพิมพ์ใบเบิกจ่ายครุภัณฑ์ (Approved Assets)
-                let actionButton = '-';
-                if (currentUser?.role === 'admin') {
-                    if (record.status === 'approved') {
-                        actionButton = `
-                            <div class="flex items-center justify-end gap-1.5">
-                                <button onclick="printBorrowSlip('${record.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold py-1.5 px-2.5 rounded-lg border border-blue-200 transition-colors" title="พิมพ์ใบเบิกครุภัณฑ์">
-                                    <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-                                </button>
-                                <button onclick="handleReturn('${record.id}')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold py-1.5 px-3 rounded-lg border border-emerald-200 transition-colors">
-                                    ตรวจรับคืนคลัง
-                                </button>
-                            </div>
-                        `;
-                    } else {
-                        actionButton = `<span class="text-xs text-slate-400">เสร็จสมบูรณ์</span>`;
-                    }
+                let actionButton = `<span class="text-xs text-slate-400">รออนุมัติก่อนพิมพ์</span>`;
+                if (record.status === 'approved') {
+                    actionButton = `
+                        <button onclick="printBorrowSlip('${record.id}')" class="inline-flex items-center gap-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold py-1.5 px-2.5 rounded-lg border border-blue-200 transition-colors" title="พิมพ์ใบเบิกวัสดุ">
+                            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                            พิมพ์
+                        </button>
+                    `;
+                } else if (record.status === 'rejected') {
+                    actionButton = `<span class="text-xs text-slate-400">ไม่สามารถพิมพ์ได้</span>`;
                 }
 
                 return `
                     <tr class="hover:bg-slate-50/50">
-                        <td class="py-3.5 px-4 font-bold text-slate-800">${record.assetId}<br><span class="text-xs text-slate-400 font-medium">${assetName}</span></td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800">${record.assetId}<br><span class="text-xs text-slate-400 font-medium">${matName}</span><br><span class="text-[10px] font-bold text-indigo-600">จำนวน ${qtyLabel}</span></td>
                         <td class="py-3.5 px-4 text-xs"><strong>${record.borrower}</strong><br><span class="text-slate-400">${record.department}</span></td>
                         <td class="py-3.5 px-4 text-xs text-slate-600">${record.borrowDate}</td>
                         <td class="py-3.5 px-4 text-xs">${statusBadge}</td>
-                        <td class="py-3.5 px-4 text-right" style="display: ${currentUser?.role === 'admin' ? 'table-cell' : 'none'};">${actionButton}</td>
+                        <td class="py-3.5 px-4 text-right">${actionButton}</td>
                     </tr>
                 `;
             }).join('');
@@ -2423,7 +2923,6 @@
 
             tbody.innerHTML = filteredMats.map(mat => {
                 const isLowStock = mat.stock <= 5;
-                // หากสต็อกต่ำกว่าหรือเท่ากับ 5 ให้เตือนเป็นกรอบพื้นหลังสีแดงเตือน (bg-rose-50 border-rose-300 text-rose-700)
                 const stockBadgeClass = isLowStock 
                     ? `inline-flex items-center gap-1.5 bg-rose-50 border border-rose-300 text-rose-700 px-3 py-1.5 rounded-xl font-bold shadow-sm` 
                     : `font-bold text-slate-800`;
@@ -2432,7 +2931,6 @@
                     ? `<span class="text-[10px] font-bold text-white bg-rose-600 px-1.5 py-0.5 rounded-md animate-pulse ml-1">ใกล้หมด</span>` 
                     : ``;
 
-                // เพิ่มปุ่มพิมพ์ทำสถิติใบเบิกจ่ายวัสดุสิ้นเปลือง
                 const actionCell = currentUser?.role === 'admin' ? `
                     <button onclick="openMaterialPrintModal('${mat.id}')" class="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="ทำจ่ายวัสดุ & พิมพ์ใบเบิก">
                         <i data-lucide="printer" class="w-4 h-4"></i>
@@ -2553,7 +3051,6 @@
                 document.getElementById('material-modal-title').innerHTML = `<i data-lucide="boxes" class="text-indigo-600 w-5 h-5"></i> ลงทะเบียนพัสดุวัสดุสิ้นเปลืองใหม่`;
                 document.getElementById('material-form-mode').value = "add";
                 document.getElementById('material-form-original-id').value = "";
-                // ระบบตั้งค่า ID อัตโนมัติในหน่วยความจำสำหรับการเชื่อมโยงฐานข้อมูล
                 matIdInput.value = "MAT-" + Date.now();
             }
 
@@ -2583,7 +3080,6 @@
 
             if (mode === 'add') {
                 if (materials.some(m => m.id === matObj.id)) {
-                    // หากซ้ำให้สลับเจนคีย์รหัสใหม่ทันที
                     matObj.id = "MAT-" + (Date.now() + 1);
                 }
                 await writeMaterial(matObj);
@@ -2682,7 +3178,7 @@
 
                     <table style="width: 100%; margin-bottom: 20px; font-size: 18px;">
                         <tr>
-                            <td style="width: 50%; padding: 4px 0;"><strong>รหัสเบิกจ่าย (ออโต้):</strong> ${mat.id}</td>
+                            <td style="width: 50%; padding: 4px 0;"><strong>รหัสเบิกจ่าย:</strong> ${mat.id}</td>
                             <td style="width: 50%; padding: 4px 0; text-align: right;"><strong>วันที่ทำรายการ:</strong> ${dateStr}</td>
                         </tr>
                         <tr>
@@ -2738,25 +3234,32 @@
             renderApp();
         }
 
-        // ฟังก์ชันสั่งพิมพ์ใบเบิกจ่ายครุภัณฑ์ 
+        // ฟังก์ชันสั่งพิมพ์ใบเบิกวัสดุหลังอนุมัติ
         function printBorrowSlip(recordId) {
             const record = borrowRecords.find(r => r.id === recordId);
             if (!record) return;
 
-            const asset = assets.find(a => a.id === record.assetId);
-            const assetName = asset ? asset.name : "ครุภัณฑ์ไม่พบข้อมูลในสารบบ";
-            const assetCategory = asset ? asset.category : "-";
+            if (record.status !== 'approved') {
+                showToast("ยังไม่สามารถพิมพ์ใบเบิกได้ ต้องรอแอดมินอนุมัติก่อน", "error");
+                return;
+            }
+
+            const mat = materials.find(m => m.id === record.assetId);
+            const matName = mat ? mat.name : "วัสดุไม่พบข้อมูลในสารบบ";
+            const matCategory = mat ? mat.category : "-";
+            const qty = record.qty || 1;
+            const unit = record.unit || mat?.unit || "หน่วย";
 
             const printSec = document.getElementById('print-section');
             printSec.innerHTML = `
                 <div style="font-family: 'TH SarabunIT๙', 'TH Sarabun IT๙', 'TH Sarabun New', 'Sarabun', sans-serif; padding: 40px; color: #000; line-height: 1.6; max-width: 800px; margin: 0 auto; background: white; font-size: 18px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
                         <div>
-                            <h2 style="margin: 0; font-size: 28px; font-weight: bold; line-height: 1.2;">ใบเบิกจ่ายพัสดุครุภัณฑ์</h2>
+                            <h2 style="margin: 0; font-size: 28px; font-weight: bold; line-height: 1.2;">ใบเบิกวัสดุ</h2>
                             <h3 style="margin: 5px 0 0 0; font-size: 20px; font-weight: bold; color: #334155; line-height: 1.2;">สำนักงานเลขานุการ อบจ.ภูเก็ต</h3>
                         </div>
                         <div style="text-align: right;">
-                            <span style="font-size: 16px; font-weight: bold; border: 1px solid #000; padding: 4px 10px; border-radius: 4px;">ประวัติคุมพัสดุ</span>
+                            <span style="font-size: 16px; font-weight: bold; border: 1px solid #000; padding: 4px 10px; border-radius: 4px;">อนุมัติแล้ว</span>
                         </div>
                     </div>
 
@@ -2774,40 +3277,40 @@
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 18px;">
                         <thead>
                             <tr style="border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; background-color: #f8fafc;">
-                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 25%;">รหัสครุภัณฑ์</th>
-                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 45%;">รายการชื่อครุภัณฑ์ / รุ่นสารบบ</th>
-                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">จำนวนที่ได้รับ</th>
-                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">ราคาทุนกลาง</th>
+                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 25%;">รหัสวัสดุ</th>
+                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 45%;">รายการวัสดุ</th>
+                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">จำนวนที่เบิก</th>
+                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">หน่วยนับ</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr style="border-bottom: 1.5px solid #000;">
                                 <td style="padding: 10px 10px; font-weight: bold; font-size: 20px;">${record.assetId}</td>
                                 <td style="padding: 10px 10px;">
-                                    <div style="font-weight: bold; font-size: 20px;">${assetName}</div>
-                                    <div style="font-size: 16px; color: #475569; margin-top: 2px;">หมวดหมู่: ${assetCategory}</div>
+                                    <div style="font-weight: bold; font-size: 20px;">${matName}</div>
+                                    <div style="font-size: 16px; color: #475569; margin-top: 2px;">ประเภทวัสดุ: ${matCategory}</div>
                                 </td>
-                                <td style="padding: 10px 10px; text-align: right; font-weight: bold; font-size: 20px;">1</td>
-                                <td style="padding: 10px 10px; text-align: right; font-weight: bold;">฿${asset ? asset.cost.toLocaleString() : '-'}</td>
+                                <td style="padding: 10px 10px; text-align: right; font-weight: bold; font-size: 20px;">${qty}</td>
+                                <td style="padding: 10px 10px; text-align: right; font-weight: bold;">${unit}</td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div style="margin-top: 80px; display: flex; justify-content: space-between; font-size: 18px;">
                         <div style="text-align: center; width: 45%;">
-                            <p>ลงชื่อ............................................................ผู้รับมอบครุภัณฑ์</p>
+                            <p>ลงชื่อ............................................................ผู้รับวัสดุ</p>
                             <p style="margin-top: 5px; font-weight: bold;">( ${record.borrower} )</p>
                             <p style="margin-top: 2px; color: #475569; font-size: 16px;">ฝ่าย: ${record.department}</p>
                         </div>
                         <div style="text-align: center; width: 45%;">
-                            <p>ลงชื่อ............................................................ผู้จ่ายมอบพัสดุ</p>
+                            <p>ลงชื่อ............................................................ผู้อนุมัติ/จ่ายวัสดุ</p>
                             <p style="margin-top: 5px; font-weight: bold;">( เจ้าหน้าที่พัสดุส่วนกลาง )</p>
-                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">วันที่อนุมัติส่งมอบ: ${record.borrowDate}</p>
+                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">วันที่อนุมัติ: ${record.borrowDate}</p>
                         </div>
                     </div>
 
                     <div style="margin-top: 80px; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: center; font-size: 14px; color: #64748b;">
-                        * ระเบียบราชการ: ครุภัณฑ์และพัสดุหลวงห้ามนำไปจัดจำหน่าย แลกเปลี่ยน หรือใช้ส่วนตนโดยมิชอบเด็ดขาด *
+                        * เอกสารนี้พิมพ์ได้หลังจากผู้ดูแลระบบอนุมัติคำขอเบิกวัสดุแล้วเท่านั้น *
                     </div>
                 </div>
             `;
@@ -2815,8 +3318,6 @@
             window.print();
             renderApp();
         }
-
-        // ================= สิ้นสุดฟังก์ชันโมดูลวัสดุ =================
 
         function renderUsersTable() {
             const tbody = document.getElementById('user-table-body');
@@ -3124,50 +3625,68 @@
             );
         }
 
+        // ระบบควบคุมธุรกรรมการเบิกวัสดุ
         async function handleBorrow(e) {
             e.preventDefault();
             
-            const assetId = document.getElementById('borrow-asset-select').value;
+            const materialId = document.getElementById('borrow-asset-select').value;
             const borrower = document.getElementById('borrower-name').value.trim();
             const dept = document.getElementById('borrower-dept').value.trim();
             const borrowDate = document.getElementById('borrow-date').value;
+            const qty = parseInt(document.getElementById('borrow-qty').value, 10);
 
-            if (!assetId) {
-                showToast("ไม่มีครุภัณฑ์พัสดุว่างพร้อมให้เบิกในขณะนี้", "error");
+            if (!materialId) {
+                showToast("ไม่มีวัสดุคงคลังพร้อมให้เบิกในขณะนี้", "error");
+                return;
+            }
+
+            if (!qty || qty < 1) {
+                showToast("กรุณาระบุจำนวนวัสดุที่ต้องการเบิกให้ถูกต้อง", "error");
+                return;
+            }
+
+            const material = materials.find(m => m.id === materialId);
+            if (!material) {
+                showToast("ไม่พบข้อมูลวัสดุในระบบ", "error");
+                return;
+            }
+
+            if (qty > material.stock) {
+                showToast(`จำนวนที่ขอเบิกมากกว่าคงเหลือในคลัง (${material.stock} ${material.unit})`, "error");
                 return;
             }
 
             const initialStatus = currentUser?.role === 'admin' ? 'approved' : 'pending';
 
             const newRecord = {
-                id: "BR-" + (borrowRecords.length + 1001),
-                assetId: assetId,
-                type: "เบิกใช้งาน",
+                id: "BR-" + Date.now(),
+                assetId: materialId,
+                type: "เบิกวัสดุ",
                 borrower: borrower,
                 department: dept,
                 borrowDate: borrowDate,
+                qty: qty,
+                unit: material.unit,
                 status: initialStatus
             };
 
-            const asset = assets.find(a => a.id === assetId);
-            if (asset) {
-                if (currentUser?.role === 'admin') {
-                    asset.status = "borrowed";
-                    await writeAsset(asset);
-                    await writeBorrowRecord(newRecord);
-                    await writeActivity("แอดมินระบบ", `จ่ายพัสดุด่วน: [${assetId}] ไปยังแผนก ${dept} (ผู้รับ: ${borrower})`);
-                    showToast(`ดำเนินการอนุมัติส่งมอบพัสดุเสร็จสิ้น`, "success");
-                } else {
-                    asset.status = "pending_approval";
-                    await writeAsset(asset);
-                    await writeBorrowRecord(newRecord);
-                    await writeActivity(borrower, `ยื่นขอเบิกครุภัณฑ์: [${assetId}] ไปใช้งาน`);
-                    showToast(`คำขอถูกเสนอส่งตรวจรับแล้ว กรุณารอแอดมินอนุมัติ`, "info");
-                }
+            if (currentUser?.role === 'admin') {
+                material.stock -= qty;
+                material.disbursed = (material.disbursed || 0) + qty;
+                newRecord.approvedAt = new Date().toISOString();
+                await writeMaterial(material);
+                await writeBorrowRecord(newRecord);
+                await writeActivity("แอดมินระบบ", `อนุมัติเบิกวัสดุทันที: [${materialId}] ${material.name} จำนวน ${qty} ${material.unit} ให้ ${borrower} (${dept})`);
+                showToast(`อนุมัติและตัดยอดวัสดุเรียบร้อย สามารถพิมพ์ใบเบิกได้`, "success");
+            } else {
+                await writeBorrowRecord(newRecord);
+                await writeActivity(borrower, `ยื่นขอเบิกวัสดุ: [${materialId}] ${material.name} จำนวน ${qty} ${material.unit}`);
+                showToast(`คำขอเบิกวัสดุถูกส่งแล้ว กรุณารอแอดมินอนุมัติก่อนพิมพ์เอกสาร`, "info");
             }
 
             renderApp();
             document.getElementById('borrow-asset-search').value = "";
+            document.getElementById('borrow-qty').value = 1;
         }
 
         function approveBorrowRequest(recordId) {
@@ -3176,20 +3695,32 @@
             const record = borrowRecords.find(r => r.id === recordId);
             if (record) {
                 showConfirmModal(
-                    "ยืนยันสิทธิ์การเบิก?",
-                    `ต้องการส่งมอบครุภัณฑ์ ${record.assetId} ให้ผู้ร้องขอ [${record.borrower}] หรือไม่?`,
+                    "อนุมัติคำขอเบิกวัสดุ?",
+                    `ต้องการอนุมัติวัสดุ ${record.assetId} จำนวน ${record.qty || 1} ${record.unit || 'หน่วย'} ให้ผู้ร้องขอ [${record.borrower}] หรือไม่?`,
                     async function() {
-                        record.status = "approved";
+                        const material = materials.find(m => m.id === record.assetId);
+                        const qty = record.qty || 1;
                         
-                        const asset = assets.find(a => a.id === record.assetId);
-                        if (asset) {
-                            asset.status = "borrowed";
-                            await writeAsset(asset);
+                        if (!material) {
+                            showToast("ไม่พบข้อมูลวัสดุในระบบ", "error");
+                            return;
                         }
 
+                        if (qty > material.stock) {
+                            showToast(`อนุมัติไม่ได้ เนื่องจากคงเหลือเพียง ${material.stock} ${material.unit}`, "error");
+                            return;
+                        }
+
+                        material.stock -= qty;
+                        material.disbursed = (material.disbursed || 0) + qty;
+                        record.status = "approved";
+                        record.unit = record.unit || material.unit;
+                        record.approvedAt = new Date().toISOString();
+
+                        await writeMaterial(material);
                         await writeBorrowRecord(record);
-                        await writeActivity("แอดมินพัสดุ", `อนุมัติคำร้องเบิกพัสดุ: [${record.assetId}] ของ ${record.borrower}`);
-                        showToast(`อนุมัติคำร้องขอเบิกพัสดุเรียบร้อย`, "success");
+                        await writeActivity("แอดมินพัสดุ", `อนุมัติคำร้องเบิกวัสดุ: [${record.assetId}] จำนวน ${qty} ${record.unit} ของ ${record.borrower}`);
+                        showToast(`อนุมัติคำร้องขอเบิกวัสดุเรียบร้อย ผู้ใช้สามารถพิมพ์เอกสารได้แล้ว`, "success");
                     },
                     false
                 );
@@ -3203,24 +3734,19 @@
             if (record) {
                 showConfirmModal(
                     "ปฏิเสธคำร้องขอเบิก?",
-                    `ต้องการปฏิเสธคำร้องเบิก ${record.assetId} ของ [${record.borrower}] ใช่หรือไม่?`,
+                    `ต้องการปฏิเสธคำร้องเบิกวัสดุ ${record.assetId} ของ [${record.borrower}] ใช่หรือไม่?`,
                     async function() {
                         record.status = "rejected";
-                        
-                        const asset = assets.find(a => a.id === record.assetId);
-                        if (asset) {
-                            asset.status = "available";
-                            await writeAsset(asset);
-                        }
 
                         await writeBorrowRecord(record);
-                        await writeActivity("แอดมินพัสดุ", `ปฏิเสธคำเสนอเบิกพัสดุ: [${record.assetId}]`);
-                        showToast(`ปฏิเสธคำขอและส่งคืนพัสดุเข้าคลัง`, "info");
+                        await writeActivity("แอดมินพัสดุ", `ปฏิเสธคำเสนอเบิกวัสดุ: [${record.assetId}]`);
+                        showToast(`ปฏิเสธคำขอเบิกวัสดุเรียบร้อย`, "info");
                     }
                 );
             }
         }
 
+        // รับคืนพัสดุ
         function handleReturn(recordId) {
             if (currentUser?.role !== 'admin') return;
 
@@ -3376,7 +3902,8 @@
         // เริ่มต้นรันระบบเมื่อเบราว์เซอร์พร้อมทำงาน
         window.onload = function() {
             initializeFirebase();
-            showToast("ระบบจัดการวัสดุและครุภัณฑ์ อบจ.ภูเก็ต พร้อมทำงาน!", "info");
+            checkAuthSession(); 
+            showToast("ระบบ E-Office สำนักงานเลขานุการ อบจ.ภูเก็ต พร้อมทำงาน!", "info");
         };
     </script>
 
