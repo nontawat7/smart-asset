@@ -13,7 +13,7 @@
     <!-- Google Fonts: Noto Sans Thai -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- นำเข้า Firebase SDK Compat เพื่อรันเสถียรบนไฟล์เดี่ยว -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -56,49 +56,67 @@
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-none"></div>
 
     <!-- ========================================================================= -->
-    <!-- ========================= 1. LOGIN SCREEN =============================== -->
+    <!-- ========================= 1. LOGIN SCREEN (ELEGANT BLUE-WHITE) ========== -->
     <!-- ========================================================================= -->
-    <div id="login-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-100/40 to-indigo-50/70 p-4 overflow-y-auto">
-        <div class="relative w-full max-w-xl bg-white/80 backdrop-blur-xl p-10 md:p-12 rounded-3xl border border-white/80 shadow-[0_25px_60px_rgba(30,58,138,0.12)] flex flex-col space-y-8 text-slate-800 my-auto">
-            <!-- แสงตกแต่งพื้นหลัง -->
-            <div class="absolute -top-10 -left-10 w-44 h-44 bg-sky-300/30 rounded-full blur-[70px] opacity-60 pointer-events-none"></div>
-            <div class="absolute -bottom-10 -right-10 w-44 h-44 bg-indigo-300/30 rounded-full blur-[70px] opacity-60 pointer-events-none"></div>
+    <div id="login-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-100 p-4 overflow-y-auto">
+        <!-- รัศมีแสงสีพาสเทลเพื่อความหรูหรานุ่มลึก -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-400/10 rounded-full blur-[120px] pointer-events-none"></div>
 
+        <div class="relative w-full max-w-xl bg-white/90 backdrop-blur-2xl p-10 md:p-12 rounded-[2.5rem] border border-blue-100 shadow-[0_25px_60px_-15px_rgba(30,41,59,0.15)] flex flex-col space-y-8 my-auto">
+            
             <div class="text-center space-y-4 relative pt-4">
-                <div class="inline-flex relative p-1.5">
-                    <svg class="w-20 h-16 mx-auto drop-shadow-[0_8px_16px_rgba(59,130,246,0.15)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="45" stroke="#3b82f6" stroke-width="2" stroke-dasharray="8 6" opacity="0.5"/>
-                        <path d="M50 18 L78 33 L50 48 L22 33 Z" fill="#06b6d4" opacity="0.9"/>
-                        <path d="M50 48 L78 33 L78 63 L50 78 Z" fill="#3b82f6" opacity="0.95"/>
-                        <path d="M22 33 L50 48 L50 78 L22 63 Z" fill="#1d4ed8" opacity="0.75"/>
+                <div class="inline-flex relative p-2.5 bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 rounded-[2rem] shadow-lg shadow-blue-500/20 border border-white/20">
+                    <!-- โลโก้หรูหราฟ้าครามสลับทอง (Luxurious Sky Blue & Gold Crest) -->
+                    <svg class="w-20 h-20 text-white filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.1)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="crestGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fef08a" />
+                                <stop offset="50%" stop-color="#eab308" />
+                                <stop offset="100%" stop-color="#854d0e" />
+                            </linearGradient>
+                            <linearGradient id="crestBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#38bdf8" />
+                                <stop offset="100%" stop-color="#1e3a8a" />
+                            </linearGradient>
+                        </defs>
+                        <!-- โล่พิทักษ์ -->
+                        <path d="M50 5 L85 20 C85 55 50 85 50 95 C50 85 15 55 15 20 L50 5 Z" fill="url(#crestBlue)" stroke="url(#crestGold)" stroke-width="4" />
+                        <!-- สลักสัญลักษณ์ด้านใน -->
+                        <path d="M50 15 L75 28 L50 41 L25 28 Z" fill="url(#crestGold)" opacity="0.95" />
+                        <path d="M50 41 L75 28 L75 55 L50 68 Z" fill="#ca8a04" opacity="0.8" />
+                        <path d="M25 28 L50 41 L50 68 L25 55 Z" fill="#854d0e" opacity="0.85" />
+                        <!-- มงกุฎประกายดาวตรงกลาง -->
+                        <circle cx="50" cy="41" r="5" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,1))" />
+                        <path d="M50 78 L65 68 L50 62 L35 68 Z" fill="url(#crestGold)" />
                     </svg>
                 </div>
-                <div class="space-y-1">
-                    <h2 class="text-3xl font-black text-slate-800 tracking-tight">
+                <div class="space-y-1.5">
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tight uppercase">
                         E-Office Portal Hub
                     </h2>
-                    <p class="text-[14px] text-blue-600 font-bold tracking-wide">สำนักงานเลขานุการ อบจ.ภูเก็ต</p>
+                    <p class="text-[13px] text-blue-600 font-extrabold tracking-widest uppercase">สำนักงานเลขานุการ อบจ.ภูเก็ต</p>
                 </div>
             </div>
 
             <form id="login-form" onsubmit="handleLogin(event)" class="space-y-6 relative">
                 <div class="space-y-2.5">
-                    <label class="block text-sm font-bold text-blue-950 uppercase tracking-wider">ชื่อผู้ใช้งาน (Username)</label>
-                    <div class="flex items-center gap-3 bg-white border border-slate-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/15 rounded-xl px-4 py-3.5 transition-all shadow-sm">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ชื่อผู้ใช้งาน (Username)</label>
+                    <div class="flex items-center gap-3 bg-slate-50 border border-slate-200 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-2xl px-4 py-3.5 transition-all shadow-inner">
                         <i data-lucide="user" class="w-5 h-5 text-blue-500"></i>
                         <input type="text" id="login-username" required placeholder="ระบุ Username ของคุณ" class="bg-transparent border-none text-[15px] w-full text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-0">
                     </div>
                 </div>
 
                 <div class="space-y-2.5">
-                    <label class="block text-sm font-bold text-blue-950 uppercase tracking-wider">รหัสผ่าน (Password)</label>
-                    <div class="flex items-center gap-3 bg-white border border-slate-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/15 rounded-xl px-4 py-3.5 transition-all shadow-sm">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">รหัสผ่าน (Password)</label>
+                    <div class="flex items-center gap-3 bg-slate-50 border border-slate-200 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 rounded-2xl px-4 py-3.5 transition-all shadow-inner">
                         <i data-lucide="lock" class="w-5 h-5 text-blue-500"></i>
                         <input type="password" id="login-password" required placeholder="ระบุรหัสผ่านของคุณ" class="bg-transparent border-none text-[15px] w-full text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-0">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-[16px] py-4 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/15 hover:shadow-blue-500/25">
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-850 text-white font-bold text-[16px] py-4 px-4 rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20">
                     <i data-lucide="log-in" class="w-5 h-5"></i>
                     เข้าสู่ระบบ E-Office
                 </button>
@@ -107,188 +125,190 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- ======================= 0. PORTAL MAIN SCREEN =========================== -->
+    <!-- ======================= 0. PORTAL MAIN SCREEN (ELEGANT BLUE-WHITE) ====== -->
     <!-- ========================================================================= -->
-    <div id="portal-screen" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-100/30 to-indigo-100/50 p-4 overflow-y-auto">
-        <div class="relative w-full max-w-6xl bg-white/70 backdrop-blur-2xl p-8 md:p-12 rounded-[2.5rem] border border-white/80 shadow-[0_30px_70px_rgba(30,58,138,0.15)] flex flex-col space-y-10 text-slate-800 my-auto">
+    <div id="portal-screen" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-100 p-4 overflow-y-auto">
+        <div class="relative w-full max-w-7xl bg-white/95 backdrop-blur-3xl p-8 md:p-12 rounded-[2.5rem] border border-blue-100 shadow-[0_30px_70px_-20px_rgba(15,23,42,0.12)] flex flex-col space-y-10 my-auto text-slate-800">
             
-            <!-- แสงตกแต่งพื้นหลังคลื่นอัจฉริยะ -->
-            <div class="absolute -top-16 -left-16 w-64 h-64 bg-sky-300/20 rounded-full blur-[80px] opacity-70 pointer-events-none"></div>
-            <div class="absolute -bottom-16 -right-16 w-64 h-64 bg-blue-300/20 rounded-full blur-[80px] opacity-70 pointer-events-none"></div>
+            <!-- รัศมีนุ่มนวลกระจายด้านหลัง -->
+            <div class="absolute -top-16 -left-16 w-80 h-80 bg-blue-300/10 rounded-full blur-[100px] pointer-events-none"></div>
+            <div class="absolute -bottom-16 -right-16 w-80 h-80 bg-indigo-300/10 rounded-full blur-[100px] pointer-events-none"></div>
             
             <!-- ปุ่มออกจากระบบบนหน้า Portal -->
-            <button onclick="handleLogout()" class="absolute top-6 right-6 md:top-8 md:right-10 flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-4 py-2 rounded-2xl text-xs font-bold transition-all shadow-sm">
+            <button onclick="handleLogout()" class="absolute top-6 right-6 md:top-8 md:right-10 flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-100 px-4 py-2 rounded-2xl text-xs font-bold transition-all shadow-sm">
                 <i data-lucide="log-out" class="w-4 h-4"></i>
                 <span>ออกจากระบบ</span>
             </button>
 
             <!-- ส่วนหัวแสดงตราสัญลักษณ์และหัวข้อ Portal -->
             <div class="text-center space-y-4 relative">
-                <div class="inline-flex relative p-2 bg-gradient-to-tr from-blue-500 to-sky-400 rounded-3xl shadow-lg shadow-blue-500/20">
-                    <!-- SVG Logo -->
-                    <svg class="w-16 h-16 text-white" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M50 15 L80 30 L50 45 L20 30 Z" fill="currentColor" opacity="0.9"/>
-                        <path d="M50 45 L80 30 L80 60 L50 75 Z" fill="currentColor" opacity="0.95"/>
-                        <path d="M20 30 L50 45 L50 75 L20 60 Z" fill="currentColor" opacity="0.75"/>
-                        <circle cx="50" cy="45" r="5" fill="#f59e0b"/>
+                <div class="inline-flex relative p-2.5 bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 rounded-[2.5rem] shadow-lg shadow-blue-500/15 border border-white/30">
+                    <!-- Emblem Logo -->
+                    <svg class="w-20 h-20 text-white filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.1)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 5 L85 20 C85 55 50 85 50 95 C50 85 15 55 15 20 L50 5 Z" fill="url(#crestBlue)" stroke="url(#crestGold)" stroke-width="4.5" />
+                        <path d="M50 15 L75 28 L50 41 L25 28 Z" fill="url(#crestGold)" opacity="0.95" />
+                        <path d="M50 41 L75 28 L75 55 L50 68 Z" fill="#ca8a04" />
+                        <path d="M25 28 L50 41 L50 68 L25 55 Z" fill="#854d0e" />
+                        <circle cx="50" cy="41" r="5" fill="#ffffff" filter="drop-shadow(0 0 4px #ffffff)"/>
                     </svg>
                 </div>
                 <div class="space-y-2">
-                    <h1 class="text-4xl font-black tracking-tight bg-gradient-to-r from-blue-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent">
+                    <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-800">
                         E-Office Portal Hub
                     </h1>
-                    <p class="text-lg font-bold text-blue-700 tracking-wide">สำนักงานเลขานุการ อบจ.ภูเก็ต</p>
+                    <p class="text-lg font-bold text-blue-600 tracking-widest uppercase">สำนักงานเลขานุการ อบจ.ภูเก็ต</p>
                     
                     <!-- ส่วนต้อนรับตามสิทธิ์บัญชีผู้ใช้งาน -->
-                    <div id="portal-user-greeting" class="mt-2 inline-flex items-center gap-2 bg-blue-50 border border-blue-100 px-4 py-1.5 rounded-full text-xs font-bold text-blue-800">
+                    <div id="portal-user-greeting" class="mt-4 inline-flex items-center gap-2 bg-slate-50 border border-slate-200 px-5 py-2 rounded-full text-xs font-bold text-slate-600 shadow-inner">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span id="portal-greeting-text">ยินดีต้อนรับผู้ใช้งาน</span>
                     </div>
                 </div>
             </div>
 
-            <!-- กล่องทางเลือกเมนูหลัก 3 คอลัมน์ -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+            <!-- กล่องทางเลือกเมนูหลัก (4 คอลัมน์ สีฟ้า-ขาว สว่างพรีเมียม) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
                 
                 <!-- การ์ดระบบ 1: จัดการวัสดุและครุภัณฑ์ -->
-                <button onclick="enterAssetSystem()" class="group text-left p-6 bg-white/90 hover:bg-white rounded-[2rem] border border-slate-200/80 shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_rgba(30,58,138,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
+                <button onclick="enterAssetSystem()" class="group text-left p-6 bg-white hover:bg-slate-50/50 rounded-[2rem] border border-slate-200 hover:border-blue-500 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(30,58,138,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/[0.03] rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
                     
-                    <div class="relative flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-50 to-sky-100/50 rounded-2xl shadow-inner border border-white group-hover:shadow-blue-500/10 group-hover:border-blue-200 transition-all duration-300">
-                        <div class="absolute inset-0 bg-blue-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_8px_12px_rgba(30,58,138,0.2)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div class="relative flex items-center justify-center w-20 h-20 bg-blue-50 rounded-2xl shadow-inner border border-blue-100 group-hover:bg-blue-100/50 group-hover:border-blue-300 transition-all duration-300">
+                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_4px_8px_rgba(30,58,138,0.15)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
-                                <linearGradient id="cubeTopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#38bdf8" />
-                                    <stop offset="100%" stop-color="#0284c7" />
-                                </linearGradient>
                                 <linearGradient id="cubeLeftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#0284c7" />
-                                    <stop offset="100%" stop-color="#1e3a8a" />
-                                </linearGradient>
-                                <linearGradient id="cubeRightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#0ea5e9" />
+                                    <stop offset="0%" stop-color="#2563eb" />
                                     <stop offset="100%" stop-color="#1d4ed8" />
                                 </linearGradient>
-                                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                                    <feGaussianBlur stdDeviation="3" result="blur" />
-                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                                </filter>
+                                <linearGradient id="cubeRightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#3b82f6" />
+                                    <stop offset="100%" stop-color="#1d4ed8" />
+                                </linearGradient>
+                                <linearGradient id="cubeTopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#60a5fa" />
+                                    <stop offset="100%" stop-color="#2563eb" />
+                                </linearGradient>
                             </defs>
-                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#1e3b8a" opacity="0.25" />
+                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#1e3b8a" opacity="0.15" />
                             <path d="M25 45 L60 62 L60 98 L25 80 Z" fill="url(#cubeLeftGrad)" />
                             <path d="M60 62 L95 45 L95 80 L60 98 Z" fill="url(#cubeRightGrad)" />
                             <path d="M60 25 L95 45 L60 62 L25 45 Z" fill="url(#cubeTopGrad)" />
                             <path d="M60 25 L60 62" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.6" />
-                            <path d="M25 45 L60 62 L95 45" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" opacity="0.4" />
-                            <circle cx="60" cy="43" r="10" fill="#f59e0b" opacity="0.9" filter="url(#glow)" />
+                            <circle cx="60" cy="43" r="10" fill="#eab308" />
                             <path d="M56 43 L64 43 M60 39 L60 47" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
-                            <path d="M20 58 C 20 45, 100 45, 100 58 C 100 70, 20 70, 20 58" stroke="#38bdf8" stroke-width="2" stroke-dasharray="6 4" opacity="0.8" />
                         </svg>
                     </div>
                     
                     <div class="space-y-2 mt-4 z-10">
-                        <span class="text-[11px] font-extrabold text-blue-600 uppercase tracking-widest bg-blue-50 px-2.5 py-1 rounded-full">ระบบภายใน</span>
-                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-blue-700 transition-colors">ระบบบริหารจัดการวัสดุและครุภัณฑ์</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">ระบบบันทึกคุมสต็อกวัสดุอุปกรณ์ และตรวจสอบขออนุมัติเบิกจ่ายครุภัณฑ์กลางของสำนักงาน</p>
+                        <span class="text-[11px] font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">ระบบภายใน</span>
+                        <h3 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">วัสดุและครุภัณฑ์</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">ระบบบันทึกคุมสต็อกวัสดุอุปกรณ์ และตรวจสอบขออนุมัติเบิกจ่ายครุภัณฑ์กลางของสำนักงาน</p>
                     </div>
                 </button>
 
-                <!-- การ์ดระบบ 2: จัดการผู้ใช้งานระบบ (ถอนตัวแยกเดี่ยวออกมาหน้าแรก) -->
-                <button id="portal-card-users" onclick="enterUserSystem()" class="group text-left p-6 bg-white/90 hover:bg-white rounded-[2rem] border border-slate-200/80 shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_rgba(30,58,138,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
+                <!-- การ์ดระบบ 2: จัดการผู้ใช้งานระบบ -->
+                <button id="portal-card-users" onclick="enterUserSystem()" class="group text-left p-6 bg-white hover:bg-slate-50/50 rounded-[2rem] border border-slate-200 hover:border-indigo-500 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(79,70,229,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/[0.03] rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
                     
-                    <div class="relative flex items-center justify-center w-20 h-20 bg-gradient-to-br from-indigo-50 to-purple-100/50 rounded-2xl shadow-inner border border-white group-hover:shadow-indigo-500/10 group-hover:border-indigo-200 transition-all duration-300">
-                        <div class="absolute inset-0 bg-indigo-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_8px_12px_rgba(79,70,229,0.25)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div class="relative flex items-center justify-center w-20 h-20 bg-indigo-50 rounded-2xl shadow-inner border border-indigo-100 group-hover:bg-indigo-100/50 group-hover:border-indigo-300 transition-all duration-300">
+                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_4px_8px_rgba(79,70,229,0.15)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
-                                <linearGradient id="userTop" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#c7d2fe" />
-                                    <stop offset="100%" stop-color="#818cf8" />
-                                </linearGradient>
                                 <linearGradient id="userLeft" x1="0%" y1="0%" x2="0%" y2="100%">
                                     <stop offset="0%" stop-color="#4f46e5" />
-                                    <stop offset="100%" stop-color="#312e81" />
+                                    <stop offset="100%" stop-color="#4338ca" />
                                 </linearGradient>
                                 <linearGradient id="userRight" x1="0%" y1="0%" x2="0%" y2="100%">
                                     <stop offset="0%" stop-color="#6366f1" />
-                                    <stop offset="100%" stop-color="#3730a3" />
+                                    <stop offset="100%" stop-color="#4338ca" />
                                 </linearGradient>
-                                <filter id="purpleGlow" x="-20%" y="-20%" width="140%" height="140%">
-                                    <feGaussianBlur stdDeviation="2.5" result="blur" />
-                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                                </filter>
+                                <linearGradient id="userTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#818cf8" />
+                                    <stop offset="100%" stop-color="#4f46e5" />
+                                </linearGradient>
                             </defs>
-                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#312e81" opacity="0.3" />
+                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#312e81" opacity="0.15" />
                             <path d="M30 65 L60 76 L60 98 L30 86 Z" fill="url(#userLeft)" />
                             <path d="M60 76 L90 65 L90 86 L60 98 Z" fill="url(#userRight)" />
                             <path d="M60 54 L90 65 L60 76 L30 65 Z" fill="url(#userTop)" />
-                            <circle cx="60" cy="40" r="8" fill="#ffffff" filter="url(#purpleGlow)" />
+                            <circle cx="60" cy="40" r="8" fill="#ffffff" />
                             <path d="M44 60 C 44 48, 76 48, 76 60 Z" fill="#ffffff" opacity="0.9" />
-                            <path d="M25 80 C 25 70, 95 70, 95 80" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7" />
                         </svg>
                     </div>
                     
                     <div class="space-y-2 mt-4 z-10">
-                        <span class="text-[11px] font-extrabold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2.5 py-1 rounded-full">ระบบเฉพาะแอดมิน</span>
-                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">ระบบจัดการผู้ใช้งาน</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">ควบคุมบัญชีผู้ใช้งานระบบ อัปเดตสิทธิ์การเข้าถึง กำหนดฝ่ายสังกัดพนักงาน และตรวจสอบความปลอดภัยข้อมูล</p>
+                        <span class="text-[11px] font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">ผู้ดูแลระบบ</span>
+                        <h3 class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">ระบบจัดการผู้ใช้งาน</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">ควบคุมบัญชีผู้ใช้งานระบบ อัปเดตสิทธิ์การเข้าถึง กำหนดฝ่ายสังกัดพนักงาน และความปลอดภัยข้อมูล</p>
                     </div>
                 </button>
 
-                <!-- การ์ดระบบ 3: จองห้องประชุม (เชื่อมภายนอก) -->
-                <a href="https://meeting.phuketpao.go.th/index.php" target="_blank" class="group text-left p-6 bg-white/90 hover:bg-white rounded-[2rem] border border-slate-200/80 shadow-[0_15px_35px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_50px_rgba(30,58,138,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
+                <!-- การ์ดระบบ 3: จองห้องประชุม -->
+                <a href="https://meeting.phuketpao.go.th/index.php" target="_blank" class="group text-left p-6 bg-white hover:bg-slate-50/50 rounded-[2rem] border border-slate-200 hover:border-amber-500 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(217,119,6,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/[0.03] rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
                     
-                    <div class="relative flex items-center justify-center w-20 h-20 bg-gradient-to-br from-amber-50 to-orange-100/50 rounded-2xl shadow-inner border border-white group-hover:shadow-amber-500/10 group-hover:border-amber-200 transition-all duration-300">
-                        <div class="absolute inset-0 bg-amber-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_8px_12px_rgba(180,83,9,0.25)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div class="relative flex items-center justify-center w-20 h-20 bg-amber-50 rounded-2xl shadow-inner border border-amber-100 group-hover:bg-amber-100/50 group-hover:border-amber-300 transition-all duration-300">
+                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_4px_8px_rgba(217,119,6,0.15)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
-                                <linearGradient id="podiumTop" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#fef08a" />
-                                    <stop offset="100%" stop-color="#eab308" />
-                                </linearGradient>
                                 <linearGradient id="podiumLeft" x1="0%" y1="0%" x2="0%" y2="100%">
                                     <stop offset="0%" stop-color="#d97706" />
-                                    <stop offset="100%" stop-color="#7c2d12" />
+                                    <stop offset="100%" stop-color="#b45309" />
                                 </linearGradient>
                                 <linearGradient id="podiumRight" x1="0%" y1="0%" x2="0%" y2="100%">
                                     <stop offset="0%" stop-color="#f59e0b" />
                                     <stop offset="100%" stop-color="#b45309" />
                                 </linearGradient>
-                                <filter id="amberGlow" x="-20%" y="-20%" width="140%" height="140%">
-                                    <feGaussianBlur stdDeviation="2.5" result="blur" />
-                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                                </filter>
+                                <linearGradient id="podiumTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fbbf24" />
+                                    <stop offset="100%" stop-color="#d97706" />
+                                </linearGradient>
                             </defs>
-                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#7c2d12" opacity="0.3" />
+                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#7c2d12" opacity="0.15" />
                             <path d="M30 65 L60 76 L60 98 L30 86 Z" fill="url(#podiumLeft)" />
                             <path d="M60 76 L90 65 L90 86 L60 98 Z" fill="url(#podiumRight)" />
                             <path d="M60 54 L90 65 L60 76 L30 65 Z" fill="url(#podiumTop)" />
                             <path d="M40 33 L60 41 L80 33 L60 25 Z" fill="#ffffff" opacity="0.95" />
-                            <path d="M40 33 L60 41 L60 47 L40 39 Z" fill="#cbd5e1" />
-                            <path d="M60 41 L80 33 L80 39 L60 47 Z" fill="#e2e8f0" />
-                            <path d="M50 29 L60 33 L70 29 L60 25 Z" fill="#ef4444" />
-                            <path d="M50 29 L60 33 L60 36 L50 32 Z" fill="#b91c1c" />
-                            <path d="M60 33 L70 29 L70 32 L60 36 Z" fill="#dc2626" />
-                            <circle cx="60" cy="33" r="5" fill="#f59e0b" filter="url(#amberGlow)" />
-                            <path d="M25 80 C 25 70, 95 70, 95 80 C 95 90, 25 90, 25 80" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7" />
                         </svg>
                     </div>
                     
                     <div class="space-y-2 mt-4 z-10">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[11px] font-extrabold text-amber-600 uppercase tracking-widest bg-amber-50 px-2.5 py-1 rounded-full">ระบบจองออนไลน์</span>
-                            <span class="inline-flex w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-amber-600 transition-colors">ระบบจองห้องประชุม</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">เข้าใช้บริการบันทึกข้อมูลตรวจสอบคิว และจองห้องประชุมสำหรับการสัมมนา ประชุมสภา และงานพิธีการ</p>
+                        <span class="text-[11px] font-bold text-amber-600 uppercase tracking-widest bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100">ระบบจองออนไลน์</span>
+                        <h3 class="text-lg font-bold text-slate-800 group-hover:text-amber-600 transition-colors">ระบบจองห้องประชุม</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">เข้าใช้บริการบันทึกข้อมูลตรวจสอบคิว และจองห้องประชุมสำหรับการสัมมนา ประชุมสภา และงานพิธีการ</p>
+                    </div>
+                </a>
+
+                <!-- การ์ดระบบ 4: รวมรูปโครงการต่างๆ -->
+                <a href="https://drive.google.com/drive/folders/180xqZwOdamFpx1fLhatlmPlmcs1PXWvC?usp=sharing" target="_blank" class="group text-left p-6 bg-white hover:bg-slate-50/50 rounded-[2rem] border border-slate-200 hover:border-emerald-500 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/[0.03] rounded-bl-[10rem] group-hover:scale-110 transition-transform duration-500"></div>
+                    
+                    <div class="relative flex items-center justify-center w-20 h-20 bg-emerald-50 rounded-2xl shadow-inner border border-emerald-100 group-hover:bg-emerald-100/50 group-hover:border-emerald-300 transition-all duration-300">
+                        <svg class="w-14 h-14 relative z-10 filter drop-shadow-[0_4px_8px_rgba(16,185,129,0.15)] group-hover:scale-110 transition-transform duration-300" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="photoBack" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#34d399" />
+                                    <stop offset="100%" stop-color="#059669" />
+                                </linearGradient>
+                            </defs>
+                            <ellipse cx="60" cy="98" rx="35" ry="8" fill="#064e3b" opacity="0.15" />
+                            <!-- กรอบรูปภาพซ้อนกัน -->
+                            <rect x="32" y="32" width="56" height="42" rx="4" transform="rotate(-8 60 53)" fill="#064e3b" opacity="0.3" />
+                            <rect x="32" y="32" width="56" height="42" rx="4" transform="rotate(5 60 53)" fill="url(#photoBack)" stroke="#ffffff" stroke-width="2" />
+                            <!-- รายละเอียดดวงอาทิตย์และภูเขาในรูปภาพจำลอง -->
+                            <circle cx="48" cy="46" r="5" fill="#f59e0b" />
+                            <path d="M36 68 L52 50 L64 62 L72 54 L84 68 Z" fill="#ffffff" opacity="0.9" />
+                        </svg>
+                    </div>
+                    
+                    <div class="space-y-2 mt-4 z-10">
+                        <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-widest bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">คลังภาพรวม</span>
+                        <h3 class="text-lg font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">รวมรูปโครงการต่างๆ</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">รวบรวมประมวลรูปภาพการปฏิบัติราชการ โครงการ และงานกิจกรรมต่าง ๆ ของ อบจ.ภูเก็ต ไว้บน Google Drive คลังกลาง</p>
                     </div>
                 </a>
             </div>
 
             <!-- ข้อความลิขสิทธิ์ท้ายหน้าจอ -->
-            <div class="text-center text-[11px] text-slate-400/90 font-medium tracking-wider relative pt-2">
+            <div class="text-center text-[11px] text-slate-400 font-medium tracking-wider relative pt-2">
                 &copy; 2026 สำนักงานเลขานุการ อบจ.ภูเก็ต
             </div>
         </div>
@@ -540,7 +560,7 @@
                             </button>
                             <button onclick="switchTab('borrow')" class="flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-emerald-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all text-emerald-700">
                                 <i data-lucide="send" class="w-6 h-6 mb-2"></i>
-                                <span class="text-[13px] font-semibold">ยื่นคำขอเบิกวัสดุ</span>
+                                <span class="text-[13px] font-semibold">ยื่นคำขอเบิกวัสดุสิ้นเปลือง</span>
                             </button>
                         </div>
                     </div>
@@ -598,7 +618,6 @@
                             <input type="text" id="search-inventory" oninput="filterAssets()" placeholder="ค้นหารหัส, ชื่อครุภัณฑ์, ผู้เบิก, แผนก..." class="bg-transparent border-none text-[15px] w-full focus:outline-none focus:ring-0">
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <!-- อัปเดต Dropdown คัดกรองหมวดหมู่ครุภัณฑ์ทั้ง 12 รายการ -->
                             <select id="filter-category" onchange="filterAssets()" class="border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-blue-500">
                                 <option value="all">ทุกหมวดหมู่</option>
                                 <option value="ครุภัณฑ์สำนักงาน">ครุภัณฑ์สำนักงาน</option>
@@ -649,7 +668,7 @@
                     </div>
                 </div>
 
-                <!-- ================= TAB: MATERIAL REQUEST ================= -->
+                <!-- ================= TAB: BORROW & RETURN (ระบบเบิกวัสดุ) ================= -->
                 <div id="tab-borrow" class="tab-content hidden space-y-6">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         
@@ -658,25 +677,29 @@
                             <div>
                                 <h3 class="font-bold text-slate-800 text-[15px] border-b border-slate-100 pb-3 flex items-center gap-2" id="borrow-form-title">
                                     <i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i>
-                                    ส่งคำร้องขอเบิกวัสดุ
+                                    ส่งคำร้องขอเบิกใช้งานพัสดุวัสดุสิ้นเปลือง
                                 </h3>
                                 <form id="borrow-form" class="space-y-4 mt-4" onsubmit="handleBorrow(event)">
                                     
                                     <div class="space-y-2 p-3 bg-slate-50 border border-slate-200/60 rounded-xl">
-                                        <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ค้นหาวัสดุในคลังที่พร้อมเบิก</span>
+                                        <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider">ค้นหาพัสดุวัสดุว่างในคลัง</span>
                                         <div class="grid grid-cols-2 gap-2">
-                                            <select id="borrow-asset-cat-filter" onchange="filterBorrowSelector()" class="border border-slate-200 rounded-lg p-2 text-xs bg-white focus:outline-blue-500">
-                                                <option value="all">ทุกประเภทวัสดุ</option>
+                                            <select id="borrow-material-cat-filter" onchange="filterBorrowSelector()" class="border border-slate-200 rounded-lg p-2 text-xs bg-white focus:outline-blue-500">
+                                                <option value="all">ทุกหมวดหมู่</option>
                                                 <option value="วัสดุไฟฟ้าและวิทยุ">วัสดุไฟฟ้าและวิทยุ</option>
                                                 <option value="วัสดุงานบ้านงานครัว">วัสดุงานบ้านงานครัว</option>
                                                 <option value="วัสดุคอมพิวเตอร์">วัสดุคอมพิวเตอร์</option>
                                             </select>
-                                            <input type="text" id="borrow-asset-search" oninput="filterBorrowSelector()" placeholder="พิมพ์ค้นชื่อ/รหัสวัสดุ..." class="border border-slate-200 rounded-lg p-2 text-xs focus:outline-blue-500">
+                                            <input type="text" id="borrow-material-search" oninput="filterBorrowSelector()" placeholder="พิมพ์ค้นชื่อ/รหัส..." class="border border-slate-200 rounded-lg p-2 text-xs focus:outline-blue-500">
                                         </div>
-                                        <select id="borrow-asset-select" required class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white focus:outline-blue-500">
+                                        <select id="borrow-material-select" required class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white focus:outline-blue-500">
                                         </select>
                                     </div>
 
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">จำนวนที่ต้องการเบิก</label>
+                                        <input type="number" id="borrow-qty" required min="1" value="1" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
+                                    </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">ชื่อ-นามสกุล ผู้ขอเบิก</label>
                                         <input type="text" id="borrower-name" readonly required class="w-full border border-slate-200 bg-slate-50 cursor-not-allowed rounded-xl p-3 text-sm focus:outline-blue-500">
@@ -686,30 +709,26 @@
                                         <input type="text" id="borrower-dept" readonly required class="w-full border border-slate-200 bg-slate-50 cursor-not-allowed rounded-xl p-3 text-sm focus:outline-blue-500">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">จำนวนที่ต้องการเบิก</label>
-                                        <input type="number" id="borrow-qty" required min="1" value="1" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">วันที่ยื่นคำขอเบิก</label>
+                                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">วันที่เบิกใช้งาน</label>
                                         <input type="date" id="borrow-date" required class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-blue-500">
                                     </div>
                                     
                                     <button type="submit" class="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-md" id="borrow-submit-btn">
                                         <i data-lucide="check-circle" class="w-5 h-5"></i>
-                                        ส่งคำขอเบิกวัสดุ
+                                        ส่งคำขอเบิกพัสดุ
                                     </button>
                                 </form>
                             </div>
                         </div>
 
-                        <!-- ประวัติคำขอเบิกวัสดุ -->
+                        <!-- ประวัติคำขอเบิกวัสดุสิ้นเปลือง -->
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 lg:col-span-2 flex flex-col space-y-6">
                             
                             <div id="admin-pending-section" class="space-y-3">
                                 <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
                                     <h3 class="font-bold text-slate-800 text-[15px] flex items-center gap-2">
                                         <i data-lucide="bell" class="text-amber-500 w-5 h-5"></i>
-                                        รายการคำร้องขอเบิกวัสดุรอพิจารณา (แอดมินอนุมัติ)
+                                        รายการคำร้องขอเบิกวัสดุรอพิจารณาอนุมัติ (แอดมิน)
                                     </h3>
                                     <span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-bold" id="badge-pending-count">0</span>
                                 </div>
@@ -717,9 +736,10 @@
                                     <table class="w-full text-left border-collapse text-sm">
                                         <thead>
                                             <tr class="bg-slate-50 text-xs font-semibold text-slate-500 border-b border-slate-200">
-                                                <th class="py-3 px-4">วัสดุ</th>
+                                                <th class="py-3 px-4">วัสดุที่ขอเบิก</th>
+                                                <th class="py-3 px-4">จำนวน</th>
                                                 <th class="py-3 px-4">ผู้ยื่นเรื่อง/แผนก</th>
-                                                <th class="py-3 px-4">วันที่เบิก</th>
+                                                <th class="py-3 px-4">วันที่ขอ</th>
                                                 <th class="py-3 px-4 text-right">การพิจารณา</th>
                                             </tr>
                                         </thead>
@@ -733,7 +753,7 @@
                                 <div class="pb-3 border-b border-slate-100">
                                     <h3 class="font-bold text-slate-800 text-[15px] flex items-center gap-2">
                                         <i data-lucide="clipboard-list" class="text-blue-600 w-5 h-5"></i>
-                                        ทะเบียนประวัติการเบิกวัสดุล่าสุด
+                                        ทะเบียนประวัติการขอเบิกวัสดุสิ้นเปลือง
                                     </h3>
                                 </div>
                                 <div class="overflow-x-auto">
@@ -741,10 +761,11 @@
                                         <thead>
                                             <tr class="bg-slate-50 text-xs font-semibold text-slate-500 border-b border-slate-200">
                                                 <th class="py-3 px-4">วัสดุ</th>
-                                                <th class="py-3 px-4">ผู้ขอเบิก / สังกัด</th>
+                                                <th class="py-3 px-4">จำนวน</th>
+                                                <th class="py-3 px-4">ผู้ยื่นเบิก / สังกัด</th>
                                                 <th class="py-3 px-4">วันที่เบิก</th>
                                                 <th class="py-3 px-4">สถานะอนุมัติ</th>
-                                                <th class="py-3 px-4 text-right" id="action-header-cell">ดำเนินการ</th>
+                                                <th class="py-3 px-4 text-right" id="action-header-cell">การพิมพ์เอกสาร</th>
                                             </tr>
                                         </thead>
                                         <tbody id="borrow-table-body" class="divide-y divide-slate-100">
@@ -936,7 +957,6 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-400 mb-1.5 uppercase">หมวดหมู่พัสดุ</label>
-                        <!-- อัปเดตเมนูหมวดหมู่ครุภัณฑ์ทั้ง 12 หมวดหมู่ในขั้นตอนบันทึกข้อมูล -->
                         <select id="form-category" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white focus:outline-blue-500">
                             <option value="ครุภัณฑ์สำนักงาน">ครุภัณฑ์สำนักงาน</option>
                             <option value="ครุภัณฑ์ยานพาหนะและขนส่ง">ครุภัณฑ์ยานพาหนะและขนส่ง</option>
@@ -983,7 +1003,7 @@
     <!-- 2. Modal: บัตรคุมประวัติครุภัณฑ์ -->
     <div id="asset-detail-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl flex flex-col overflow-hidden">
-            <div class="p-6 bg-slate-900 text-white flex justify-between items-center bg-gradient-to-r from-slate-900 to-blue-950">
+            <div class="p-6 bg-slate-900 text-white flex justify-between items-center bg-gradient-to-r from-blue-900 to-indigo-950">
                 <div>
                     <span class="text-xs text-blue-300 font-semibold uppercase tracking-wider" id="detail-category-badge">ครุภัณฑ์คอมพิวเตอร์</span>
                     <h3 class="font-bold text-lg mt-0.5" id="detail-title">-</h3>
@@ -1590,8 +1610,8 @@
         ];
 
         const initialActivities = [
-            { time: "09:15 น. วันนี้", user: "นายกรกช", action: "ได้รับอนุมัติการเบิก รถจักรยานยนต์ Honda CB300R ไปใช้งานสายตรวจชุมชน" },
-            { time: "10:30 น. วันนี้", user: "สมชาย รักดี", action: "ยื่นคำขอเสนออนุมัติเบิก กล้องถ่ายภาพ Sony Alpha 7 IV" }
+            { time: "09:15 น. วันนี้", user: "นายกรกช", action: "ได้รับอนุมัติการเบิกพัสดุอุปกรณ์ ไปใช้ราชการในหน่วยงาน" },
+            { time: "10:30 น. วันนี้", user: "สมชาย รักดี", action: "ยื่นคำขอเสนออนุมัติเบิกพัสดุผ่านทางระบบ E-Office" }
         ];
 
         const defaultUsers = [
@@ -1602,7 +1622,7 @@
         let assets = [];
         let borrowRecords = [];
         let activities = [];
-        let users = [];
+        let users = [...defaultUsers]; // โหลดค่าตั้งต้นทันทีเพื่อให้ระบบ login ได้ชัวร์ 100%
         let materials = [];
 
         let currentUser = null;
@@ -1633,7 +1653,17 @@
                 const shortRole = currentUser.role === 'admin' ? 'ผู้ดูแลระบบ (Admin)' : 'ผู้ใช้งานทั่วไป (User)';
                 greetingText.innerText = `เข้าใช้งานโดย: คุณ${currentUser.name} (${currentUser.dept} - ${shortRole})`;
             }
-            lucide.createIcons();
+            safeCreateIcons();
+        }
+
+        function safeCreateIcons() {
+            try {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            } catch (e) {
+                console.error("Lucide icons error:", e);
+            }
         }
 
         // เข้าสู่ระบบวัสดุและครุภัณฑ์ (เปิดหน้าแดชบอร์ดสรุปงาน)
@@ -1646,7 +1676,7 @@
             switchTab('dashboard'); 
         }
 
-        // เข้าสู่ระบบจัดการผู้ใช้งาน (ถอนตัวแยกเดี่ยวออกมาหน้าแรก)
+        // เข้าสู่ระบบจัดการผู้ใช้งาน
         function enterUserSystem() {
             if (!currentUser) {
                 showLogin();
@@ -1656,8 +1686,8 @@
                 showToast("ข้อผิดพลาด: เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถเข้าถึงระบบจัดการผู้ใช้งานได้", "error");
                 return;
             }
-            showWorkspace(); // เปิดหน้า workspace
-            switchTab('users'); // สลับแท็บไปที่หน้าจัดการผู้ใช้โดยตรง
+            showWorkspace(); 
+            switchTab('users'); 
         }
 
         async function authenticateFirebase() {
@@ -1747,7 +1777,6 @@
                     db = firebase.firestore();
                     isFirebaseActive = true;
                     
-                    // เรียกเช็คและเติมคลังทันทีถ้าเจอ db บนคลาวด์ว่างเปล่า
                     await checkAndAutoPopulateFirestore();
 
                     badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span><span>คลาวด์ออนไลน์</span>`;
@@ -2035,6 +2064,7 @@
             const usernameInp = document.getElementById('login-username').value.trim().toLowerCase();
             const passwordInp = document.getElementById('login-password').value;
 
+            // ผสานข้อมูลผู้ใช้ให้มีความสมบูรณ์ในการ Login
             const lookupList = (users && users.length > 0) ? users : defaultUsers;
             const user = lookupList.find(u => u.username === usernameInp && u.password === passwordInp);
             
@@ -2122,7 +2152,6 @@
             const quickAddBtn = document.getElementById('quick-action-add-btn');
             
             const inventoryActionCol = document.getElementById('action-header-td');
-            const borrowActionCol = document.getElementById('action-header-cell');
             const matActionCol = document.getElementById('mat-action-header');
 
             const portalUserCard = document.getElementById('portal-card-users');
@@ -2146,7 +2175,6 @@
                 if (quickAddBtn) quickAddBtn.classList.remove('hidden');
                 
                 if (inventoryActionCol) inventoryActionCol.style.display = 'table-cell';
-                if (borrowActionCol) borrowActionCol.style.display = 'table-cell';
                 if (matActionCol) matActionCol.style.display = 'table-cell';
 
                 if (portalUserCard) portalUserCard.style.display = 'flex';
@@ -2181,7 +2209,6 @@
                 if (quickAddBtn) quickAddBtn.classList.add('hidden');
                 
                 if (inventoryActionCol) inventoryActionCol.style.display = 'none';
-                if (borrowActionCol) borrowActionCol.style.display = 'table-cell';
                 if (matActionCol) matActionCol.style.display = 'none';
 
                 if (portalUserCard) portalUserCard.style.display = 'none';
@@ -2196,6 +2223,10 @@
                 
                 document.getElementById('quick-actions-grid').className = "grid grid-cols-1 gap-3";
             }
+
+            // คอลัมน์พิมพ์สำหรับใบเบิกประวัติเบิกพัสดุเปิดให้เข้าถึงได้ทั้ง User และ Admin (ประมวลผลเงื่อนไขอนุมัติชั้นใน)
+            const borrowActionCol = document.getElementById('action-header-cell');
+            if (borrowActionCol) borrowActionCol.style.display = 'table-cell';
         }
 
         // ระบบยืนยันรายการ (Custom Confirm Dialog)
@@ -2317,7 +2348,7 @@
             renderMaterialsTab(); 
             renderUsersTable();
             renderPieCharts();
-            lucide.createIcons();
+            safeCreateIcons();
         }
 
         function renderStats() {
@@ -2669,18 +2700,9 @@
             const filterStat = document.getElementById('filter-status').value;
 
             const filtered = assets.filter(item => {
-                const activeBorrow = item.status === 'borrowed' 
-                    ? borrowRecords.find(r => r.assetId === item.id && r.status === 'approved') 
-                    : (item.status === 'pending_approval' ? borrowRecords.find(r => r.assetId === item.id && r.status === 'pending') : null);
-
-                const borrowerName = activeBorrow ? activeBorrow.borrower.toLowerCase() : '';
-                const borrowerDept = activeBorrow ? activeBorrow.department.toLowerCase() : '';
-
                 const matchSearch = item.name.toLowerCase().includes(searchValue) || 
                                     item.id.toLowerCase().includes(searchValue) ||
-                                    item.responsible.toLowerCase().includes(searchValue) ||
-                                    borrowerName.includes(searchValue) ||
-                                    borrowerDept.includes(searchValue);
+                                    item.responsible.toLowerCase().includes(searchValue);
                 const matchCat = filterCat === 'all' || item.category === filterCat;
                 const matchStat = filterStat === 'all' || item.status === filterStat;
                 return matchSearch && matchCat && matchStat;
@@ -2701,29 +2723,13 @@
             }
 
             tbody.innerHTML = filtered.map(item => {
-                const activeBorrow = item.status === 'borrowed' 
-                    ? borrowRecords.find(r => r.assetId === item.id && r.status === 'approved') 
-                    : (item.status === 'pending_approval' ? borrowRecords.find(r => r.assetId === item.id && r.status === 'pending') : null);
-
                 let statusBadge = '';
                 if (item.status === 'available') {
                     statusBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">พร้อมใช้งาน</span>`;
                 } else if (item.status === 'pending_approval') {
-                    const requesterLabel = activeBorrow ? `ผู้ขอ: ${activeBorrow.borrower}` : 'รออนุมัติเบิก';
-                    statusBadge = `
-                        <div class="flex flex-col items-start gap-1">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">รออนุมัติเบิก</span>
-                            <span class="text-[10px] text-amber-600 font-semibold bg-amber-50/60 px-1.5 py-0.5 rounded border border-amber-200/40">${requesterLabel}</span>
-                        </div>
-                    `;
+                    statusBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">รออนุมัติเบิก</span>`;
                 } else if (item.status === 'borrowed') {
-                    const borrowerLabel = activeBorrow ? `ผู้เบิก: ${activeBorrow.borrower}` : 'ถูกเบิกใช้งาน';
-                    statusBadge = `
-                        <div class="flex flex-col items-start gap-1">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">ถูกเบิกใช้งาน</span>
-                            <span class="text-[10px] text-blue-600 font-semibold bg-blue-50/60 px-1.5 py-0.5 rounded border border-blue-200/40">${borrowerLabel}</span>
-                        </div>
-                    `;
+                    statusBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">ถูกเบิกใช้งาน</span>`;
                 }
 
                 const assetPhoto = item.image || `https://placehold.co/100x100/e2e8f0/475569?text=${encodeURIComponent(item.category)}`;
@@ -2757,9 +2763,7 @@
                         <td class="py-4 px-6 font-bold text-slate-900">${item.id}</td>
                         <td class="py-4 px-6">
                             <div class="font-bold text-slate-800">${item.name}</div>
-                            <div class="text-[10px] text-slate-400 mt-1 space-y-0.5">
-                                ${activeBorrow ? `<div class="text-blue-600 font-bold bg-blue-50/60 px-1.5 py-0.5 rounded border border-blue-100/30 inline-block">ผู้ครอบครอง: ${activeBorrow.borrower} (${activeBorrow.department})</div>` : ''}
-                            </div>
+                            <div class="text-[10px] text-slate-400 mt-1">ผู้ครอบครองปัจจุบัน: ${item.responsible}</div>
                         </td>
                         <td class="py-4 px-6 text-xs text-slate-500 font-semibold">${item.category}</td>
                         <td class="py-4 px-6 text-xs text-slate-500">${item.location}</td>
@@ -2780,10 +2784,12 @@
             lucide.createIcons();
         }
 
+        // ดึงพัสดุวัสดุสิ้นเปลืองที่มีสต็อกในระบบมาใส่ตัวเลือกผู้เบิก
         function filterBorrowSelector() {
-            const catFilter = document.getElementById('borrow-asset-cat-filter').value;
-            const searchVal = document.getElementById('borrow-asset-search').value.toLowerCase();
-            const selectEl = document.getElementById('borrow-asset-select');
+            const catFilter = document.getElementById('borrow-material-cat-filter').value;
+            const searchVal = document.getElementById('borrow-material-search').value.toLowerCase();
+            const selectEl = document.getElementById('borrow-material-select');
+            if (!selectEl) return;
 
             const availableList = materials.filter(item => {
                 const matchCat = catFilter === 'all' || item.category === catFilter;
@@ -2792,14 +2798,15 @@
             });
 
             if (availableList.length === 0) {
-                selectEl.innerHTML = `<option value="">-- ไม่พบวัสดุคงคลังพร้อมให้เบิก --</option>`;
+                selectEl.innerHTML = `<option value="">-- ไม่พบวัสดุคงเหลือในคลัง --</option>`;
             } else {
                 selectEl.innerHTML = availableList.map(item => `
-                    <option value="${item.id}">${item.id} - ${item.name} | คงเหลือ ${item.stock} ${item.unit}</option>
+                    <option value="${item.id}">${item.id} - ${item.name} (คงเหลือในสต็อก: ${item.stock} ${item.unit})</option>
                 `).join('');
             }
         }
 
+        // ประมวลผลหน้าต่างความต้องการขอเบิกวัสดุสิ้นเปลือง
         function renderBorrowTab() {
             filterBorrowSelector();
 
@@ -2811,19 +2818,24 @@
             if (pendingRecords.length === 0) {
                 pendingBody.innerHTML = `
                     <tr>
-                        <td colspan="4" class="py-4 text-center text-xs text-slate-400">
-                            ไม่มีรายการรอการอนุมัติเบิกวัสดุในขณะนี้
+                        <td colspan="5" class="py-4 text-center text-xs text-slate-400">
+                            ไม่มีรายการคำร้องขอเบิกพัสดุวัสดุสิ้นเปลืองรอพิจารณาในขณะนี้
                         </td>
                     </tr>
                 `;
             } else {
                 pendingBody.innerHTML = pendingRecords.map(record => {
                     const mat = materials.find(m => m.id === record.assetId);
-                    const matName = mat ? mat.name : "ไม่พบข้อมูลวัสดุ";
-                    const qtyLabel = `${record.qty || 1} ${record.unit || mat?.unit || 'หน่วย'}`;
+                    const matName = mat ? mat.name : "วัสดุรหัสว่าง";
+                    const matUnit = mat ? mat.unit : "หน่วย";
+                    const qty = record.qty || 1;
                     return `
                         <tr class="bg-amber-50/20">
-                            <td class="py-3 px-4 font-semibold text-slate-800">${record.assetId}<br><span class="text-[10px] font-normal text-slate-400">${matName}</span><br><span class="text-[10px] font-bold text-indigo-600">จำนวน ${qtyLabel}</span></td>
+                            <td class="py-3 px-4 font-semibold text-slate-800">
+                                ${record.assetId}<br>
+                                <span class="text-[10px] font-normal text-slate-400">${matName}</span>
+                            </td>
+                            <td class="py-3 px-4 font-bold text-slate-700">${qty} ${matUnit}</td>
                             <td class="py-3 px-4 text-xs"><strong>${record.borrower}</strong><br><span class="text-[10px] text-slate-400">${record.department}</span></td>
                             <td class="py-3 px-4 text-xs text-slate-600">${record.borrowDate}</td>
                             <td class="py-3 px-4 text-right">
@@ -2838,15 +2850,13 @@
             }
 
             const tbody = document.getElementById('borrow-table-body');
-            const activeAndHistRecords = currentUser?.role === 'admin'
-                ? borrowRecords.filter(r => r.status !== 'pending')
-                : borrowRecords;
+            const activeAndHistRecords = borrowRecords.filter(r => r.status !== 'pending');
 
             if (activeAndHistRecords.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="5" class="py-6 text-center text-slate-400">
-                            ไม่มีข้อมูลประวัติความเคลื่อนไหวการเบิกวัสดุ
+                        <td colspan="6" class="py-6 text-center text-slate-400">
+                            ไม่มีข้อมูลประวัติการทำรายการขอเบิกวัสดุสิ้นเปลือง
                         </td>
                     </tr>
                 `;
@@ -2855,35 +2865,41 @@
 
             tbody.innerHTML = activeAndHistRecords.map(record => {
                 const mat = materials.find(m => m.id === record.assetId);
-                const matName = mat ? mat.name : "ไม่พบข้อมูลวัสดุ";
-                const qtyLabel = `${record.qty || 1} ${record.unit || mat?.unit || 'หน่วย'}`;
+                const matName = mat ? mat.name : "วัสดุสิ้นเปลืองไม่มีในระบบ";
+                const matUnit = mat ? mat.unit : "หน่วย";
+                const qty = record.qty || 1;
                 
                 let statusBadge = '';
                 if (record.status === 'approved') {
-                    statusBadge = `<span class="px-2.5 py-1 rounded bg-blue-50 border border-blue-200 text-blue-700 font-bold text-xs">อนุมัติเรียบร้อย</span>`;
-                } else if (record.status === 'pending') {
-                    statusBadge = `<span class="px-2.5 py-1 rounded bg-amber-50 border border-amber-200 text-amber-700 font-bold text-xs">รอแอดมินอนุมัติ</span>`;
+                    statusBadge = `<span class="px-2.5 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs">อนุมัติแล้ว</span>`;
                 } else if (record.status === 'rejected') {
                     statusBadge = `<span class="px-2.5 py-1 rounded bg-rose-50 border border-rose-200 text-rose-700 font-bold text-xs">ปฏิเสธสิทธิ์</span>`;
                 } else {
-                    statusBadge = `<span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200 text-slate-500 font-medium text-xs">ส่งคืนคลังแล้ว</span>`;
+                    statusBadge = `<span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200 text-slate-500 font-medium text-xs">จ่ายพัสดุแล้ว</span>`;
                 }
 
-                let actionButton = `<span class="text-xs text-slate-400">รออนุมัติก่อนพิมพ์</span>`;
+                // การสิทธิ์พิมพ์เอกสารเบิก: พิมพ์เอกสารได้ต่อเมื่อแอดมินพิจารณา "อนุมัติแล้ว" เท่านั้น
+                let actionButton = '';
                 if (record.status === 'approved') {
                     actionButton = `
-                        <button onclick="printBorrowSlip('${record.id}')" class="inline-flex items-center gap-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold py-1.5 px-2.5 rounded-lg border border-blue-200 transition-colors" title="พิมพ์ใบเบิกวัสดุ">
+                        <button onclick="printBorrowSlip('${record.id}')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-3 rounded-lg flex items-center gap-1 transition-all shadow-sm" title="พิมพ์ใบเบิกพัสดุ">
                             <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-                            พิมพ์
+                            <span>พิมพ์ใบเบิก</span>
                         </button>
                     `;
                 } else if (record.status === 'rejected') {
-                    actionButton = `<span class="text-xs text-slate-400">ไม่สามารถพิมพ์ได้</span>`;
+                    actionButton = `<span class="text-xs text-rose-500 font-semibold">พิมพ์ไม่ได้ (ปฏิเสธ)</span>`;
+                } else {
+                    actionButton = `<span class="text-xs text-slate-400">เสร็จสมบูรณ์</span>`;
                 }
 
                 return `
                     <tr class="hover:bg-slate-50/50">
-                        <td class="py-3.5 px-4 font-bold text-slate-800">${record.assetId}<br><span class="text-xs text-slate-400 font-medium">${matName}</span><br><span class="text-[10px] font-bold text-indigo-600">จำนวน ${qtyLabel}</span></td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800">
+                            ${record.assetId}<br>
+                            <span class="text-xs text-slate-400 font-medium">${matName}</span>
+                        </td>
+                        <td class="py-3.5 px-4 font-bold text-slate-700">${qty} ${matUnit}</td>
                         <td class="py-3.5 px-4 text-xs"><strong>${record.borrower}</strong><br><span class="text-slate-400">${record.department}</span></td>
                         <td class="py-3.5 px-4 text-xs text-slate-600">${record.borrowDate}</td>
                         <td class="py-3.5 px-4 text-xs">${statusBadge}</td>
@@ -3321,6 +3337,7 @@
 
         function renderUsersTable() {
             const tbody = document.getElementById('user-table-body');
+            if (!tbody) return;
             if (users.length === 0) {
                 tbody.innerHTML = `
                     <tr>
@@ -3629,7 +3646,7 @@
         async function handleBorrow(e) {
             e.preventDefault();
             
-            const materialId = document.getElementById('borrow-asset-select').value;
+            const materialId = document.getElementById('borrow-material-select').value;
             const borrower = document.getElementById('borrower-name').value.trim();
             const dept = document.getElementById('borrower-dept').value.trim();
             const borrowDate = document.getElementById('borrow-date').value;
@@ -3685,7 +3702,7 @@
             }
 
             renderApp();
-            document.getElementById('borrow-asset-search').value = "";
+            document.getElementById('borrow-material-search').value = "";
             document.getElementById('borrow-qty').value = 1;
         }
 
@@ -3746,34 +3763,7 @@
             }
         }
 
-        // รับคืนพัสดุ
-        function handleReturn(recordId) {
-            if (currentUser?.role !== 'admin') return;
-
-            const record = borrowRecords.find(r => r.id === recordId);
-            if (record) {
-                showConfirmModal(
-                    "ตรวจสอบส่งคืนพัสดุ?",
-                    `คุณต้องการตรวจรับครุภัณฑ์พัสดุรหัส ${record.assetId} กลับคืนคลังหลักใช่หรือไม่?`,
-                    async function() {
-                        record.status = "returned";
-
-                        const asset = assets.find(a => a.id === record.assetId);
-                        if (asset) {
-                            asset.status = "available";
-                            await writeAsset(asset);
-                        }
-
-                        await writeBorrowRecord(record);
-                        await writeActivity(record.borrower, `ตรวจรับคืนครุภัณฑ์ [${record.assetId}] เรียบร้อย`);
-                        showToast(`รับพัสดุส่งคืนเข้าคลังคุมพัสดุเรียบร้อย`, "success");
-                    },
-                    false
-                );
-            }
-        }
-
-        // ระบบกล่องข้อมูล Toast Alert
+        // ระบบแจ้งเตือน (Custom Toast Alert)
         function showToast(message, type = "success") {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -3848,8 +3838,6 @@
                 document.getElementById('asset-detail-modal').classList.remove('hidden');
             }
         }
-
-        function closeAssetDetailModal() { document.getElementById('asset-detail-modal').classList.add('hidden'); }
 
         // ระบบบันทึก Config UI เพื่อเชื่อมคลาวด์
         function openFirebaseSettings() {
