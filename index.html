@@ -66,29 +66,13 @@
         <div class="relative w-full max-w-xl bg-white/90 backdrop-blur-2xl p-10 md:p-12 rounded-[2.5rem] border border-blue-100 shadow-[0_25px_60px_-15px_rgba(30,41,59,0.15)] flex flex-col space-y-8 my-auto">
             
             <div class="text-center space-y-4 relative pt-4">
-                <div class="inline-flex relative p-2.5 bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 rounded-[2rem] shadow-lg shadow-blue-500/20 border border-white/20">
-                    <!-- โลโก้หรูหราฟ้าครามสลับทอง (Luxurious Sky Blue & Gold Crest) -->
-                    <svg class="w-20 h-20 text-white filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.1)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="crestGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#fef08a" />
-                                <stop offset="50%" stop-color="#eab308" />
-                                <stop offset="100%" stop-color="#854d0e" />
-                            </linearGradient>
-                            <linearGradient id="crestBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#38bdf8" />
-                                <stop offset="100%" stop-color="#1e3a8a" />
-                            </linearGradient>
-                        </defs>
-                        <!-- โล่พิทักษ์ -->
-                        <path d="M50 5 L85 20 C85 55 50 85 50 95 C50 85 15 55 15 20 L50 5 Z" fill="url(#crestBlue)" stroke="url(#crestGold)" stroke-width="4" />
-                        <!-- สลักสัญลักษณ์ด้านใน -->
-                        <path d="M50 15 L75 28 L50 41 L25 28 Z" fill="url(#crestGold)" opacity="0.95" />
-                        <path d="M50 41 L75 28 L75 55 L50 68 Z" fill="#ca8a04" opacity="0.8" />
-                        <path d="M25 28 L50 41 L50 68 L25 55 Z" fill="#854d0e" opacity="0.85" />
-                        <!-- มงกุฎประกายดาวตรงกลาง -->
-                        <circle cx="50" cy="41" r="5" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,1))" />
-                        <path d="M50 78 L65 68 L50 62 L35 68 Z" fill="url(#crestGold)" />
+                <div class="inline-flex relative p-1.5">
+                    <!-- ย้อนกลับมาใช้โลโก้กล่อง 3 มิติ ดั้งเดิมบนหน้าจอล็อกอิน -->
+                    <svg class="w-20 h-16 mx-auto drop-shadow-[0_8px_16px_rgba(59,130,246,0.15)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" stroke="#3b82f6" stroke-width="2" stroke-dasharray="8 6" opacity="0.5"/>
+                        <path d="M50 18 L78 33 L50 48 L22 33 Z" fill="#06b6d4" opacity="0.9"/>
+                        <path d="M50 48 L78 33 L78 63 L50 78 Z" fill="#3b82f6" opacity="0.95"/>
+                        <path d="M22 33 L50 48 L50 78 L22 63 Z" fill="#1d4ed8" opacity="0.75"/>
                     </svg>
                 </div>
                 <div class="space-y-1.5">
@@ -142,14 +126,13 @@
 
             <!-- ส่วนหัวแสดงตราสัญลักษณ์และหัวข้อ Portal -->
             <div class="text-center space-y-4 relative">
-                <div class="inline-flex relative p-2.5 bg-gradient-to-tr from-blue-600 via-blue-500 to-sky-400 rounded-[2.5rem] shadow-lg shadow-blue-500/15 border border-white/30">
-                    <!-- Emblem Logo -->
-                    <svg class="w-20 h-20 text-white filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.1)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M50 5 L85 20 C85 55 50 85 50 95 C50 85 15 55 15 20 L50 5 Z" fill="url(#crestBlue)" stroke="url(#crestGold)" stroke-width="4.5" />
-                        <path d="M50 15 L75 28 L50 41 L25 28 Z" fill="url(#crestGold)" opacity="0.95" />
-                        <path d="M50 41 L75 28 L75 55 L50 68 Z" fill="#ca8a04" />
-                        <path d="M25 28 L50 41 L50 68 L25 55 Z" fill="#854d0e" />
-                        <circle cx="50" cy="41" r="5" fill="#ffffff" filter="drop-shadow(0 0 4px #ffffff)"/>
+                <div class="inline-flex relative p-2 bg-gradient-to-tr from-blue-500 to-sky-400 rounded-3xl shadow-lg shadow-blue-500/20">
+                    <!-- ย้อนกลับมาใช้โลโก้ดั้งเดิมบนหน้าพอร์ทัลหลัก -->
+                    <svg class="w-16 h-16 text-white" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 15 L80 30 L50 45 L20 30 Z" fill="currentColor" opacity="0.9"/>
+                        <path d="M50 45 L80 30 L80 60 L50 75 Z" fill="currentColor" opacity="0.95"/>
+                        <path d="M20 30 L50 45 L50 75 L20 60 Z" fill="currentColor" opacity="0.75"/>
+                        <circle cx="50" cy="45" r="5" fill="#f59e0b"/>
                     </svg>
                 </div>
                 <div class="space-y-2">
@@ -1632,6 +1615,21 @@
         let statusChartInstance = null;
         let materialChartInstance = null; 
         let materialDashboardChartInstance = null; 
+
+        // ฟังก์ชันแปลงรูปแบบวันที่สากลให้ออกมาเป็นภาษาไทยสลักจุดไข่ปลา (Thai Date Parser for Government Form)
+        function parseThaiDate(dateStr) {
+            if (!dateStr) return { day: '.....', month: '........................', year: '..........' };
+            try {
+                const parts = dateStr.split('-');
+                const year = parseInt(parts[0], 10) + 543;
+                const monthIdx = parseInt(parts[1], 10) - 1;
+                const day = parseInt(parts[2], 10);
+                const months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+                return { day: day, month: months[monthIdx] || '........................', year: year };
+            } catch(e) {
+                return { day: '.....', month: '........................', year: '..........' };
+            }
+        }
 
         // การเชื่อมต่อฐานข้อมูลคลาวด์ FIREBASE ENGINE
         let db = null;
@@ -3179,67 +3177,116 @@
             await writeActivity("เจ้าหน้าที่พัสดุ", `ทำเรื่องจ่ายวัสดุสิ้นเปลืองด่วน: ${mat.name} จำนวน ${qty} ${mat.unit} ให้แก่คุณ ${recipient} (${dept})`);
             showToast("ตัดยอดคลังวัสดุสิ้นเปลืองเสร็จสิ้น กำลังเปิดรายงานการพิมพ์...", "success");
 
+            const tDate = parseThaiDate(dateStr);
             const printSec = document.getElementById('print-section');
+            
             printSec.innerHTML = `
-                <div style="font-family: 'TH SarabunIT๙', 'TH Sarabun IT๙', 'TH Sarabun New', 'Sarabun', sans-serif; padding: 40px; color: #000; line-height: 1.6; max-width: 800px; margin: 0 auto; background: white; font-size: 18px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
-                        <div>
-                            <h2 style="margin: 0; font-size: 28px; font-weight: bold; line-height: 1.2;">ใบเบิกจ่ายพัสดุวัสดุสิ้นเปลือง</h2>
-                            <h3 style="margin: 5px 0 0 0; font-size: 20px; font-weight: bold; color: #334155; line-height: 1.2;">สำนักงานเลขานุการ อบจ.ภูเก็ต</h3>
+                <style>
+                    @media print {
+                        @page {
+                            size: A4 portrait;
+                            margin: 0;
+                        }
+                        body {
+                            margin: 0;
+                            padding: 0;
+                            background: white !important;
+                        }
+                    }
+                </style>
+                <div style="width: 210mm; height: 297mm; padding: 20mm 15mm 15mm 15mm; margin: 0 auto; font-family: 'Sarabun', 'TH Sarabun New', 'TH SarabunIT๙', sans-serif; font-size: 19px; color: black; line-height: 1.5; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; background: white; page-break-inside: avoid;">
+                    <div style="flex-grow: 1;">
+                        <!-- หัวข้อกึ่งกลางตามแบบสแกน -->
+                        <div style="width: 100%; text-align: center; font-weight: bold; font-size: 26px; margin-bottom: 5px;">ใบเบิกพัสดุ</div>
+                        
+                        <!-- ช่องขวาบน: ใบเบิกเลขที่ / ปี และวันที่ (ตัดเส้นจุดไข่ปลาออก และทำตัวหนา) -->
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; font-size: 19px; margin-bottom: 25px; line-height: 2;">
+                            <div>ใบเบิกเลขที่ <span style="display: inline-block; width: 140px; text-align: center; font-weight: 900; font-size: 21px;">${mat.id}</span> / <span style="display: inline-block; width: 70px; text-align: center; font-weight: 900; font-size: 21px;">${tDate.year}</span></div>
+                            <div style="margin-top: 4px;">วันที่ <span style="display: inline-block; width: 45px; text-align: center; font-weight: 900; font-size: 21px;">${tDate.day}</span> เดือน <span style="display: inline-block; width: 140px; text-align: center; font-weight: 900; font-size: 21px;">${tDate.month}</span> พ.ศ. <span style="display: inline-block; width: 70px; text-align: center; font-weight: 900; font-size: 21px;">${tDate.year}</span></div>
                         </div>
-                        <div style="text-align: right;">
-                            <span style="font-size: 16px; font-weight: bold; border: 1px solid #000; padding: 4px 10px; border-radius: 4px;">ต้นฉบับงานพัสดุ</span>
+
+                        <!-- คำขึ้นต้นเรียน (ตัดเส้นจุดไข่ปลาออก และทำตัวหนา) -->
+                        <div style="font-size: 19px; line-height: 2; margin-bottom: 15px;">
+                            เรียน  เลขานุการองค์การบริหารส่วนจังหวัด<br>
+                            <span style="display: inline-block; width: 50px;"></span>เจ้าหน้าที่ในสังกัดขอเบิกวัสดุ <span style="display: inline-block; width: 520px; font-weight: 900; text-align: center; font-size: 21px; padding-bottom: 2px;">${mat.category}</span><br>
+                            เพื่อใช้ในการปฏิบัติงานราชการของสำนักงานเลขานุการ อบจ. ตามลำดับ ดังนี้
                         </div>
+
+                        <!-- ตารางพัสดุ 5 คอลัมน์ตรงตามแบบฟอร์มสแกน -->
+                        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; font-size: 18px; margin-bottom: 20px;">
+                            <thead>
+                                <tr style="border-bottom: 1.5px solid #000; background-color: #f8fafc; font-weight: bold; height: 38px;">
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 8%;">ลำดับ</th>
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 42%;">รายการ</th>
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 12%;">จำนวน</th>
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 18%;">ชื่อผู้ขอเบิก</th>
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 20%;">ได้รับพัสดุถูกต้องแล้ว<br>ลงชื่อผู้รับพัสดุ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height: 34px;">
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px;">1</td>
+                                    <td style="border: 1px solid #000; text-align: left; padding: 6px 10px; font-weight: bold;">${mat.name}</td>
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px; font-weight: bold;">${qty} ${mat.unit}</td>
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px; font-weight: bold;">${recipient}</td>
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px;">
+                                        <span style="display: inline-block; width: 85%; border-bottom: 1px dotted #999; height: 16px;"></span>
+                                    </td>
+                                </tr>
+                                ${Array.from({length: 8}).map((_, index) => `
+                                <tr style="height: 34px;">
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px;">${index + 2}</td>
+                                    <td style="border: 1px solid #000; padding: 6px;"></td>
+                                    <td style="border: 1px solid #000; padding: 6px;"></td>
+                                    <td style="border: 1px solid #000; padding: 6px;"></td>
+                                    <td style="border: 1px solid #000; padding: 6px;"></td>
+                                </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
                     </div>
 
-                    <table style="width: 100%; margin-bottom: 20px; font-size: 18px;">
-                        <tr>
-                            <td style="width: 50%; padding: 4px 0;"><strong>รหัสเบิกจ่าย:</strong> ${mat.id}</td>
-                            <td style="width: 50%; padding: 4px 0; text-align: right;"><strong>วันที่ทำรายการ:</strong> ${dateStr}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 4px 0;"><strong>ผู้รับมอบพัสดุ:</strong> ${recipient}</td>
-                            <td style="padding: 4px 0; text-align: right;"><strong>ฝ่าย/กองสังกัด:</strong> ${dept}</td>
-                        </tr>
-                    </table>
-
-                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 18px;">
-                        <thead>
-                            <tr style="border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; background-color: #f8fafc;">
-                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">ลำดับ</th>
-                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 55%;">รายการวัสดุอุปกรณ์สิ้นเปลือง</th>
-                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">จำนวนเบิก</th>
-                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">หน่วยนับ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="border-bottom: 1.5px solid #000;">
-                                <td style="padding: 10px 10px;">1</td>
-                                <td style="padding: 10px 10px;">
-                                    <div style="font-weight: bold; font-size: 20px;">${mat.name}</div>
-                                    <div style="font-size: 16px; color: #475569; margin-top: 2px;">หมวดหมู่: ${mat.category}</div>
+                    <!-- ส่วนลงชื่อและประเมินอนุมัติตามรูปสแกนต้นฉบับ -->
+                    <div style="font-size: 18px; box-sizing: border-box;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; line-height: 1.8;">
+                            <tr>
+                                <td style="width: 48%; vertical-align: top;">
+                                    <div style="font-weight: bold; margin-bottom: 6px;">ความเห็นของหัวหน้าเจ้าหน้าที่</div>
+                                    <div style="border-bottom: 1px dotted #000; width: 100%; height: 24px; margin-bottom: 15px;"></div>
+                                    <div style="text-align: center; margin-top: 15px;">
+                                        (ลงชื่อ)............................................................หัวหน้าเจ้าหน้าที่<br>
+                                        (............................................................)<br>
+                                        วันที่.........../................../...........
+                                    </div>
                                 </td>
-                                <td style="padding: 10px 10px; text-align: right; font-weight: bold; font-size: 20px;">${qty}</td>
-                                <td style="padding: 10px 10px; text-align: right;">${mat.unit}</td>
+                                <td style="width: 4%;"></td>
+                                <td style="width: 48%; vertical-align: top;">
+                                    <div style="font-weight: bold; margin-bottom: 6px;">ความเห็นของเลขานุการองค์การบริหารส่วนจังหวัด</div>
+                                    <div style="margin-top: 10px; margin-bottom: 15px; display: flex; gap: 30px;">
+                                        <span style="display: inline-flex; align-items: center; gap: 8px;">
+                                            <span style="display: inline-block; width: 15px; height: 14px; border: 1.5px solid #000;"></span> อนุมัติ
+                                        </span>
+                                        <span style="display: inline-flex; align-items: center; gap: 8px;">
+                                            <span style="display: inline-block; width: 15px; height: 14px; border: 1.5px solid #000;"></span> ไม่อนุมัติ
+                                        </span>
+                                    </div>
+                                    <div style="text-align: center; margin-top: 15px;">
+                                        (ลงชื่อ)............................................................<br>
+                                        (............................................................)<br>
+                                        วันที่.........../................../...........
+                                    </div>
+                                </td>
                             </tr>
-                        </tbody>
-                    </table>
+                        </table>
 
-                    <div style="margin-top: 80px; display: flex; justify-content: space-between; font-size: 18px;">
-                        <div style="text-align: center; width: 45%;">
-                            <p>ลงชื่อ............................................................ผู้รับพัสดุ</p>
-                            <p style="margin-top: 5px; font-weight: bold;">( ${recipient} )</p>
-                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">ตำแหน่ง: ............................................................</p>
+                        <div style="width: 100%; text-align: center; font-size: 18px; margin-top: 15px; border-top: 1px dashed #cbd5e1; padding-top: 15px; line-height: 2;">
+                            <strong>ได้จ่ายของและลงบัญชีคุมเบิกจ่ายแล้ว</strong>
+                            <div style="margin-top: 12px;">
+                                (ลงชื่อ)............................................................เจ้าหน้าที่จ่าย<br>
+                                (............................................................)<br>
+                                วันที่.........../................../...........
+                            </div>
                         </div>
-                        <div style="text-align: center; width: 45%;">
-                            <p>ลงชื่อ............................................................ผู้จ่ายพัสดุ</p>
-                            <p style="margin-top: 5px; font-weight: bold;">( เจ้าหน้าที่งานพัสดุ )</p>
-                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">วันที่อนุมัติจ่าย: ${dateStr}</p>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 80px; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: center; font-size: 14px; color: #64748b;">
-                        * เอกสารนี้สร้างขึ้นโดยระบบควบคุมพัสดุและวัสดุสิ้นเปลือง สำนักงานเลขานุการ อบจ.ภูเก็ต เพื่อใช้ควบคุมทะเบียนคลังพัสดุหลวง *
                     </div>
                 </div>
             `;
@@ -3266,67 +3313,116 @@
             const qty = record.qty || 1;
             const unit = record.unit || mat?.unit || "หน่วย";
 
+            const tDate = parseThaiDate(record.borrowDate);
             const printSec = document.getElementById('print-section');
+            
             printSec.innerHTML = `
-                <div style="font-family: 'TH SarabunIT๙', 'TH Sarabun IT๙', 'TH Sarabun New', 'Sarabun', sans-serif; padding: 40px; color: #000; line-height: 1.6; max-width: 800px; margin: 0 auto; background: white; font-size: 18px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
-                        <div>
-                            <h2 style="margin: 0; font-size: 28px; font-weight: bold; line-height: 1.2;">ใบเบิกวัสดุ</h2>
-                            <h3 style="margin: 5px 0 0 0; font-size: 20px; font-weight: bold; color: #334155; line-height: 1.2;">สำนักงานเลขานุการ อบจ.ภูเก็ต</h3>
+                <style>
+                    @media print {
+                        @page {
+                            size: A4 portrait;
+                            margin: 0;
+                        }
+                        body {
+                            margin: 0;
+                            padding: 0;
+                            background: white !important;
+                        }
+                    }
+                </style>
+                <div style="width: 210mm; height: 297mm; padding: 20mm 15mm 15mm 15mm; margin: 0 auto; font-family: 'Sarabun', 'TH Sarabun New', 'TH SarabunIT๙', sans-serif; font-size: 19px; color: black; line-height: 1.5; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; background: white; page-break-inside: avoid;">
+                    <div style="flex-grow: 1;">
+                        <!-- หัวข้อกึ่งกลางตามแบบสแกน -->
+                        <div style="width: 100%; text-align: center; font-weight: bold; font-size: 26px; margin-bottom: 5px;">ใบเบิกพัสดุ</div>
+                        
+                        <!-- ช่องขวาบน: ใบเบิกเลขที่ / ปี และวันที่ (ตัดเส้นจุดไข่ปลาออก และทำตัวหนา) -->
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; font-size: 19px; margin-bottom: 25px; line-height: 2;">
+                            <div>ใบเบิกเลขที่ <span style="display: inline-block; width: 140px; text-align: center; font-weight: 900; font-size: 21px;">${record.id}</span> / <span style="display: inline-block; width: 70px; text-align: center; font-weight: 900; font-size: 21px;">${tDate.year}</span></div>
+                            <div style="margin-top: 4px;">วันที่ <span style="display: inline-block; width: 45px; text-align: center; font-weight: 900; font-size: 21px;">${tDate.day}</span> เดือน <span style="display: inline-block; width: 140px; text-align: center; font-weight: 900; font-size: 21px;">${tDate.month}</span> พ.ศ. <span style="display: inline-block; width: 70px; text-align: center; font-weight: 900; font-size: 21px;">${tDate.year}</span></div>
                         </div>
-                        <div style="text-align: right;">
-                            <span style="font-size: 16px; font-weight: bold; border: 1px solid #000; padding: 4px 10px; border-radius: 4px;">อนุมัติแล้ว</span>
+
+                        <!-- คำขึ้นต้นเรียน (ตัดเส้นจุดไข่ปลาออก และทำตัวหนา) -->
+                        <div style="font-size: 19px; line-height: 2; margin-bottom: 15px;">
+                            เรียน  เลขานุการองค์การบริหารส่วนจังหวัด<br>
+                            <span style="display: inline-block; width: 50px;"></span>เจ้าหน้าที่ในสังกัดขอเบิกวัสดุ <span style="display: inline-block; width: 520px; font-weight: 900; text-align: center; font-size: 21px; padding-bottom: 2px;">${matCategory}</span><br>
+                            เพื่อใช้ในการปฏิบัติงานราชการของสำนักงานเลขานุการ อบจ. ตามลำดับ ดังนี้
                         </div>
+
+                        <!-- ตารางพัสดุ 5 คอลัมน์ตรงตามแบบฟอร์มสแกน -->
+                        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; font-size: 18px; margin-bottom: 20px;">
+                            <thead>
+                                <tr style="border-bottom: 1.5px solid #000; background-color: #f8fafc; font-weight: bold; height: 38px;">
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 8%;">ลำดับ</th>
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 42%;">รายการ</th>
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 12%;">จำนวน</th>
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 18%;">ชื่อผู้ขอเบิก</th>
+                                    <th style="border: 1px solid #000; padding: 6px; text-align: center; width: 20%;">ได้รับพัสดุถูกต้องแล้ว<br>ลงชื่อผู้รับพัสดุ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height: 34px;">
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px;">1</td>
+                                    <td style="border: 1px solid #000; text-align: left; padding: 6px 10px; font-weight: bold;">${matName}</td>
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px; font-weight: bold;">${qty} ${unit}</td>
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px; font-weight: bold;">${record.borrower}</td>
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px;">
+                                        <span style="display: inline-block; width: 85%; border-bottom: 1px dotted #999; height: 16px;"></span>
+                                    </td>
+                                </tr>
+                                ${Array.from({length: 8}).map((_, index) => `
+                                <tr style="height: 34px;">
+                                    <td style="border: 1px solid #000; text-align: center; padding: 6px;">${index + 2}</td>
+                                    <td style="border: 1px solid #000; padding: 6px;"></td>
+                                    <td style="border: 1px solid #000; padding: 6px;"></td>
+                                    <td style="border: 1px solid #000; padding: 6px;"></td>
+                                    <td style="border: 1px solid #000; padding: 6px;"></td>
+                                </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
                     </div>
 
-                    <table style="width: 100%; margin-bottom: 20px; font-size: 18px;">
-                        <tr>
-                            <td style="width: 50%; padding: 4px 0;"><strong>เลขที่คำร้อง:</strong> ${record.id}</td>
-                            <td style="width: 50%; padding: 4px 0; text-align: right;"><strong>วันที่เสนอเบิก:</strong> ${record.borrowDate}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 4px 0;"><strong>ผู้ยื่นเรื่องเบิก:</strong> ${record.borrower}</td>
-                            <td style="padding: 4px 0; text-align: right;"><strong>ฝ่าย/กองสังกัด:</strong> ${record.department}</td>
-                        </tr>
-                    </table>
-
-                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 18px;">
-                        <thead>
-                            <tr style="border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; background-color: #f8fafc;">
-                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 25%;">รหัสวัสดุ</th>
-                                <th style="padding: 8px 10px; text-align: left; border-bottom: 1.5px solid #000; font-weight: bold; width: 45%;">รายการวัสดุ</th>
-                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">จำนวนที่เบิก</th>
-                                <th style="padding: 8px 10px; text-align: right; border-bottom: 1.5px solid #000; font-weight: bold; width: 15%;">หน่วยนับ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="border-bottom: 1.5px solid #000;">
-                                <td style="padding: 10px 10px; font-weight: bold; font-size: 20px;">${record.assetId}</td>
-                                <td style="padding: 10px 10px;">
-                                    <div style="font-weight: bold; font-size: 20px;">${matName}</div>
-                                    <div style="font-size: 16px; color: #475569; margin-top: 2px;">ประเภทวัสดุ: ${matCategory}</div>
+                    <!-- ส่วนลงชื่อและประเมินอนุมัติตามรูปสแกนต้นฉบับ -->
+                    <div style="font-size: 18px; box-sizing: border-box;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; line-height: 1.8;">
+                            <tr>
+                                <td style="width: 48%; vertical-align: top;">
+                                    <div style="font-weight: bold; margin-bottom: 6px;">ความเห็นของหัวหน้าเจ้าหน้าที่</div>
+                                    <div style="border-bottom: 1px dotted #000; width: 100%; height: 24px; margin-bottom: 15px;"></div>
+                                    <div style="text-align: center; margin-top: 15px;">
+                                        (ลงชื่อ)............................................................หัวหน้าเจ้าหน้าที่<br>
+                                        (............................................................)<br>
+                                        วันที่.........../................../...........
+                                    </div>
                                 </td>
-                                <td style="padding: 10px 10px; text-align: right; font-weight: bold; font-size: 20px;">${qty}</td>
-                                <td style="padding: 10px 10px; text-align: right; font-weight: bold;">${unit}</td>
+                                <td style="width: 4%;"></td>
+                                <td style="width: 48%; vertical-align: top;">
+                                    <div style="font-weight: bold; margin-bottom: 6px;">ความเห็นของเลขานุการองค์การบริหารส่วนจังหวัด</div>
+                                    <div style="margin-top: 10px; margin-bottom: 15px; display: flex; gap: 30px;">
+                                        <span style="display: inline-flex; align-items: center; gap: 8px;">
+                                            <span style="display: inline-block; width: 15px; height: 14px; border: 1.5px solid #000;"></span> อนุมัติ
+                                        </span>
+                                        <span style="display: inline-flex; align-items: center; gap: 8px;">
+                                            <span style="display: inline-block; width: 15px; height: 14px; border: 1.5px solid #000;"></span> ไม่อนุมัติ
+                                        </span>
+                                    </div>
+                                    <div style="text-align: center; margin-top: 15px;">
+                                        (ลงชื่อ)............................................................<br>
+                                        (............................................................)<br>
+                                        วันที่.........../................../...........
+                                    </div>
+                                </td>
                             </tr>
-                        </tbody>
-                    </table>
+                        </table>
 
-                    <div style="margin-top: 80px; display: flex; justify-content: space-between; font-size: 18px;">
-                        <div style="text-align: center; width: 45%;">
-                            <p>ลงชื่อ............................................................ผู้รับวัสดุ</p>
-                            <p style="margin-top: 5px; font-weight: bold;">( ${record.borrower} )</p>
-                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">ฝ่าย: ${record.department}</p>
+                        <div style="width: 100%; text-align: center; font-size: 18px; margin-top: 15px; border-top: 1px dashed #cbd5e1; padding-top: 15px; line-height: 2;">
+                            <strong>ได้จ่ายของและลงบัญชีคุมเบิกจ่ายแล้ว</strong>
+                            <div style="margin-top: 12px;">
+                                (ลงชื่อ)............................................................เจ้าหน้าที่จ่าย<br>
+                                (............................................................)<br>
+                                วันที่.........../................../...........
+                            </div>
                         </div>
-                        <div style="text-align: center; width: 45%;">
-                            <p>ลงชื่อ............................................................ผู้อนุมัติ/จ่ายวัสดุ</p>
-                            <p style="margin-top: 5px; font-weight: bold;">( เจ้าหน้าที่พัสดุส่วนกลาง )</p>
-                            <p style="margin-top: 2px; color: #475569; font-size: 16px;">วันที่อนุมัติ: ${record.borrowDate}</p>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 80px; border-top: 1px dashed #cbd5e1; padding-top: 10px; text-align: center; font-size: 14px; color: #64748b;">
-                        * เอกสารนี้พิมพ์ได้หลังจากผู้ดูแลระบบอนุมัติคำขอเบิกวัสดุแล้วเท่านั้น *
                     </div>
                 </div>
             `;
